@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f9ff">
+<title>Agenda V1</title>
+<style>
+:root{
+  --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
+  --blue1:#8064df; --blue2:#466fd1; --blue3:#70b9ed; --blue4:#86d5c2; --blue5:#ffd65c;
+  --line:rgba(55,50,100,.15); --field:#fff; --accent:#b786e8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+body.dark{
+  --bg:#0b1424; --text:#fff; --panel:#111d31; --field:#15233a;
+  --line:rgba(255,255,255,.15); --shadow:0 12px 26px rgba(0,0,0,.38);
+}
+button,input,textarea{font:inherit}
+button{color:inherit}
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+.top-actions{position:fixed;z-index:20;top:max(14px,env(safe-area-inset-top));left:16px;right:16px;display:flex;justify-content:space-between;pointer-events:none}
+.icon-btn{pointer-events:auto;border:0;background:var(--panel);width:48px;height:48px;border-radius:15px;box-shadow:var(--shadow);font-size:23px;cursor:pointer}
+.theme{display:flex;background:var(--panel);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;pointer-events:auto}
+.theme button{border:0;background:transparent;width:46px;height:46px;font-size:21px;cursor:pointer}
+.theme button.on{background:rgba(90,130,220,.18)}
+.dashboard{padding:78px 28px 42px;max-width:1400px;margin:auto}
+.title{text-align:center;font-family:"Brush Script MT","Segoe Script",cursive;font-size:clamp(56px,7vw,92px);font-weight:800;text-shadow:0 5px 8px rgba(0,0,0,.18);margin:0 0 35px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.tile{border:0;border-radius:26px;min-height:150px;padding:22px 12px;box-shadow:0 12px 0 rgba(20,50,120,.16),var(--shadow);cursor:pointer;font-weight:800;font-size:clamp(17px,2vw,25px);transition:.15s transform; color:#111}
+body.dark .tile{color:#fff}
+.tile:active{transform:translateY(5px)}
+.tile .ico{display:block;font-size:42px;margin-bottom:12px}
+.c1{background:linear-gradient(145deg,#8f72e8,#c2a4f3)}
+.c2{background:linear-gradient(145deg,#3159bd,#6794ed)}
+.c3{background:linear-gradient(145deg,#78b9e9,#b7dcf8)}
+.c4{background:linear-gradient(145deg,#82cfbd,#bce8db)}
+.c5{background:linear-gradient(145deg,#ffd35c,#ffe99a)}
+.placeholder{cursor:default}
+.daily{padding:18px 22px 45px;max-width:1100px;margin:auto}
+.daily-head{padding:10px 80px 20px;text-align:center;background:linear-gradient(135deg,rgba(183,134,232,.48),rgba(235,222,250,.25));border-radius:0 0 28px 28px}
+.daily h1{font-family:"Brush Script MT","Segoe Script",cursive;font-size:clamp(42px,6vw,72px);margin:0 0 6px;font-weight:800}
+.date-row{display:grid;grid-template-columns:52px 1fr 52px;gap:14px;align-items:center;max-width:720px;margin:auto}
+.nav{border:0;background:var(--panel);height:48px;border-radius:14px;box-shadow:var(--shadow);font-size:31px;cursor:pointer}
+#dateLabel{font-size:clamp(20px,3vw,30px);font-weight:800}
+.schedule{margin-top:18px}
+.slot{display:grid;grid-template-columns:120px 1fr;gap:12px;margin:8px 0;align-items:start}
+.time{background:linear-gradient(135deg,#e8d6fa,#d6b6f2);color:#111;text-align:center;font-weight:800;padding:13px 8px;border-radius:11px}
+body.dark .time{background:linear-gradient(135deg,#62409a,#8c63bd);color:#fff}
+.note{width:100%;min-height:48px;resize:none;overflow:hidden;border:1px solid var(--line);background:var(--field);color:var(--text);border-radius:11px;padding:13px 15px;outline:none;box-shadow:0 3px 8px rgba(0,0,0,.05)}
+.note::placeholder{color:#8c8c98;font-style:italic}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.tile{min-height:135px}}
+@media(max-width:520px){
+ .dashboard{padding:78px 15px 30px}.grid{grid-template-columns:1fr 1fr;gap:14px}.tile{min-height:112px;border-radius:20px;padding:14px 8px;font-size:15px}.tile .ico{font-size:31px}
+ .daily{padding:12px 10px 35px}.daily-head{padding:64px 8px 16px}.slot{grid-template-columns:76px 1fr;gap:7px}.time{padding:13px 3px}.note{padding:13px 10px}
+}
+@media(orientation:landscape) and (min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<div class="top-actions">
+  <button id="homeBtn" class="icon-btn" aria-label="Accueil" title="Accueil" style="visibility:hidden">⌂</button>
+  <div class="theme" aria-label="Thème"><button id="lightBtn" class="on" title="Mode clair">☀</button><button id="darkBtn" title="Mode sombre">☾</button></div>
+</div>
+
+<section id="home" class="page active">
+ <main class="dashboard">
+  <h1 class="title">Agenda</h1>
+  <div class="grid">
+   <button class="tile c1" data-page="daily"><span class="ico">▣</span>JOUR</button>
+   <button class="tile c1 placeholder"><span class="ico">▣</span>SEMAINE</button>
+   <button class="tile c1 placeholder"><span class="ico">▣</span>MOIS</button>
+   <button class="tile c1 placeholder"><span class="ico">▣</span>ANNÉE</button>
+
+   <button class="tile c2 placeholder"><span class="ico">▣</span>RENDEZ-VOUS</button>
+   <button class="tile c2 placeholder"><span class="ico">✓</span>TO DO LIST PERSO</button>
+   <button class="tile c2 placeholder"><span class="ico">✓</span>TO DO LIST TRAVAIL</button>
+   <button class="tile c2 placeholder"><span class="ico">◎</span>OBJECTIFS</button>
+
+   <button class="tile c3 placeholder"><span class="ico">♔</span>DATE ANNIVERSAIRE</button>
+   <button class="tile c3 placeholder"><span class="ico">♡</span>SUIVI DE SANTÉ</button>
+   <button class="tile c3 placeholder"><span class="ico">♀</span>CYCLE FÉMININ</button>
+   <button class="tile c3 placeholder"><span class="ico">↔</span>EXERCICES</button>
+
+   <button class="tile c2 placeholder"><span class="ico">▶</span>FILMS</button>
+   <button class="tile c2 placeholder"><span class="ico">▻</span>SÉRIES TV</button>
+   <button class="tile c2 placeholder"><span class="ico">▤</span>LIVRES</button>
+   <button class="tile c2 placeholder"><span class="ico">✎</span>LOISIRS CRÉATIFS</button>
+
+   <button class="tile c5 placeholder"><span class="ico">◇</span>FINANCES (PRÊTS)</button>
+   <button class="tile c5 placeholder"><span class="ico">▥</span>FINANCES (COMPTES)</button>
+   <button class="tile c5 placeholder"><span class="ico">◔</span>FINANCES (BUDGETS)</button>
+   <button class="tile c5 placeholder"><span class="ico">♙</span>FINANCES (ÉPARGNES)</button>
+
+   <button class="tile c4 placeholder"><span class="ico">◉</span>MENUS</button>
+   <button class="tile c4 placeholder"><span class="ico">🛒</span>LISTE ÉPICERIES</button>
+   <button class="tile c4 placeholder"><span class="ico">♨</span>RECETTES</button>
+   <button class="tile c4 placeholder"><span class="ico">▢</span>LISTE ACHATS</button>
+  </div>
+ </main>
+</section>
+
+<section id="daily" class="page">
+ <main class="daily">
+  <header class="daily-head">
+   <h1>Agenda journalier</h1>
+   <div class="date-row">
+    <button class="nav" id="prevDay" aria-label="Jour précédent">‹</button>
+    <div id="dateLabel"></div>
+    <button class="nav" id="nextDay" aria-label="Jour suivant">›</button>
+   </div>
+  </header>
+  <div id="schedule" class="schedule"></div>
+ </main>
+</section>
+
+<script>
+const home=document.getElementById('home'), daily=document.getElementById('daily'), homeBtn=document.getElementById('homeBtn');
+const lightBtn=document.getElementById('lightBtn'), darkBtn=document.getElementById('darkBtn');
+function setTheme(mode){
+ document.body.classList.toggle('dark',mode==='dark');
+ lightBtn.classList.toggle('on',mode==='light'); darkBtn.classList.toggle('on',mode==='dark');
+ localStorage.setItem('agenda-theme',mode);
+}
+lightBtn.onclick=()=>setTheme('light'); darkBtn.onclick=()=>setTheme('dark');
+setTheme(localStorage.getItem('agenda-theme')||'light');
+
+function show(page){
+ home.classList.toggle('active',page==='home'); daily.classList.toggle('active',page==='daily');
+ homeBtn.style.visibility=page==='home'?'hidden':'visible'; window.scrollTo(0,0);
+}
+homeBtn.onclick=()=>show('home');
+document.querySelector('[data-page="daily"]').onclick=()=>show('daily');
+
+const START = new Date(2026,8,1); // 1 septembre 2026
+let current = new Date(Math.max(Date.now(), START.getTime()));
+current.setHours(12,0,0,0);
+
+function keyForDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function formatDate(d){return d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).replace(/^./,c=>c.toUpperCase())}
+const schedule=document.getElementById('schedule');
+function times(){
+ const a=[]; for(let h=5;h<=22;h++){a.push(`${h}:00`); if(h<22)a.push(`${h}:30`)} return a;
+}
+function autoGrow(el){el.style.height='auto';el.style.height=Math.max(48,el.scrollHeight)+'px'}
+function render(){
+ document.getElementById('dateLabel').textContent=formatDate(current);
+ schedule.innerHTML='';
+ const dk=keyForDate(current);
+ times().forEach(t=>{
+  const row=document.createElement('div'); row.className='slot';
+  const lab=document.createElement('div'); lab.className='time'; lab.textContent=t;
+  const ta=document.createElement('textarea'); ta.className='note'; ta.placeholder='Écrire ici...';
+  const storageKey=`agenda:${dk}:${t}`; ta.value=localStorage.getItem(storageKey)||'';
+  ta.addEventListener('input',()=>{autoGrow(ta);localStorage.setItem(storageKey,ta.value)});
+  row.append(lab,ta); schedule.append(row); requestAnimationFrame(()=>autoGrow(ta));
+ });
+ document.getElementById('prevDay').disabled=current<=START;
+}
+document.getElementById('prevDay').onclick=()=>{if(current>START){current.setDate(current.getDate()-1);render()}};
+document.getElementById('nextDay').onclick=()=>{current.setDate(current.getDate()+1);render()};
+render();
+</script>
+</body>
+</html>
