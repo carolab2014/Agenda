@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V5</title>
+<title>Agenda V5.1</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -726,7 +726,7 @@ function render(){
   const lab=document.createElement('div'); lab.className='time'; lab.textContent=t;
   const ta=document.createElement('textarea'); ta.className='note'; ta.placeholder='Écrire ici...';
   const storageKey=`agenda:${dk}:${t}`; ta.value=localStorage.getItem(storageKey)||'';
-  ta.addEventListener('input',()=>{autoGrow(ta);localStorage.setItem(storageKey,ta.value)});
+  ta.addEventListener('input',()=>{autoGrow(ta);localStorage.setItem(storageKey,ta.value); if(typeof agendaV5FillWeekSummaries==='function') agendaV5FillWeekSummaries();});
   row.append(lab,ta); schedule.append(row); requestAnimationFrame(()=>autoGrow(ta));
  });
  document.getElementById('prevDay').disabled=current<=START;
@@ -857,61 +857,38 @@ function agendaV5DateKey(date){
 
 function agendaV5ReadDailyText(date, time){
   const dateKey = agendaV5DateKey(date);
-  const candidates = [
-    `agenda-${dateKey}-${time}`,
-    `agenda_${dateKey}_${time}`,
-    `${dateKey}-${time}`,
-    `${dateKey}_${time}`,
-    `day-${dateKey}-${time}`,
-    `day_${dateKey}_${time}`
-  ];
-  for (const key of candidates){
-    const v = localStorage.getItem(key);
-    if (v !== null) return v;
-  }
-
-  /* Compatibilité avec le stockage déjà utilisé par l'application :
-     recherche ciblée des clés contenant la date et l'heure. */
-  const compactTime = time.replace(':','');
-  for (let i=0; i<localStorage.length; i++){
-    const key = localStorage.key(i) || '';
-    const low = key.toLowerCase();
-    if (low.includes(dateKey.toLowerCase()) &&
-        (low.includes(time) || low.includes(compactTime))){
-      const v = localStorage.getItem(key);
-      if (v !== null) return v;
-    }
-  }
-  return '';
+  return localStorage.getItem(`agenda:${dateKey}:${time}`) || '';
 }
 
 function agendaV5FillWeekSummaries(){
-  const table = document.querySelector('#weekPage table');
-  if (!table || typeof weekStart === 'undefined') return;
+  const rows = [...document.querySelectorAll('#weekBody tr')];
+  if (!rows.length || typeof weekStart === 'undefined') return;
 
-  const rows = [...table.querySelectorAll('tbody tr')];
   rows.forEach(row => {
     const cells = [...row.children];
     if (cells.length < 8) return;
-    const time = (cells[0].textContent || '').trim().replace(/\s*h\s*/i, ':');
+    const time = (cells[0].textContent || '').trim();
     if (!/^\d{1,2}:\d{2}$/.test(time)) return;
 
     for (let d=0; d<7; d++){
       const date = new Date(weekStart);
       date.setDate(weekStart.getDate()+d);
-      const fullText = agendaV5ReadDailyText(date, time);
-      const summary = agendaV5ExtractWeeklySummary(fullText);
-      const cell = cells[d+1];
 
-      /* Ne remplace que le résumé automatique V5. */
-      let box = cell.querySelector('.agenda-v5-week-summary');
-      if (!box){
-        box = document.createElement('div');
-        box.className = 'agenda-v5-week-summary';
-        cell.appendChild(box);
+      const dailyText = agendaV5ReadDailyText(date, time);
+      const summary = agendaV5ExtractWeeklySummary(dailyText);
+      const ta = cells[d+1].querySelector('textarea');
+      if (!ta) continue;
+
+      // If Day contains [brackets], the Week cell shows only that extracted text.
+      // If there are no brackets, retain any manually-entered Week text.
+      if (summary) {
+        ta.value = summary;
+        ta.dataset.fromDay = '1';
+      } else if (ta.dataset.fromDay === '1') {
+        ta.value = '';
+        delete ta.dataset.fromDay;
       }
-      box.textContent = summary;
-      box.style.display = summary ? 'block' : 'none';
+      if (typeof autoGrow === 'function') autoGrow(ta);
     }
   });
 }
