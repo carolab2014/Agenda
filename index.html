@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V4.1</title>
+<title>Agenda V4.2</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -517,6 +517,9 @@ lightBtn.onclick=()=>setTheme('light'); darkBtn.onclick=()=>setTheme('dark');
 setTheme(localStorage.getItem('agenda-theme')||'light');
 
 function show(page){
+ const wp=document.getElementById('weekPage');
+ if(wp){wp.classList.remove('active');wp.style.display='none';}
+ home.style.display=''; daily.style.display='';
  home.classList.toggle('active',page==='home'); daily.classList.toggle('active',page==='daily');
  homeBtn.style.visibility='hidden';
  document.querySelector('.top-actions').style.display=page==='daily'?'none':'flex';
@@ -639,9 +642,33 @@ render();
    });
  }
  window.changeWeek=function(days){weekStart.setDate(weekStart.getDate()+days);renderWeek()}
+
+ window.showHome=function(){
+   const p=document.getElementById('weekPage');
+   p.classList.remove('active');
+   p.style.display='none';
+   const home=document.getElementById('home');
+   const daily=document.getElementById('daily');
+   home.style.display='';
+   daily.style.display='';
+   home.classList.add('active');
+   daily.classList.remove('active');
+   document.querySelector('.top-actions').style.display='flex';
+   document.getElementById('homeBtn').style.visibility='hidden';
+   window.scrollTo(0,0);
+ }
+
  window.showWeek=function(){
-   document.querySelectorAll("section,main").forEach(el=>{ if(el.id!=="weekPage") el.style.display="none"; });
-   const p=document.getElementById("weekPage"); p.style.display="block"; p.classList.add("active"); renderWeek(); window.scrollTo(0,0);
+   document.getElementById('home').classList.remove('active');
+   document.getElementById('daily').classList.remove('active');
+   document.getElementById('home').style.display='none';
+   document.getElementById('daily').style.display='none';
+   document.querySelector('.top-actions').style.display='none';
+   const p=document.getElementById('weekPage');
+   p.style.display='block';
+   p.classList.add('active');
+   renderWeek();
+   window.scrollTo(0,0);
  }
  // Wire the SEMAINe tile without changing the rest of the application.
  document.addEventListener("DOMContentLoaded",()=>{
