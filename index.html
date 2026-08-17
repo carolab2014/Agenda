@@ -637,6 +637,33 @@ body.dark #monthPage .silver-round{color:#fff!important;-webkit-text-fill-color:
  .month-daynum{font-size:16px}.month-weekday{font-size:13px;padding:12px 2px}
 }
 
+
+/* V6.1 — Entêtes uniformes : Jour = référence */
+.daily, .week-page, .month-page{
+  width:100% !important;
+  max-width:1100px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  box-sizing:border-box !important;
+}
+.daily-head, .week-head, .month-head{
+  width:100% !important;
+  height:195px !important;
+  min-height:195px !important;
+  max-height:195px !important;
+  box-sizing:border-box !important;
+  border-radius:30px !important;
+  margin-top:12px !important;
+}
+/* On conserve le contenu et les couleurs propres à chaque section. */
+@media(max-width:700px){
+  .daily-head, .week-head, .month-head{
+    height:195px !important;
+    min-height:195px !important;
+    max-height:195px !important;
+  }
+}
+
 </style>
 </head>
 <body>
