@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V5.2</title>
+<title>Agenda V6</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -597,6 +597,46 @@ body.dark #weekPage button[aria-label="Mode sombre"] {
 body:not(.dark) #weekPage .agenda-v5-week-summary{color:#000;}
 body.dark #weekPage .agenda-v5-week-summary{color:#fff;}
 
+
+/* ===== Agenda V6 — Page MOIS ===== */
+#monthPage{display:none;min-height:100vh;padding:18px 22px 44px;max-width:1400px;margin:auto}
+#monthPage.active{display:block}
+.month-head{position:relative;min-height:218px;padding:24px 95px 28px;text-align:center;border-radius:30px;background:linear-gradient(135deg,#4b2fc7 0%,#7d49e2 100%);box-shadow:var(--shadow);color:#fff}
+.month-title{font-family:"Brush Script MT","Segoe Script",cursive;font-size:clamp(48px,6.2vw,78px);line-height:1;margin:0 0 12px;font-weight:800}
+.month-label{font-size:clamp(24px,3.2vw,38px);font-weight:800}
+.month-home{position:absolute;left:18px;top:18px}
+.month-theme{position:absolute;right:18px;top:18px;display:flex;gap:8px}
+.month-prev{position:absolute;left:20%;bottom:24px}
+.month-next{position:absolute;right:20%;bottom:24px}
+.month-wrap{margin-top:22px;border:1.5px solid #7550db;border-radius:18px;overflow:hidden;background:var(--panel)}
+.month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.month-weekday{padding:15px 5px;text-align:center;font-weight:850;background:linear-gradient(135deg,#5234c9,#8150e2);color:#fff;border-right:1px solid rgba(255,255,255,.28)}
+.month-weekday:nth-child(7){border-right:0}
+.month-cell{position:relative;min-height:var(--month-cell-h,145px);padding:10px 10px 8px;border-right:1px solid rgba(112,75,210,.28);border-top:1px solid rgba(112,75,210,.28);background:#fff;color:#111;overflow:auto}
+.month-cell:nth-child(7n){border-right:0}
+.month-cell.outside{background:#faf9ff;color:#999}
+.month-daynum{font-size:19px;font-weight:800;margin-bottom:7px}
+.month-summary{font-size:clamp(11px,1.05vw,15px);line-height:1.25;font-weight:650;white-space:pre-wrap;overflow-wrap:anywhere}
+.month-entry{display:block;margin:0 0 5px}
+.month-entry-time{font-weight:850;margin-right:5px}
+.month-size{display:flex;justify-content:center;align-items:center;gap:12px;margin:18px auto 0;flex-wrap:wrap;font-weight:700}
+.month-size input[type="range"]{width:min(330px,42vw);accent-color:#6740d5}
+.month-size .silver-round{width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important}
+body.dark #monthPage .month-cell{background:#151a36;color:#fff;border-color:rgba(140,105,230,.32)}
+body.dark #monthPage .month-cell.outside{background:#11162e;color:#7f8496}
+body.dark #monthPage .month-wrap{background:#11162e}
+body:not(.dark) #monthPage .silver-round{color:#000!important;-webkit-text-fill-color:#000!important}
+body.dark #monthPage .silver-round{color:#fff!important;-webkit-text-fill-color:#fff!important}
+#monthPage .silver-round .ui-svg{color:currentColor!important}
+@media(max-width:700px){
+ #monthPage{padding:12px 10px 30px}
+ .month-head{min-height:205px;padding:64px 55px 25px}
+ .month-home{left:12px;top:12px}.month-theme{right:12px;top:12px}
+ .month-prev{left:18%;bottom:20px}.month-next{right:18%;bottom:20px}
+ .month-cell{padding:7px 6px;min-height:var(--month-cell-h,110px)}
+ .month-daynum{font-size:16px}.month-weekday{font-size:13px;padding:12px 2px}
+}
+
 </style>
 </head>
 <body>
@@ -611,7 +651,7 @@ body.dark #weekPage .agenda-v5-week-summary{color:#fff;}
   <div class="grid">
    <button class="tile c1" data-page="daily"><span class="ico"><svg viewBox="0 0 64 64"><rect x="10" y="14" width="44" height="40" rx="5"/><path d="M10 25h44M20 9v11M44 9v11"/><path d="M20 33h4M30 33h4M40 33h4M20 42h4M30 42h4M40 42h4"/></svg></span>JOUR</button>
    <button class="tile c1 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="8" y="13" width="39" height="35" rx="5"/><path d="M8 24h39M17 8v10M38 8v10"/><circle cx="45" cy="43" r="13"/><path d="M45 35v8l6 3"/></svg></span>SEMAINE</button>
-   <button class="tile c1 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="9" y="13" width="46" height="42" rx="5"/><path d="M9 24h46M19 8v10M45 8v10"/><path d="M18 32h4M29 32h4M40 32h4M18 41h4M29 41h4M40 41h4M18 49h4M29 49h4M40 49h4"/></svg></span>MOIS</button>
+   <button class="tile c1" data-page="month"><span class="ico"><svg viewBox="0 0 64 64"><rect x="9" y="13" width="46" height="42" rx="5"/><path d="M9 24h46M19 8v10M45 8v10"/><path d="M18 32h4M29 32h4M40 32h4M18 41h4M29 41h4M40 41h4M18 49h4M29 49h4M40 49h4"/></svg></span>MOIS</button>
    <button class="tile c1 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="10" y="13" width="44" height="42" rx="5"/><path d="M10 24h44M20 8v10M44 8v10"/><text x="32" y="44" text-anchor="middle" font-size="17" fill="currentColor" stroke="none">365</text></svg></span>ANNÉE</button>
 
    <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="23"/><path d="M32 17v16l10 7"/><path d="M32 11v4M32 49v4M11 32h4M49 32h4"/></svg></span>RENDEZ-VOUS</button>
@@ -911,6 +951,111 @@ document.addEventListener('input', function(e){
   }
 });
 
+</script>
+
+
+<section id="monthPage">
+  <header class="month-head">
+    <button class="silver-round month-home" id="monthHome" type="button" aria-label="Accueil" title="Accueil">
+      <svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="month-theme">
+      <button class="silver-round" id="monthLight" type="button" aria-label="Mode clair" title="Mode clair">
+        <svg class="ui-svg sun-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button class="silver-round" id="monthDark" type="button" aria-label="Mode sombre" title="Mode sombre">
+        <svg class="ui-svg" viewBox="0 0 24 24"><path d="M20.5 15.3A8.7 8.7 0 0 1 8.7 3.5 9 9 0 1 0 20.5 15.3Z" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <h1 class="month-title">Agenda mensuel</h1>
+    <div id="monthLabel" class="month-label"></div>
+    <button class="silver-round month-prev" id="prevMonth" type="button" aria-label="Mois précédent">‹</button>
+    <button class="silver-round month-next" id="nextMonth" type="button" aria-label="Mois suivant">›</button>
+  </header>
+  <div class="month-wrap">
+    <div class="month-grid" id="monthGrid"></div>
+  </div>
+  <div class="month-size">
+    <span>Taille des cases</span>
+    <button class="silver-round" id="monthSmaller" type="button" aria-label="Réduire">−</button>
+    <input id="monthSize" type="range" min="85" max="220" step="5" value="145" aria-label="Taille des cases">
+    <button class="silver-round" id="monthLarger" type="button" aria-label="Agrandir">+</button>
+    <span id="monthSizeLabel">100 %</span>
+  </div>
+</section>
+
+
+<script>
+/* ===== Agenda V6 — calendrier mensuel + synchronisation [crochets] ===== */
+(function(){
+ const M=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+ const D=["DIM","LUN","MAR","MER","JEU","VEN","SAM"];
+ let monthCursor=new Date(2026,7,1,12,0,0,0);
+
+ function dateKey(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+ function extract(s){return [...String(s||'').matchAll(/\[([^\[\]]+)\]/g)].map(x=>x[1].trim()).filter(Boolean)}
+ function dailyEntries(d){
+   const dk=dateKey(d), out=[];
+   times().forEach(t=>{
+     const parts=extract(localStorage.getItem(`agenda:${dk}:${t}`)||'');
+     parts.forEach(txt=>out.push({time:t,text:txt}));
+   });
+   return out;
+ }
+ window.renderMonth=function(){
+   const grid=document.getElementById('monthGrid'); if(!grid)return;
+   document.getElementById('monthLabel').textContent=`${M[monthCursor.getMonth()].replace(/^./,c=>c.toUpperCase())} ${monthCursor.getFullYear()}`;
+   grid.innerHTML='';
+   D.forEach(x=>{const e=document.createElement('div');e.className='month-weekday';e.textContent=x;grid.appendChild(e)});
+   const first=new Date(monthCursor.getFullYear(),monthCursor.getMonth(),1,12);
+   const start=new Date(first); start.setDate(first.getDate()-first.getDay()); // dimanche
+   for(let i=0;i<42;i++){
+     const d=new Date(start); d.setDate(start.getDate()+i);
+     const c=document.createElement('div'); c.className='month-cell'+(d.getMonth()!==monthCursor.getMonth()?' outside':'');
+     const n=document.createElement('div');n.className='month-daynum';n.textContent=d.getDate();c.appendChild(n);
+     const s=document.createElement('div');s.className='month-summary';
+     dailyEntries(d).forEach(ent=>{
+       const line=document.createElement('div');line.className='month-entry';
+       const tm=document.createElement('span');tm.className='month-entry-time';tm.textContent=ent.time;
+       line.append(tm,document.createTextNode(ent.text));s.appendChild(line);
+     });
+     c.appendChild(s);grid.appendChild(c);
+   }
+ }
+ window.showMonth=function(){
+   document.getElementById('home').classList.remove('active');document.getElementById('daily').classList.remove('active');
+   document.getElementById('home').style.display='none';document.getElementById('daily').style.display='none';
+   const wp=document.getElementById('weekPage');wp.classList.remove('active');wp.style.display='none';
+   document.querySelector('.top-actions').style.display='none';
+   const mp=document.getElementById('monthPage');mp.style.display='block';mp.classList.add('active');
+   renderMonth();window.scrollTo(0,0);
+ }
+ function closeMonth(){
+   const mp=document.getElementById('monthPage');mp.classList.remove('active');mp.style.display='none';
+   show('home');
+ }
+ document.getElementById('monthHome').onclick=closeMonth;
+ document.getElementById('monthLight').onclick=()=>setTheme('light');
+ document.getElementById('monthDark').onclick=()=>setTheme('dark');
+ document.getElementById('prevMonth').onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()-1);renderMonth()};
+ document.getElementById('nextMonth').onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()+1);renderMonth()};
+
+ const slider=document.getElementById('monthSize'), label=document.getElementById('monthSizeLabel');
+ function setSize(v){
+   v=Math.max(85,Math.min(220,Number(v)||145));slider.value=v;
+   document.getElementById('monthPage').style.setProperty('--month-cell-h',v+'px');
+   label.textContent=Math.round(v/145*100)+' %';localStorage.setItem('agenda-month-cell-size',v);
+ }
+ slider.oninput=()=>setSize(slider.value);
+ document.getElementById('monthSmaller').onclick=()=>setSize(Number(slider.value)-10);
+ document.getElementById('monthLarger').onclick=()=>setSize(Number(slider.value)+10);
+ setSize(localStorage.getItem('agenda-month-cell-size')||145);
+
+ const tile=document.querySelector('[data-page="month"]'); if(tile) tile.onclick=(e)=>{e.preventDefault();showMonth()};
+ document.addEventListener('input',e=>{
+   if(e.target && e.target.classList.contains('note') && document.getElementById('monthPage').classList.contains('active')) renderMonth();
+ });
+})();
 </script>
 
 </body>
