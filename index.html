@@ -615,7 +615,10 @@ body.dark #weekPage .agenda-v5-week-summary{color:#fff;}
 .month-cell{position:relative;min-height:var(--month-cell-h,145px);padding:10px 10px 8px;border-right:1px solid rgba(112,75,210,.28);border-top:1px solid rgba(112,75,210,.28);background:#fff;color:#111;overflow:auto}
 .month-cell:nth-child(7n){border-right:0}
 .month-cell.outside{background:#faf9ff;color:#999}
-.month-daynum{font-size:19px;font-weight:800;margin-bottom:7px}
+.month-daynum{position:absolute;top:9px;right:9px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:7px;background:linear-gradient(135deg,#5234c9,#8150e2);color:#fff;font-size:18px;font-weight:850;line-height:1;box-shadow:0 2px 6px rgba(82,52,201,.18);z-index:1}
+.month-cell{padding-top:52px}
+.month-cell.outside .month-daynum{background:linear-gradient(135deg,#8d79cf,#ad94e7);color:#fff;opacity:.72}
+body.dark #monthPage .month-daynum{color:#fff!important;-webkit-text-fill-color:#fff!important}
 .month-summary{font-size:clamp(11px,1.05vw,15px);line-height:1.25;font-weight:650;white-space:pre-wrap;overflow-wrap:anywhere}
 .month-entry{display:block;margin:0 0 5px}
 .month-entry-time{font-weight:850;margin-right:5px}
