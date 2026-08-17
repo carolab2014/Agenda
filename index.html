@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V3.6</title>
+<title>Agenda V3.7</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -224,6 +224,35 @@ body.dark .tile .ico{color:#fff}
 .grid .tile .ico svg text{fill:#fff !important;stroke:none !important}
 .agenda-flourish{display:flex;justify-content:center;align-items:center;margin:-8px auto 24px;color:var(--text);height:28px}
 .agenda-flourish svg{width:250px;max-width:55vw;height:28px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+
+/* V3.7 — Agenda journalier assorti exactement à la case JOUR */
+.daily-head {
+  background:linear-gradient(135deg,#3020B8 0%,#6B42D9 100%) !important;
+  border-radius:30px !important;
+  color:#fff !important;
+  margin-top:12px;
+  box-shadow:0 8px 18px rgba(48,32,184,.18);
+}
+.daily-head h1,
+.daily-head #dateLabel {
+  color:#fff !important;
+}
+.daily-head .silver-round {
+  color:#fff !important;
+}
+.time {
+  background:linear-gradient(135deg,#3020B8 0%,#6B42D9 100%) !important;
+  color:#fff !important;
+  box-shadow:0 4px 9px rgba(48,32,184,.16);
+}
+body.dark .daily-head {
+  background:linear-gradient(135deg,#3020B8 0%,#6B42D9 100%) !important;
+}
+body.dark .time {
+  background:linear-gradient(135deg,#3020B8 0%,#6B42D9 100%) !important;
+  color:#fff !important;
+}
 
 </style>
 </head>
