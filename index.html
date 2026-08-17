@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V4.3</title>
+<title>Agenda V4.4</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -490,6 +490,52 @@ body.dark .icon-btn {
   background:linear-gradient(145deg,#eeeeee 0%,#c8c8c8 48%,#a9a9a9 100%) !important;
   border:2px solid rgba(255,255,255,.95) !important;
 }
+
+
+/* V4.4 — Agenda semaine : pictogrammes argent conformes au thème */
+body:not(.dark) #weekPage .silver-round,
+body:not(.dark) #weekPage .week-silver,
+body:not(.dark) #weekPage button {
+  --week-icon-color:#000;
+}
+body.dark #weekPage .silver-round,
+body.dark #weekPage .week-silver,
+body.dark #weekPage button {
+  --week-icon-color:#fff;
+}
+
+/* SVG */
+#weekPage .silver-round svg,
+#weekPage .week-silver svg {
+  color:var(--week-icon-color) !important;
+  stroke:var(--week-icon-color) !important;
+}
+#weekPage .silver-round svg *,
+#weekPage .week-silver svg * {
+  stroke:var(--week-icon-color) !important;
+}
+#weekPage .silver-round svg [fill]:not([fill="none"]),
+#weekPage .week-silver svg [fill]:not([fill="none"]) {
+  fill:var(--week-icon-color) !important;
+}
+
+/* Icônes texte / caractères / pseudo-éléments */
+#weekPage .silver-round,
+#weekPage .week-silver {
+  color:var(--week-icon-color) !important;
+  -webkit-text-fill-color:var(--week-icon-color) !important;
+}
+#weekPage .silver-round::before,
+#weekPage .silver-round::after,
+#weekPage .week-silver::before,
+#weekPage .week-silver::after {
+  color:var(--week-icon-color) !important;
+  -webkit-text-fill-color:var(--week-icon-color) !important;
+}
+
+/* Les flèches de navigation suivent la même règle visuelle */
+body:not(.dark) #weekPage .week-nav { color:#000 !important; -webkit-text-fill-color:#000 !important; }
+body.dark #weekPage .week-nav { color:#fff !important; -webkit-text-fill-color:#fff !important; }
 
 </style>
 </head>
