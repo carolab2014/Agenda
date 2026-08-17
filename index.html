@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V3</title>
+<title>Agenda V3.1</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -61,12 +61,43 @@ body.dark .time{background:linear-gradient(135deg,#62409a,#8c63bd);color:#fff}
  .daily{padding:12px 10px 35px}.daily-head{padding:64px 8px 16px}.slot{grid-template-columns:76px 1fr;gap:7px}.time{padding:13px 3px}.note{padding:13px 10px}
 }
 @media(orientation:landscape) and (min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+
+.sun-icon,.moon-icon{display:block;position:relative;width:20px;height:20px;margin:auto;color:#fff}
+.sun-icon{border:2px solid currentColor;border-radius:50%;transform:scale(.62)}
+.sun-icon::before{
+ content:"";position:absolute;left:50%;top:50%;width:3px;height:34px;background:currentColor;
+ transform:translate(-50%,-50%);border-radius:3px;
+ box-shadow:0 0 0 transparent;
+}
+.sun-icon::after{
+ content:"";position:absolute;left:50%;top:50%;width:34px;height:3px;background:currentColor;
+ transform:translate(-50%,-50%);border-radius:3px;
+ box-shadow:0 0 0 transparent;
+}
+.sun-icon{box-shadow:0 0 0 2px transparent}
+.sun-icon + *{display:none}
+.silver-round .sun-icon::before,.theme .sun-icon::before{
+ box-shadow:none;
+}
+.moon-icon{width:20px;height:20px;border-radius:50%;background:#fff}
+.moon-icon::after{content:"";position:absolute;width:17px;height:17px;border-radius:50%;background:#aaa;left:7px;top:-3px}
+.silver-round .moon-icon::after{background:#a7a7a7}
+.theme .moon-icon::after{background:#a7a7a7}
+
+/* diagonal rays for the sun */
+.sun-icon{background:
+ linear-gradient(#fff,#fff) center/2px 34px no-repeat,
+ linear-gradient(90deg,#fff,#fff) center/34px 2px no-repeat;
+}
+.sun-icon::before{transform:translate(-50%,-50%) rotate(45deg)}
+.sun-icon::after{transform:translate(-50%,-50%) rotate(45deg)}
+
 </style>
 </head>
 <body>
 <div class="top-actions">
   <button id="homeBtn" class="icon-btn" aria-label="Accueil" title="Accueil" style="visibility:hidden">⌂</button>
-  <div class="theme" aria-label="Thème"><button id="lightBtn" class="on" title="Mode clair">☀</button><button id="darkBtn" title="Mode sombre">☾</button></div>
+  <div class="theme" aria-label="Thème"><button id="lightBtn" class="on" title="Mode clair"><span class="sun-icon" aria-hidden="true"></span></button><button id="darkBtn" title="Mode sombre"><span class="moon-icon" aria-hidden="true"></span></button></div>
 </div>
 
 <section id="home" class="page active">
@@ -112,8 +143,8 @@ body.dark .time{background:linear-gradient(135deg,#62409a,#8c63bd);color:#fff}
    <div class="daily-controls">
      <button id="dailyHome" class="silver-round" aria-label="Accueil" title="Accueil">⌂</button>
      <div class="daily-theme">
-       <button id="dailyLight" class="silver-round" aria-label="Mode clair" title="Mode clair">☀</button>
-       <button id="dailyDark" class="silver-round" aria-label="Mode sombre" title="Mode sombre">☾</button>
+       <button id="dailyLight" class="silver-round" aria-label="Mode clair" title="Mode clair"><span class="sun-icon" aria-hidden="true"></span></button>
+       <button id="dailyDark" class="silver-round" aria-label="Mode sombre" title="Mode sombre"><span class="moon-icon" aria-hidden="true"></span></button>
      </div>
    </div>
    <h1>Agenda journalier</h1>
