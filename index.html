@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V4.2</title>
+<title>Agenda V4.3</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -434,6 +434,61 @@ body.dark .week-table th,.week-table td{border-color:rgba(180,160,255,.22)}
  .week-head{min-height:185px;padding:20px 70px 22px}
  .week-home{left:12px;top:12px}.week-theme{right:12px;top:12px;gap:6px}
  .week-prev{left:14%;bottom:16px}.week-next{right:14%;bottom:16px}
+}
+
+
+/* V4.3 — pictogrammes des boutons argent selon le mode */
+/* Mode clair : maison, soleil et lune noirs */
+body:not(.dark) .silver-round,
+body:not(.dark) .theme button,
+body:not(.dark) .icon-btn {
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+body:not(.dark) .silver-round svg,
+body:not(.dark) .theme button svg,
+body:not(.dark) .icon-btn svg,
+body:not(.dark) .silver-round .ui-svg,
+body:not(.dark) .theme button .ui-svg,
+body:not(.dark) .icon-btn .ui-svg {
+  color:#000 !important;
+  stroke:#000 !important;
+}
+body:not(.dark) .sun-icon::before,
+body:not(.dark) .moon-icon::before {
+  color:#000 !important;
+}
+
+/* Mode sombre : maison, soleil et lune blancs */
+body.dark .silver-round,
+body.dark .theme button,
+body.dark .icon-btn {
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+body.dark .silver-round svg,
+body.dark .theme button svg,
+body.dark .icon-btn svg,
+body.dark .silver-round .ui-svg,
+body.dark .theme button .ui-svg,
+body.dark .icon-btn .ui-svg {
+  color:#fff !important;
+  stroke:#fff !important;
+}
+body.dark .sun-icon::before,
+body.dark .moon-icon::before {
+  color:#fff !important;
+}
+
+/* Les boutons restent argent dans les deux modes */
+body:not(.dark) .silver-round,
+body:not(.dark) .theme button,
+body:not(.dark) .icon-btn,
+body.dark .silver-round,
+body.dark .theme button,
+body.dark .icon-btn {
+  background:linear-gradient(145deg,#eeeeee 0%,#c8c8c8 48%,#a9a9a9 100%) !important;
+  border:2px solid rgba(255,255,255,.95) !important;
 }
 
 </style>
