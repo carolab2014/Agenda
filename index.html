@@ -682,7 +682,7 @@ body.dark #monthPage .silver-round{color:#fff!important;-webkit-text-fill-color:
    <button class="tile c1" data-page="daily"><span class="ico"><svg viewBox="0 0 64 64"><rect x="10" y="14" width="44" height="40" rx="5"/><path d="M10 25h44M20 9v11M44 9v11"/><path d="M20 33h4M30 33h4M40 33h4M20 42h4M30 42h4M40 42h4"/></svg></span>JOUR</button>
    <button class="tile c1 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="8" y="13" width="39" height="35" rx="5"/><path d="M8 24h39M17 8v10M38 8v10"/><circle cx="45" cy="43" r="13"/><path d="M45 35v8l6 3"/></svg></span>SEMAINE</button>
    <button class="tile c1" data-page="month"><span class="ico"><svg viewBox="0 0 64 64"><rect x="9" y="13" width="46" height="42" rx="5"/><path d="M9 24h46M19 8v10M45 8v10"/><path d="M18 32h4M29 32h4M40 32h4M18 41h4M29 41h4M40 41h4M18 49h4M29 49h4M40 49h4"/></svg></span>MOIS</button>
-   <button class="tile c1 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="10" y="13" width="44" height="42" rx="5"/><path d="M10 24h44M20 8v10M44 8v10"/><text x="32" y="44" text-anchor="middle" font-size="17" fill="currentColor" stroke="none">365</text></svg></span>ANNÉE</button>
+   <button class="tile c1" data-page="year"><span class="ico"><svg viewBox="0 0 64 64"><rect x="10" y="13" width="44" height="42" rx="5"/><path d="M10 24h44M20 8v10M44 8v10"/><text x="32" y="44" text-anchor="middle" font-size="17" fill="currentColor" stroke="none">365</text></svg></span>ANNÉE</button>
 
    <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="23"/><path d="M32 17v16l10 7"/><path d="M32 11v4M32 49v4M11 32h4M49 32h4"/></svg></span>RENDEZ-VOUS</button>
    <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="15" y="12" width="38" height="45" rx="4"/><path d="M25 12v-3h18v3M23 25l3 3 6-7M23 37l3 3 6-7M23 49l3 3 6-7M36 25h10M36 37h10M36 49h10"/></svg></span>TO DO LIST PERSO</button>
@@ -1085,6 +1085,49 @@ document.addEventListener('input', function(e){
  document.addEventListener('input',e=>{
    if(e.target && e.target.classList.contains('note') && document.getElementById('monthPage').classList.contains('active')) renderMonth();
  });
+})();
+</script>
+
+<style>
+/* ===== V7 — Agenda annuel, modèle image 1 ===== */
+#yearPage{display:none;min-height:100vh;padding:18px 12px 44px;max-width:1600px;margin:auto;color:#111}
+#yearPage.active{display:block}
+.year-head{position:relative;width:100%;height:195px;min-height:195px;box-sizing:border-box;margin-top:12px;padding:22px 92px 24px;text-align:center;border-radius:30px;background:linear-gradient(135deg,#5b38d0 0%,#a35cda 100%);box-shadow:var(--shadow)}
+.year-title{font-family:"Brush Script MT","Segoe Script",cursive;font-size:clamp(45px,5vw,72px);line-height:.95;margin:0;font-weight:800;color:#000}
+.year-label{font-size:clamp(25px,3vw,38px);font-weight:900;color:#000;margin-top:5px}
+.year-home{position:absolute;left:18px;top:18px}.year-theme{position:absolute;right:18px;top:18px;display:flex;gap:8px}.year-prev{position:absolute;left:18%;bottom:20px}.year-next{position:absolute;right:18%;bottom:20px}
+.year-columns{display:grid;grid-template-columns:repeat(12,minmax(116px,1fr));gap:4px;margin-top:18px;overflow-x:auto;padding-bottom:6px}
+.year-month{border:1.5px solid #9b68dd;border-radius:9px;overflow:hidden;background:#fff;min-width:116px}
+.year-month-title{text-align:center;font-weight:900;padding:8px 2px;background:#dec8f4;color:#000;line-height:1.05}
+.year-mini{padding:5px 3px 7px;background:#fff;border-bottom:1px solid #9b68dd}
+.year-mini-week,.year-mini-grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}.year-mini-week{font-size:7px;font-weight:800;margin-bottom:3px}.year-mini-grid{font-size:8px;gap:1px}.year-mini-day{padding:2px 0;border:1px solid #a778df;background:#fff;color:#000;min-height:14px}.year-mini-day.empty{visibility:hidden}.year-mini-day.weekend{background:#eadcf8}.year-mini-day.today{background:#7a48d7;color:#fff;font-weight:900}
+.year-days{font-size:10px}.year-row{display:grid;grid-template-columns:22px 26px minmax(58px,1fr);min-height:var(--year-row-h,22px);border-bottom:1px solid #d8c4ee;background:#fff;color:#000}.year-row:last-child{border-bottom:0}.year-row.weekend{background:#eadcf8}.year-row.today{background:#7a48d7;color:#fff;font-weight:800}.year-row span{padding:4px 2px;line-height:1.1}.year-note{border-left:1px solid #d8c4ee;white-space:normal;overflow-wrap:anywhere}
+.year-size{display:flex;align-items:center;justify-content:center;gap:12px;margin:20px auto 0;font-weight:800;color:#000}.year-size input{width:min(420px,45vw)}
+body.dark #yearPage{color:#fff}body.dark .year-title,body.dark .year-label{color:#fff}body.dark .year-month{background:#050505;border-color:#9b68dd}body.dark .year-month-title{background:#8f5ac8;color:#fff}body.dark .year-mini{background:#050505}body.dark .year-mini-week{color:#fff}body.dark .year-mini-day{background:#050505;color:#fff;border-color:#9b68dd}body.dark .year-mini-day.weekend{background:#281b35}body.dark .year-mini-day.today{background:#8f5ac8;color:#fff}body.dark .year-row{background:#050505;color:#fff;border-color:#513866}body.dark .year-row.weekend{background:#281b35}body.dark .year-row.today{background:#8f5ac8;color:#fff}body.dark .year-note{border-color:#513866}body.dark .year-size{color:#fff}
+body:not(.dark) #yearPage .silver-round{color:#000!important;-webkit-text-fill-color:#000!important}body.dark #yearPage .silver-round{color:#fff!important;-webkit-text-fill-color:#fff!important}
+@media(max-width:900px){.year-columns{grid-template-columns:repeat(12,120px)}.year-head{padding-left:65px;padding-right:65px}}
+</style>
+<section id="yearPage" class="page">
+ <div class="year-head">
+  <button class="silver-round year-home" aria-label="Accueil" onclick="yearGoHome()"><svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+  <div class="year-theme"><button class="silver-round" aria-label="Mode clair" onclick="setTheme('light')"><svg class="ui-svg sun-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><button class="silver-round" aria-label="Mode sombre" onclick="setTheme('dark')"><svg class="ui-svg" viewBox="0 0 24 24"><path d="M20.5 15.3A8.7 8.7 0 0 1 8.7 3.5 9 9 0 1 0 20.5 15.3Z" fill="currentColor"/></svg></button></div>
+  <h1 class="year-title">Agenda annuelle</h1><div id="yearLabel" class="year-label">2026</div>
+  <button class="silver-round year-prev" aria-label="Année précédente" onclick="changeYear(-1)">‹</button><button class="silver-round year-next" aria-label="Année suivante" onclick="changeYear(1)">›</button>
+ </div>
+ <div id="yearColumns" class="year-columns"></div>
+ <div class="year-size"><span>Taille des cases</span><button id="yearSmaller" class="silver-round">−</button><input id="yearSize" type="range" min="18" max="46" step="2" value="22"><button id="yearLarger" class="silver-round">+</button><span id="yearSizeValue">22</span></div>
+</section>
+<script>
+(()=>{
+ let y=2026; const months=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre']; const wd=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+ function pad(n){return String(n).padStart(2,'0')} function key(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
+ function bracketSummary(date){const prefix=key(date)+'|',out=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i)||'';if(k.includes(key(date))){const v=localStorage.getItem(k)||'';for(const m of v.matchAll(/\[([^\]]+)\]/g)) if(m[1].trim()) out.push(m[1].trim())}}}catch(e){} return [...new Set(out)].join(' · ')}
+ function render(){document.getElementById('yearLabel').textContent=y; const root=document.getElementById('yearColumns');root.innerHTML='';const now=new Date();
+  months.forEach((mn,m)=>{const box=document.createElement('div');box.className='year-month';box.innerHTML=`<div class="year-month-title">${mn}<br>${y}</div>`;const mini=document.createElement('div');mini.className='year-mini';mini.innerHTML='<div class="year-mini-week">'+wd.map(x=>`<span>${x}</span>`).join('')+'</div>';const mg=document.createElement('div');mg.className='year-mini-grid';let first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();for(let z=0;z<first;z++){let e=document.createElement('span');e.className='year-mini-day empty';mg.appendChild(e)}for(let d=1;d<=days;d++){let dt=new Date(y,m,d),e=document.createElement('span');e.className='year-mini-day'+([0,6].includes(dt.getDay())?' weekend':'')+(dt.toDateString()==now.toDateString()?' today':'');e.textContent=d;mg.appendChild(e)}mini.appendChild(mg);box.appendChild(mini);const rows=document.createElement('div');rows.className='year-days';for(let d=1;d<=days;d++){let dt=new Date(y,m,d),r=document.createElement('div');r.className='year-row'+([0,6].includes(dt.getDay())?' weekend':'')+(dt.toDateString()==now.toDateString()?' today':'');r.innerHTML=`<span>${d}</span><span>${wd[dt.getDay()]}</span><span class="year-note">${bracketSummary(dt)}</span>`;rows.appendChild(r)}box.appendChild(rows);root.appendChild(box)})}
+ window.showYear=()=>{['home','daily','weekPage','monthPage'].forEach(id=>{let e=document.getElementById(id);if(e){e.classList.remove('active');e.style.display='none'}});document.querySelector('.top-actions').style.display='none';let p=document.getElementById('yearPage');p.style.display='block';p.classList.add('active');render();window.scrollTo(0,0)};
+ window.yearGoHome=()=>{let p=document.getElementById('yearPage');p.classList.remove('active');p.style.display='none';let h=document.getElementById('home');h.style.display='block';h.classList.add('active');document.querySelector('.top-actions').style.display='flex';window.scrollTo(0,0)};
+ window.changeYear=n=>{y+=n;render()}; const slider=document.getElementById('yearSize'),val=document.getElementById('yearSizeValue');function size(v){v=Math.max(18,Math.min(46,+v));slider.value=v;val.textContent=v;document.documentElement.style.setProperty('--year-row-h',v+'px');localStorage.setItem('agenda-year-row-size',v)}slider.oninput=()=>size(slider.value);document.getElementById('yearSmaller').onclick=()=>size(+slider.value-2);document.getElementById('yearLarger').onclick=()=>size(+slider.value+2);size(localStorage.getItem('agenda-year-row-size')||22);
+ const tile=document.querySelector('[data-page="year"]');if(tile)tile.onclick=e=>{e.preventDefault();showYear()};
 })();
 </script>
 
