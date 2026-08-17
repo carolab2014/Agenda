@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V3.7</title>
+<title>Agenda V3.8</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -252,6 +252,93 @@ body.dark .daily-head {
 body.dark .time {
   background:linear-gradient(135deg,#3020B8 0%,#6B42D9 100%) !important;
   color:#fff !important;
+}
+
+
+/* V3.8 — règle globale texte/icônes */
+body:not(.dark),
+body:not(.dark) button,
+body:not(.dark) input,
+body:not(.dark) textarea,
+body:not(.dark) .tile,
+body:not(.dark) .tile .ico,
+body:not(.dark) .daily-head,
+body:not(.dark) .daily-head h1,
+body:not(.dark) .daily-head #dateLabel,
+body:not(.dark) .time {
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+
+body:not(.dark) .tile .ico svg,
+body:not(.dark) .daily-head svg {
+  color:#000 !important;
+  stroke:#000 !important;
+}
+body:not(.dark) .tile .ico svg text {
+  fill:#000 !important;
+  stroke:none !important;
+}
+
+body.dark,
+body.dark button,
+body.dark input,
+body.dark textarea,
+body.dark .tile,
+body.dark .tile .ico,
+body.dark .daily-head,
+body.dark .daily-head h1,
+body.dark .daily-head #dateLabel,
+body.dark .time {
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+
+body.dark .tile .ico svg,
+body.dark .daily-head svg {
+  color:#fff !important;
+  stroke:#fff !important;
+}
+body.dark .tile .ico svg text {
+  fill:#fff !important;
+  stroke:none !important;
+}
+
+/* Les boutons argent conservent toujours leurs pictogrammes blancs. */
+.silver-round,
+.silver-round .ui-svg,
+.theme button,
+.theme button .ui-svg,
+body:not(.dark) .silver-round,
+body:not(.dark) .silver-round .ui-svg,
+body:not(.dark) .theme button,
+body:not(.dark) .theme button .ui-svg,
+body.dark .silver-round,
+body.dark .silver-round .ui-svg,
+body.dark .theme button,
+body.dark .theme button .ui-svg {
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+.silver-round svg,
+.theme button svg,
+body:not(.dark) .silver-round svg,
+body:not(.dark) .theme button svg,
+body.dark .silver-round svg,
+body.dark .theme button svg {
+  stroke:#fff !important;
+}
+
+/* Placeholder lisible selon le mode */
+body:not(.dark) textarea::placeholder,
+body:not(.dark) input::placeholder {
+  color:#777 !important;
+  -webkit-text-fill-color:#777 !important;
+}
+body.dark textarea::placeholder,
+body.dark input::placeholder {
+  color:#aaa !important;
+  -webkit-text-fill-color:#aaa !important;
 }
 
 </style>
