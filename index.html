@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V4.0</title>
+<title>Agenda V4.1</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -366,6 +366,76 @@ body.dark .note::placeholder {
   -webkit-text-fill-color:#aaa !important;
 }
 
+
+/* ===== V4.1 : PAGE SEMAINE ===== */
+.week-page{display:none;max-width:1400px;margin:0 auto;padding:12px 18px 34px}
+.week-page.active{display:block}
+.week-head{
+  position:relative;
+  min-height:205px;
+  padding:22px 105px 24px;
+  border-radius:30px;
+  background:linear-gradient(135deg,#4430C2 0%,#7B4EDB 100%);
+  box-shadow:0 9px 20px rgba(68,48,194,.18);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.week-title{
+  margin:0;
+  font-family:"Snell Roundhand","Apple Chancery","URW Chancery L",cursive;
+  font-size:clamp(46px,6vw,82px);font-weight:700;line-height:.95;
+}
+.week-range{font-size:clamp(22px,3vw,35px);font-weight:800;margin-top:16px;text-align:center}
+.week-home{position:absolute;left:20px;top:18px}
+.week-theme{position:absolute;right:20px;top:18px;display:flex;gap:10px}
+.week-prev{position:absolute;left:18%;bottom:20px}
+.week-next{position:absolute;right:18%;bottom:20px}
+.week-table-wrap{margin-top:22px;overflow-x:auto;border-radius:18px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.week-table{width:100%;min-width:980px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.week-table th,.week-table td{border-right:1px solid rgba(68,48,194,.22);border-bottom:1px solid rgba(68,48,194,.22)}
+.week-table thead th{
+  background:linear-gradient(135deg,#4430C2,#7B4EDB);
+  padding:13px 6px;font-weight:800;font-size:15px;
+}
+.week-table .hour{width:90px;background:linear-gradient(135deg,#4430C2,#7B4EDB);font-weight:800;text-align:center}
+.week-cell{height:43px;padding:0;background:rgba(123,78,219,.045)}
+.week-table tbody tr:nth-child(even) .week-cell{background:rgba(123,78,219,.10)}
+.week-cell textarea{
+  width:100%;height:100%;min-height:43px;box-sizing:border-box;border:0;outline:0;resize:none;
+  background:transparent;padding:7px 8px;font:inherit;overflow:hidden;
+}
+body:not(.dark) .week-head,
+body:not(.dark) .week-head *,
+body:not(.dark) .week-table th,
+body:not(.dark) .week-table .hour,
+body:not(.dark) .week-cell textarea{
+  color:#000 !important;-webkit-text-fill-color:#000 !important;
+}
+body.dark .week-head,
+body.dark .week-head *,
+body.dark .week-table th,
+body.dark .week-table .hour,
+body.dark .week-cell textarea{
+  color:#fff !important;-webkit-text-fill-color:#fff !important;
+}
+body.dark .week-cell{background:rgba(123,78,219,.10)}
+body.dark .week-table tbody tr:nth-child(even) .week-cell{background:rgba(123,78,219,.18)}
+body.dark .week-table th,.week-table td{border-color:rgba(180,160,255,.22)}
+/* Silver buttons: same construction as the daily page */
+.week-head .silver-round{
+  background:linear-gradient(145deg,#eeeeee 0%,#c8c8c8 48%,#a9a9a9 100%) !important;
+  border:2px solid rgba(255,255,255,.95) !important;
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.85),inset 0 -3px 5px rgba(90,90,90,.18),0 5px 10px rgba(0,0,0,.20) !important;
+  color:#fff !important;-webkit-text-fill-color:#fff !important;
+}
+.week-head .silver-round svg{stroke:#fff !important}
+.week-prev,.week-next{font-size:34px;font-weight:700}
+@media(max-width:700px){
+ .week-page{padding:8px 8px 25px}
+ .week-head{min-height:185px;padding:20px 70px 22px}
+ .week-home{left:12px;top:12px}.week-theme{right:12px;top:12px;gap:6px}
+ .week-prev{left:14%;bottom:16px}.week-next{right:14%;bottom:16px}
+}
+
 </style>
 </head>
 <body>
@@ -502,5 +572,85 @@ document.getElementById('nextDay').onclick=()=>{current.setDate(current.getDate(
 setTheme(localStorage.getItem('agenda-theme')||'light');
 render();
 </script>
+
+<section id="weekPage" class="week-page">
+  <header class="week-head">
+    <button class="silver-round week-home" type="button" onclick="showHome()" aria-label="Accueil">
+      <svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 11.2 12 4l8.5 7.2v8.3a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z"/></svg>
+    </button>
+    <div class="week-theme">
+      <button class="silver-round" type="button" onclick="setTheme('light')" aria-label="Mode clair">
+        <svg class="ui-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>
+      </button>
+      <button class="silver-round" type="button" onclick="setTheme('dark')" aria-label="Mode sombre">
+        <svg class="ui-svg" viewBox="0 0 24 24"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/></svg>
+      </button>
+    </div>
+    <h1 class="week-title">Agenda semaine</h1>
+    <div id="weekRange" class="week-range"></div>
+    <button class="silver-round week-prev" type="button" onclick="changeWeek(-7)" aria-label="Semaine précédente">‹</button>
+    <button class="silver-round week-next" type="button" onclick="changeWeek(7)" aria-label="Semaine suivante">›</button>
+  </header>
+  <div class="week-table-wrap">
+    <table class="week-table">
+      <thead><tr id="weekDaysHead"></tr></thead>
+      <tbody id="weekBody"></tbody>
+    </table>
+  </div>
+</section>
+
+
+<script>
+(function(){
+ const MONTHS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+ const DAYS=["DIM","LUN","MAR","MER","JEU","VEN","SAM"];
+ let weekStart=new Date(2026,7,2);
+
+ function pad(n){return String(n).padStart(2,"0")}
+ function key(d,h){return "agenda-week-"+d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"-"+h.replace(":","")}
+ function fmtRange(a,b){
+   if(a.getMonth()===b.getMonth() && a.getFullYear()===b.getFullYear())
+     return `Semaine du ${a.getDate()} au ${b.getDate()} ${MONTHS[b.getMonth()]} ${b.getFullYear()}`;
+   return `Semaine du ${a.getDate()} ${MONTHS[a.getMonth()]} au ${b.getDate()} ${MONTHS[b.getMonth()]} ${b.getFullYear()}`;
+ }
+ function autoGrow(t){t.style.height="43px";t.style.height=Math.max(43,t.scrollHeight)+"px"}
+ window.renderWeek=function(){
+   const end=new Date(weekStart); end.setDate(end.getDate()+6);
+   document.getElementById("weekRange").textContent=fmtRange(weekStart,end);
+   const hr=document.getElementById("weekDaysHead"); hr.innerHTML="<th>HEURE</th>";
+   const dates=[];
+   for(let i=0;i<7;i++){
+     const d=new Date(weekStart); d.setDate(d.getDate()+i); dates.push(d);
+     hr.insertAdjacentHTML("beforeend",`<th>${DAYS[i]} ${d.getDate()} ${MONTHS[d.getMonth()].toUpperCase()}</th>`);
+   }
+   const tb=document.getElementById("weekBody"); tb.innerHTML="";
+   const slots=[]; for(let h=5;h<24;h++){slots.push(`${h}:00`,`${h}:30`)} slots.push("24:00");
+   slots.forEach(h=>{
+     const tr=document.createElement("tr");
+     tr.innerHTML=`<td class="hour">${h}</td>`;
+     dates.forEach(d=>{
+       const td=document.createElement("td"); td.className="week-cell";
+       const ta=document.createElement("textarea"); ta.setAttribute("aria-label",`${h} ${DAYS[d.getDay()]}`);
+       ta.value=localStorage.getItem(key(d,h))||"";
+       ta.addEventListener("input",()=>{localStorage.setItem(key(d,h),ta.value);autoGrow(ta)});
+       td.appendChild(ta); tr.appendChild(td); setTimeout(()=>autoGrow(ta),0);
+     });
+     tb.appendChild(tr);
+   });
+ }
+ window.changeWeek=function(days){weekStart.setDate(weekStart.getDate()+days);renderWeek()}
+ window.showWeek=function(){
+   document.querySelectorAll("section,main").forEach(el=>{ if(el.id!=="weekPage") el.style.display="none"; });
+   const p=document.getElementById("weekPage"); p.style.display="block"; p.classList.add("active"); renderWeek(); window.scrollTo(0,0);
+ }
+ // Wire the SEMAINe tile without changing the rest of the application.
+ document.addEventListener("DOMContentLoaded",()=>{
+   const buttons=[...document.querySelectorAll("button.tile")];
+   const b=buttons.find(x=>x.textContent.trim().toUpperCase().includes("SEMAINE"));
+   if(b){b.onclick=function(e){e.preventDefault();showWeek()}}
+ });
+})();
+</script>
+
 </body>
 </html>
