@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V4.5</title>
+<title>Agenda V5</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -581,6 +581,22 @@ body.dark #weekPage button[aria-label="Mode sombre"] {
   -webkit-text-fill-color:#fff !important;
 }
 
+
+/* Agenda V5 — résumé automatique dans les cases de la semaine */
+#weekPage .agenda-v5-week-summary{
+  width:100%;
+  min-height:100%;
+  box-sizing:border-box;
+  padding:7px 8px;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  line-height:1.2;
+  font-size:clamp(11px,1.15vw,16px);
+  font-weight:600;
+}
+body:not(.dark) #weekPage .agenda-v5-week-summary{color:#000;}
+body.dark #weekPage .agenda-v5-week-summary{color:#fff;}
+
 </style>
 </head>
 <body>
@@ -822,6 +838,102 @@ render();
    if(b){b.onclick=function(e){e.preventDefault();showWeek()}}
  });
 })();
+
+/* ===== Agenda V5 : résumé Jour -> Semaine avec [crochets] ===== */
+function agendaV5ExtractWeeklySummary(text){
+  const matches = [...String(text || '').matchAll(/\[([^\[\]]+)\]/g)]
+    .map(m => m[1].trim())
+    .filter(Boolean);
+  return matches.join(' • ');
+}
+
+function agendaV5DateKey(date){
+  return [
+    date.getFullYear(),
+    String(date.getMonth()+1).padStart(2,'0'),
+    String(date.getDate()).padStart(2,'0')
+  ].join('-');
+}
+
+function agendaV5ReadDailyText(date, time){
+  const dateKey = agendaV5DateKey(date);
+  const candidates = [
+    `agenda-${dateKey}-${time}`,
+    `agenda_${dateKey}_${time}`,
+    `${dateKey}-${time}`,
+    `${dateKey}_${time}`,
+    `day-${dateKey}-${time}`,
+    `day_${dateKey}_${time}`
+  ];
+  for (const key of candidates){
+    const v = localStorage.getItem(key);
+    if (v !== null) return v;
+  }
+
+  /* Compatibilité avec le stockage déjà utilisé par l'application :
+     recherche ciblée des clés contenant la date et l'heure. */
+  const compactTime = time.replace(':','');
+  for (let i=0; i<localStorage.length; i++){
+    const key = localStorage.key(i) || '';
+    const low = key.toLowerCase();
+    if (low.includes(dateKey.toLowerCase()) &&
+        (low.includes(time) || low.includes(compactTime))){
+      const v = localStorage.getItem(key);
+      if (v !== null) return v;
+    }
+  }
+  return '';
+}
+
+function agendaV5FillWeekSummaries(){
+  const table = document.querySelector('#weekPage table');
+  if (!table || typeof weekStart === 'undefined') return;
+
+  const rows = [...table.querySelectorAll('tbody tr')];
+  rows.forEach(row => {
+    const cells = [...row.children];
+    if (cells.length < 8) return;
+    const time = (cells[0].textContent || '').trim().replace(/\s*h\s*/i, ':');
+    if (!/^\d{1,2}:\d{2}$/.test(time)) return;
+
+    for (let d=0; d<7; d++){
+      const date = new Date(weekStart);
+      date.setDate(weekStart.getDate()+d);
+      const fullText = agendaV5ReadDailyText(date, time);
+      const summary = agendaV5ExtractWeeklySummary(fullText);
+      const cell = cells[d+1];
+
+      /* Ne remplace que le résumé automatique V5. */
+      let box = cell.querySelector('.agenda-v5-week-summary');
+      if (!box){
+        box = document.createElement('div');
+        box.className = 'agenda-v5-week-summary';
+        cell.appendChild(box);
+      }
+      box.textContent = summary;
+      box.style.display = summary ? 'block' : 'none';
+    }
+  });
+}
+
+/* Après chaque rendu de semaine, injecter les résumés entre crochets. */
+if (typeof renderWeek === 'function'){
+  const agendaV5OriginalRenderWeek = renderWeek;
+  renderWeek = function(){
+    const result = agendaV5OriginalRenderWeek.apply(this, arguments);
+    setTimeout(agendaV5FillWeekSummaries, 0);
+    return result;
+  };
+}
+
+/* Mise à jour immédiate si un texte quotidien est modifié pendant que la
+   semaine existe dans le DOM. */
+document.addEventListener('input', function(e){
+  if (e.target && e.target.matches('textarea, input[type="text"]')){
+    setTimeout(agendaV5FillWeekSummaries, 0);
+  }
+});
+
 </script>
 
 </body>
