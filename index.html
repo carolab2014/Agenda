@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V5.1</title>
+<title>Agenda V5.2</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -768,7 +768,7 @@ render();
 (function(){
  const MONTHS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
  const DAYS=["DIM","LUN","MAR","MER","JEU","VEN","SAM"];
- let weekStart=new Date(2026,7,2);
+ let weekStart=new Date(2026,7,2); window.agendaWeekStart=weekStart;
 
  function pad(n){return String(n).padStart(2,"0")}
  function key(d,h){return "agenda-week-"+d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"-"+h.replace(":","")}
@@ -802,7 +802,7 @@ render();
      tb.appendChild(tr);
    });
  }
- window.changeWeek=function(days){weekStart.setDate(weekStart.getDate()+days);renderWeek()}
+ window.changeWeek=function(days){weekStart.setDate(weekStart.getDate()+days);window.agendaWeekStart=weekStart;renderWeek()}
 
  window.showHome=function(){
    const p=document.getElementById('weekPage');
@@ -862,7 +862,7 @@ function agendaV5ReadDailyText(date, time){
 
 function agendaV5FillWeekSummaries(){
   const rows = [...document.querySelectorAll('#weekBody tr')];
-  if (!rows.length || typeof weekStart === 'undefined') return;
+  if (!rows.length || !window.agendaWeekStart) return;
 
   rows.forEach(row => {
     const cells = [...row.children];
@@ -871,8 +871,8 @@ function agendaV5FillWeekSummaries(){
     if (!/^\d{1,2}:\d{2}$/.test(time)) return;
 
     for (let d=0; d<7; d++){
-      const date = new Date(weekStart);
-      date.setDate(weekStart.getDate()+d);
+      const date = new Date(window.agendaWeekStart);
+      date.setDate(window.agendaWeekStart.getDate()+d);
 
       const dailyText = agendaV5ReadDailyText(date, time);
       const summary = agendaV5ExtractWeeklySummary(dailyText);
