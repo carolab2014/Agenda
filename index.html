@@ -921,15 +921,40 @@ render();
 /* ===== Agenda V5 : résumé Jour -> Semaine avec [crochets] ===== */
 function agendaV5ExtractItems(text){
   const source = String(text || '');
-  const items = [];
-  // V9 : [[...]] = un sujet regroupé ; [...] = un élément individuel.
-  const re = /\[\[([\s\S]*?)\]\]|\[([^\[\]]+?)\]/g;
+  const found = [];
+  const occupied = [];
+
+  // V9 corrigée : [[...]] forme UN sujet.
+  // Si le groupe contient des [mots] internes, seuls ces mots sont réunis.
+  // Exemple : [[Retour] au [travail] pour [Caro]] -> Retour travail Caro
+  const grouped = /\[\[([\s\S]*?)\]\]/g;
   let m;
-  while ((m = re.exec(source)) !== null) {
-    const value = String(m[1] !== undefined ? m[1] : m[2]).trim();
-    if (value) items.push(value);
+  while ((m = grouped.exec(source)) !== null) {
+    const inside = m[1];
+    const selected = [];
+    const inner = /\[([^\[\]]+?)\]/g;
+    let im;
+    while ((im = inner.exec(inside)) !== null) {
+      const v = String(im[1] || '').trim();
+      if (v) selected.push(v);
+    }
+    const value = selected.length
+      ? selected.join(' ')
+      : inside.replace(/[\[\]]/g, '').trim();
+    if (value) found.push({pos:m.index, value});
+    occupied.push([m.index, m.index + m[0].length]);
   }
-  return items;
+
+  // Les [éléments] simples qui ne sont pas à l'intérieur d'un [[groupe]].
+  const single = /\[([^\[\]]+?)\]/g;
+  while ((m = single.exec(source)) !== null) {
+    const pos = m.index;
+    if (occupied.some(r => pos >= r[0] && pos < r[1])) continue;
+    const value = String(m[1] || '').trim();
+    if (value) found.push({pos, value});
+  }
+
+  return found.sort((a,b)=>a.pos-b.pos).map(x=>x.value);
 }
 function agendaV5ExtractWeeklySummary(text){
   return agendaV5ExtractItems(text).join(' • ');
