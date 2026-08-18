@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V8 — Agenda V6</title>
+<title>Agenda V9</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -932,9 +932,13 @@ function agendaV5ExtractItems(text){
   while ((m = grouped.exec(source)) !== null) {
     const inside = m[1];
     const selected = [];
+    // Le dernier ] d'un mot peut aussi servir de 1er ] de fermeture du groupe [[...]].
+    // On ajoute donc virtuellement un ] pour que [Caro]] soit lu comme le mot Caro
+    // puis comme la fermeture du groupe.
+    const innerSource = inside + ']';
     const inner = /\[([^\[\]]+?)\]/g;
     let im;
-    while ((im = inner.exec(inside)) !== null) {
+    while ((im = inner.exec(innerSource)) !== null) {
       const v = String(im[1] || '').trim();
       if (v) selected.push(v);
     }
