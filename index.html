@@ -933,9 +933,9 @@ function agendaV5ExtractItems(text){
     const inside = m[1];
     const selected = [];
     // Le dernier ] d'un mot peut aussi servir de 1er ] de fermeture du groupe [[...]].
-    // On ajoute donc virtuellement un ] pour que [Caro]] soit lu comme le mot Caro
-    // puis comme la fermeture du groupe.
-    const innerSource = inside + ']';
+    // Le premier [ est consommé par [[ et le dernier ] par ]].
+    // On les rétablit virtuellement pour lire Retour, travail et Caro.
+    const innerSource = '[' + inside + ']';
     const inner = /\[([^\[\]]+?)\]/g;
     let im;
     while ((im = inner.exec(innerSource)) !== null) {
