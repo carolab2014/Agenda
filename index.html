@@ -919,11 +919,20 @@ render();
 })();
 
 /* ===== Agenda V5 : résumé Jour -> Semaine avec [crochets] ===== */
+function agendaV5ExtractItems(text){
+  const source = String(text || '');
+  const items = [];
+  // V9 : [[...]] = un sujet regroupé ; [...] = un élément individuel.
+  const re = /\[\[([\s\S]*?)\]\]|\[([^\[\]]+?)\]/g;
+  let m;
+  while ((m = re.exec(source)) !== null) {
+    const value = String(m[1] !== undefined ? m[1] : m[2]).trim();
+    if (value) items.push(value);
+  }
+  return items;
+}
 function agendaV5ExtractWeeklySummary(text){
-  const matches = [...String(text || '').matchAll(/\[([^\[\]]+)\]/g)]
-    .map(m => m[1].trim())
-    .filter(Boolean);
-  return matches.join(' • ');
+  return agendaV5ExtractItems(text).join(' • ');
 }
 
 function agendaV5DateKey(date){
@@ -1032,7 +1041,7 @@ document.addEventListener('input', function(e){
  let monthCursor=new Date(2026,7,1,12,0,0,0);
 
  function dateKey(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
- function extract(s){return [...String(s||'').matchAll(/\[([^\[\]]+)\]/g)].map(x=>x[1].trim()).filter(Boolean)}
+ function extract(s){return (typeof agendaV5ExtractItems==='function'?agendaV5ExtractItems(s):[])}
  function dailyEntries(d){
    const dk=dateKey(d), out=[];
    times().forEach(t=>{
@@ -1130,7 +1139,7 @@ body:not(.dark) #yearPage .silver-round{color:#000!important;-webkit-text-fill-c
 (()=>{
  let y=2026; const months=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre']; const wd=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
  function pad(n){return String(n).padStart(2,'0')} function key(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
- function bracketSummary(date){const prefix=key(date)+'|',out=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i)||'';if(k.includes(key(date))){const v=localStorage.getItem(k)||'';for(const m of v.matchAll(/\[([^\]]+)\]/g)) if(m[1].trim()) out.push(m[1].trim())}}}catch(e){} return [...new Set(out)].join(' · ')}
+ function bracketSummary(date){const out=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i)||'';if(k.includes(key(date))){const v=localStorage.getItem(k)||'';const parts=(typeof agendaV5ExtractItems==='function'?agendaV5ExtractItems(v):[]);parts.forEach(x=>out.push(x))}}}catch(e){} return [...new Set(out)].join(' · ')}
  function render(){document.getElementById('yearLabel').textContent=y; const root=document.getElementById('yearColumns');root.innerHTML='';const now=new Date();
   months.forEach((mn,m)=>{const box=document.createElement('div');box.className='year-month';box.innerHTML=`<div class="year-month-title">${mn}<br>${y}</div>`;const mini=document.createElement('div');mini.className='year-mini';mini.innerHTML='<div class="year-mini-week">'+wd.map(x=>`<span>${x}</span>`).join('')+'</div>';const mg=document.createElement('div');mg.className='year-mini-grid';let first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();for(let z=0;z<first;z++){let e=document.createElement('span');e.className='year-mini-day empty';mg.appendChild(e)}for(let d=1;d<=days;d++){let dt=new Date(y,m,d),e=document.createElement('span');e.className='year-mini-day'+([0,6].includes(dt.getDay())?' weekend':'')+(dt.toDateString()==now.toDateString()?' today':'');e.textContent=d;mg.appendChild(e)}mini.appendChild(mg);box.appendChild(mini);const rows=document.createElement('div');rows.className='year-days';for(let d=1;d<=days;d++){let dt=new Date(y,m,d),r=document.createElement('div');r.className='year-row'+([0,6].includes(dt.getDay())?' weekend':'')+(dt.toDateString()==now.toDateString()?' today':'');r.innerHTML=`<span>${d}</span><span>${wd[dt.getDay()]}</span><span class="year-note">${bracketSummary(dt)}</span>`;rows.appendChild(r)}box.appendChild(rows);root.appendChild(box)})}
  window.showYear=()=>{['home','daily','weekPage','monthPage'].forEach(id=>{let e=document.getElementById(id);if(e){e.classList.remove('active');e.style.display='none'}});document.querySelector('.top-actions').style.display='none';let p=document.getElementById('yearPage');p.style.display='block';p.classList.add('active');render();window.scrollTo(0,0)};
