@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V11</title>
+<title>Mon Agenda V12</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -742,6 +742,47 @@ body:not(.dark) .icon-btn,body:not(.dark) .theme button,body:not(.dark) .silver-
 body:not(.dark) .icon-btn svg,body:not(.dark) .theme button svg,body:not(.dark) .silver-round svg{color:#000!important;stroke:#000!important;}
 body.dark .icon-btn,body.dark .theme button,body.dark .silver-round{color:#fff!important;-webkit-text-fill-color:#fff!important;}
 body.dark .icon-btn svg,body.dark .theme button svg,body.dark .silver-round svg{color:#fff!important;stroke:#fff!important;}
+</style>
+
+<style>
+/* ===== V12 — contraste des cases et boutons Light Oak Wood ===== */
+/* Toutes les cases de l’accueil gardent texte + pictogrammes noirs dans les deux modes. */
+#home .tile,
+#home .tile .ico,
+#home .tile .ico svg,
+body:not(.dark) #home .tile,
+body:not(.dark) #home .tile .ico,
+body:not(.dark) #home .tile .ico svg,
+body.dark #home .tile,
+body.dark #home .tile .ico,
+body.dark #home .tile .ico svg {
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+  stroke:#000 !important;
+}
+#home .tile .ico svg text,
+body:not(.dark) #home .tile .ico svg text,
+body.dark #home .tile .ico svg text {
+  fill:#000 !important;
+  stroke:none !important;
+}
+/* Accueil, soleil et lune : Light Oak Wood + pictogrammes toujours noirs. */
+.icon-btn,.theme button,
+body:not(.dark) .icon-btn,body:not(.dark) .theme button,
+body.dark .icon-btn,body.dark .theme button {
+  background:var(--light-oak-wood) !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+.icon-btn svg,.theme button svg,
+body:not(.dark) .icon-btn svg,body:not(.dark) .theme button svg,
+body.dark .icon-btn svg,body.dark .theme button svg {
+  color:#000 !important;
+  stroke:#000 !important;
+}
+/* Le titre et le sous-titre suivent le fond général. */
+body:not(.dark) #home .title,body:not(.dark) #home .home-subtitle {color:#000 !important;-webkit-text-fill-color:#000 !important;}
+body.dark #home .title,body.dark #home .home-subtitle {color:#fff !important;-webkit-text-fill-color:#fff !important;}
 </style>
 </head>
 <body>
