@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V15</title>
+<title>Mon Agenda V16</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -879,6 +879,35 @@ body.dark #dailyDark, body.dark #dailyDark svg {
 }
 body.dark #lightBtn, body.dark #dailyHome, body.dark #dailyLight, body.dark #dailyDark {
   background:#EDE7E0 !important;
+}
+</style>
+
+<style>
+/* ===== V16 — PAGE SEMAINE Pearl Shell ===== */
+/* En-tête de la semaine en Pearl Shell, dans les deux modes. */
+.week-head, body:not(.dark) .week-head, body.dark .week-head {
+  background:var(--pearl-shell) !important;
+  color:#000 !important;
+  box-shadow:0 9px 20px rgba(0,0,0,.12) !important;
+}
+.week-head *, body:not(.dark) .week-head *, body.dark .week-head * {
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+/* Titre même calligraphie légère que Ma journée. */
+.week-title {
+  font-family:"Snell Roundhand","Apple Chancery","URW Chancery L",cursive !important;
+  font-weight:500 !important;
+}
+/* Boutons de la page semaine : Pearl Shell + écriture/pictogrammes noirs, toujours. */
+.week-head .silver-round, body:not(.dark) .week-head .silver-round, body.dark .week-head .silver-round {
+  background:var(--pearl-shell) !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+.week-head .silver-round svg, body:not(.dark) .week-head .silver-round svg, body.dark .week-head .silver-round svg {
+  color:#000 !important;
+  stroke:#000 !important;
 }
 </style>
 </head>
