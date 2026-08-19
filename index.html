@@ -784,6 +784,41 @@ body.dark .icon-btn svg,body.dark .theme button svg {
 body:not(.dark) #home .title,body:not(.dark) #home .home-subtitle {color:#000 !important;-webkit-text-fill-color:#000 !important;}
 body.dark #home .title,body.dark #home .home-subtitle {color:#fff !important;-webkit-text-fill-color:#fff !important;}
 </style>
+
+<style>
+/* ===== V12.1 — correction finale : toutes les cases d’accueil en noir ===== */
+#home .grid .tile,
+body:not(.dark) #home .grid .tile,
+body.dark #home .grid .tile {
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+#home .grid .tile .ico,
+#home .grid .tile .ico svg,
+body:not(.dark) #home .grid .tile .ico,
+body:not(.dark) #home .grid .tile .ico svg,
+body.dark #home .grid .tile .ico,
+body.dark #home .grid .tile .ico svg {
+  color:#000 !important;
+  stroke:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+#home .grid .tile .ico svg text,
+body:not(.dark) #home .grid .tile .ico svg text,
+body.dark #home .grid .tile .ico svg text {
+  fill:#000 !important;
+  stroke:none !important;
+}
+/* Soleil et lune : pictogrammes noirs dans les deux modes. */
+.theme button, body:not(.dark) .theme button, body.dark .theme button {
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+.theme button svg, body:not(.dark) .theme button svg, body.dark .theme button svg {
+  color:#000 !important;
+  stroke:#000 !important;
+}
+</style>
 </head>
 <body>
 <div class="top-actions">
