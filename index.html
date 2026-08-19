@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V16</title>
+<title>Mon Agenda V42</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -910,8 +910,332 @@ body.dark #lightBtn, body.dark #dailyHome, body.dark #dailyLight, body.dark #dai
   stroke:#000 !important;
 }
 </style>
+
+<style>
+/* ===== V17 — SEMAINE entièrement Pearl Shell ===== */
+.week-head, body:not(.dark) .week-head, body.dark .week-head,
+.week-table thead th, body:not(.dark) .week-table thead th, body.dark .week-table thead th,
+.week-table .hour, body:not(.dark) .week-table .hour, body.dark .week-table .hour {
+  background:var(--pearl-shell) !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+.week-cell, body:not(.dark) .week-cell, body.dark .week-cell,
+.week-table tbody tr:nth-child(even) .week-cell,
+body:not(.dark) .week-table tbody tr:nth-child(even) .week-cell,
+body.dark .week-table tbody tr:nth-child(even) .week-cell {
+  background:var(--pearl-shell) !important;
+}
+.week-table th,.week-table td,body.dark .week-table th,body.dark .week-table td {
+  border-color:rgba(143,132,118,.28) !important;
+}
+.week-cell textarea, body:not(.dark) .week-cell textarea, body.dark .week-cell textarea {
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+.week-head .silver-round, body:not(.dark) .week-head .silver-round, body.dark .week-head .silver-round {
+  background:var(--pearl-shell) !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+.week-head .silver-round svg, body:not(.dark) .week-head .silver-round svg, body.dark .week-head .silver-round svg {
+  color:#000 !important; stroke:#000 !important;
+}
+</style>
+
+<style>
+/* ===== V18 — Ma semaine : zones remplissables selon le mode ===== */
+.week-title {
+  font-family:"Snell Roundhand","Apple Chancery","URW Chancery L",cursive !important;
+  font-weight:400 !important;
+}
+body:not(.dark) .week-cell,
+body:not(.dark) .week-table tbody tr:nth-child(even) .week-cell {
+  background:#fff !important;
+}
+body.dark .week-cell,
+body.dark .week-table tbody tr:nth-child(even) .week-cell {
+  background:#000 !important;
+}
+body:not(.dark) .week-cell textarea {
+  background:#fff !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+body.dark .week-cell textarea {
+  background:#000 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+</style>
+
+<style>
+/* ===== V19 — Page Mois Pearl Shell ===== */
+#monthPage .month-head,
+#monthPage .month-weekday,
+#monthPage .month-daynum,
+#monthPage .month-cell.outside .month-daynum {
+  background: var(--pearl-shell) !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+#monthPage .month-head *, #monthPage .month-weekday, #monthPage .month-daynum { color:#000 !important; -webkit-text-fill-color:#000 !important; }
+#monthPage .month-wrap { border-color: var(--pearl-shell) !important; }
+#monthPage .month-cell { border-color: rgba(201,188,173,.55) !important; }
+#monthPage .month-title {
+  font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive !important;
+  font-weight:400 !important;
+}
+body.dark #monthPage .month-head, body.dark #monthPage .month-weekday, body.dark #monthPage .month-daynum {
+  background:var(--pearl-shell) !important; color:#000 !important; -webkit-text-fill-color:#000 !important;
+}
+</style>
+
+<style>
+/* ===== V37 — Impression Lettre portrait/paysage ===== */
+.print-control{
+  position:fixed;
+  right:16px;
+  bottom:max(16px,env(safe-area-inset-bottom));
+  z-index:60;
+  display:none;
+  align-items:center;
+  gap:7px;
+  padding:7px;
+  border-radius:24px;
+  background:rgba(255,255,255,.82);
+  box-shadow:0 5px 16px rgba(0,0,0,.16);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+body.dark .print-control{background:rgba(20,20,20,.82)}
+.print-control.visible{display:flex}
+.print-control button,
+.print-control select{
+  height:40px;
+  border:1.5px solid rgba(0,0,0,.12);
+  background:var(--pearl-shell,#EDE7E0);
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+  border-radius:18px;
+  font:600 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+.print-control button{
+  width:42px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+}
+.print-control button svg{width:21px;height:21px;stroke:#000!important;color:#000!important}
+.print-control select{padding:0 10px;outline:none}
+
+@page{size:Letter portrait;margin:.45in}
+
+@media print{
+  html,body{
+    background:#fff !important;
+    color:#000 !important;
+    width:auto !important;
+    min-height:auto !important;
+  }
+  body.print-landscape{ }
+  .top-actions,.print-control,
+  .daily-controls,.week-home,.week-theme,.week-prev,.week-next,
+  .month-home,.month-theme,.month-prev,.month-next,
+  button[aria-label="Accueil"],button[aria-label="Mode clair"],button[aria-label="Mode sombre"]{
+    display:none !important;
+  }
+  .page,.week-page,#monthPage{
+    display:none !important;
+  }
+  .page.active,.week-page.active,#monthPage.active{
+    display:block !important;
+  }
+  .daily,.week-page,#monthPage,.month-page,
+  #appointmentsPage,#rdvPage,.appointments-page{
+    max-width:none !important;
+    width:100% !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+  textarea,input,select{
+    color:#000 !important;
+    -webkit-text-fill-color:#000 !important;
+  }
+  textarea{
+    overflow:visible !important;
+  }
+  *{
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+  }
+}
+</style>
+
+
+<style>
+/* ===== V38 — Impression à côté du bouton Accueil ===== */
+#printControl{display:none!important}
+.page-print-btn{
+  margin-left:8px;
+  background:var(--pearl-shell,#EDE7E0)!important;
+  color:#000!important;
+  -webkit-text-fill-color:#000!important;
+}
+.page-print-btn svg,.page-print-btn svg *{
+  color:#000!important;
+  stroke:#000!important;
+}
+@media print{.page-print-btn{display:none!important}}
+</style>
+
+
+<style>
+/* ===== V39 — Accueil + Impression groupés à gauche, hors du titre ===== */
+.daily-controls > button[aria-label="Accueil"],
+.week-home,
+.month-home,
+.year-home,
+button[aria-label="Accueil"]{
+  position:relative;
+}
+.page-print-btn{
+  position:relative !important;
+  inset:auto !important;
+  top:auto !important;
+  left:auto !important;
+  right:auto !important;
+  bottom:auto !important;
+  transform:none !important;
+  margin:0 0 0 8px !important;
+  vertical-align:middle;
+  flex:0 0 44px;
+}
+/* Lorsque le bouton Accueil est positionné seul, on place l'imprimante
+   exactement 52 px à sa droite. */
+.week-home + .page-print-btn,
+.month-home + .page-print-btn,
+.year-home + .page-print-btn{
+  position:absolute !important;
+  left:52px !important;
+  top:0 !important;
+  margin:0 !important;
+}
+/* Dans les groupes de contrôles, Accueil + Impression restent côte à côte. */
+.daily-controls{
+  align-items:flex-start !important;
+}
+.daily-controls > button[aria-label="Accueil"] + .page-print-btn{
+  position:absolute !important;
+  left:52px !important;
+  top:0 !important;
+  margin:0 !important;
+}
+</style>
+
+
+<style>
+/* ===== V40 — alignement universel Accueil + Impression ===== */
+.page-print-btn{
+  position:fixed !important;
+  z-index:80 !important;
+  margin:0 !important;
+  transform:none !important;
+  width:44px !important;
+  height:44px !important;
+}
+@media print{.page-print-btn{display:none!important}}
+</style>
+
+
+<style>
+/* ===== V41 — Accueil + Impression dans le coin supérieur gauche de l'entête ===== */
+.page-print-btn{
+  position:absolute !important;
+  z-index:90 !important;
+  margin:0 !important;
+  width:44px !important;
+  height:44px !important;
+}
+.daily-head,.week-head,.month-head,.year-head,
+.appointments-head,.todo-head{
+  position:relative !important;
+}
+@media print{.page-print-btn{display:none!important}}
+</style>
+
+
+<style>
+/* ===== V42 — JOUR : Accueil/Impression à gauche, Clair/Sombre à droite ===== */
+.daily-head{position:relative!important}
+.daily-head .daily-controls{
+  position:absolute!important;
+  left:18px!important;
+  right:18px!important;
+  top:18px!important;
+  width:auto!important;
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:flex-start!important;
+  pointer-events:none;
+  z-index:95!important;
+}
+.daily-head .daily-controls > *{pointer-events:auto}
+.daily-head .daily-theme{
+  position:absolute!important;
+  top:0!important;
+  right:0!important;
+  left:auto!important;
+  display:flex!important;
+  gap:8px!important;
+  margin:0!important;
+  transform:none!important;
+}
+/* Le bouton Accueil et Impression restent à gauche. */
+.daily-head button[aria-label="Accueil"]{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  right:auto!important;
+  margin:0!important;
+}
+.daily-head .page-print-btn{
+  position:absolute!important;
+  left:52px!important;
+  top:0!important;
+  right:auto!important;
+  margin:0!important;
+}
+/* Les boutons thème ne doivent jamais être déplacés à gauche par les correctifs précédents. */
+.daily-head .daily-theme button,
+.daily-head button[title="Mode clair"],
+.daily-head button[title="Mode sombre"]{
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  margin:0!important;
+  transform:none!important;
+}
+</style>
+
 </head>
 <body>
+
+<div id="printControl" class="print-control" aria-label="Options d'impression">
+  <select id="printOrientation" aria-label="Orientation d'impression">
+    <option value="portrait">Lettre — Portrait</option>
+    <option value="landscape">Lettre — Paysage</option>
+  </select>
+  <button id="printBtn" type="button" title="Imprimer la page" aria-label="Imprimer la page">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
 <div class="top-actions">
   <button id="homeBtn" class="icon-btn" aria-label="Accueil" title="Accueil" style="visibility:hidden"><svg class="ui-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <div class="theme" aria-label="Thème"><button id="lightBtn" class="on" title="Mode clair"><svg class="ui-svg sun-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button id="darkBtn" title="Mode sombre"><svg class="ui-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.3A8.7 8.7 0 0 1 8.7 3.5 9 9 0 1 0 20.5 15.3Z" fill="currentColor"/></svg></button></div>
@@ -926,9 +1250,9 @@ body.dark #lightBtn, body.dark #dailyHome, body.dark #dailyLight, body.dark #dai
    <button class="tile c1" data-page="month"><span class="ico"><svg viewBox="0 0 64 64"><rect x="9" y="13" width="46" height="42" rx="5"/><path d="M9 24h46M19 8v10M45 8v10"/><path d="M18 32h4M29 32h4M40 32h4M18 41h4M29 41h4M40 41h4M18 49h4M29 49h4M40 49h4"/></svg></span>MOIS</button>
    <button class="tile c1" data-page="year"><span class="ico"><svg viewBox="0 0 64 64"><rect x="10" y="13" width="44" height="42" rx="5"/><path d="M10 24h44M20 8v10M44 8v10"/><text x="32" y="44" text-anchor="middle" font-size="17" fill="currentColor" stroke="none">365</text></svg></span>ANNÉE</button>
 
-   <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="23"/><path d="M32 17v16l10 7"/><path d="M32 11v4M32 49v4M11 32h4M49 32h4"/></svg></span>RENDEZ-VOUS</button>
-   <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="15" y="12" width="38" height="45" rx="4"/><path d="M25 12v-3h18v3M23 25l3 3 6-7M23 37l3 3 6-7M23 49l3 3 6-7M36 25h10M36 37h10M36 49h10"/></svg></span>TO DO LIST PERSO</button>
-   <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="9" y="20" width="46" height="32" rx="5"/><path d="M23 20v-6h18v6M9 31h46M27 30h10v7H27z"/></svg></span>TO DO LIST TRAVAIL</button>
+   <button class="tile c2" data-page="appointments"><span class="ico"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="23"/><path d="M32 17v16l10 7"/><path d="M32 11v4M32 49v4M11 32h4M49 32h4"/></svg></span>RENDEZ-VOUS</button>
+   <button class="tile c2" data-page="todo-perso"><span class="ico"><svg viewBox="0 0 64 64"><rect x="15" y="12" width="38" height="45" rx="4"/><path d="M25 12v-3h18v3M23 25l3 3 6-7M23 37l3 3 6-7M23 49l3 3 6-7M36 25h10M36 37h10M36 49h10"/></svg></span>TO DO LIST PERSO</button>
+   <button class="tile c2" data-page="todo-travail"><span class="ico"><svg viewBox="0 0 64 64"><rect x="9" y="20" width="46" height="32" rx="5"/><path d="M23 20v-6h18v6M9 31h46M27 30h10v7H27z"/></svg></span>TO DO LIST TRAVAIL</button>
    <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><circle cx="30" cy="34" r="20"/><circle cx="30" cy="34" r="12"/><circle cx="30" cy="34" r="4"/><path d="M30 34 51 13M45 13h6v6"/></svg></span>OBJECTIFS</button>
 
    <button class="tile c3 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><path d="M15 33h34v22H15zM19 25h26v8H19z"/><path d="M15 43c5-5 10 5 17 0 7-5 12 5 17 0M32 25V15"/><path d="M32 15c-5-5 0-10 0-10s5 5 0 10"/></svg></span>DATE ANNIVERSAIRE</button>
@@ -993,13 +1317,34 @@ function keyForDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padSt
 let v15Range=null;
 function saveSelection(){const sel=window.getSelection();if(sel&&sel.rangeCount){const r=sel.getRangeAt(0);const el=r.commonAncestorContainer.nodeType===1?r.commonAncestorContainer:r.commonAncestorContainer.parentElement;if(el&&el.closest&&el.closest('.v15-editable')&&!r.collapsed)v15Range=r.cloneRange();}}
 document.addEventListener('selectionchange',saveSelection);
-function paintSelection(){if(!v15Range||v15Range.collapsed)return;const host=(v15Range.commonAncestorContainer.nodeType===1?v15Range.commonAncestorContainer:v15Range.commonAncestorContainer.parentElement).closest('.v15-editable');if(!host)return;const span=document.createElement('span');span.className='v15-hl-'+activeColor;try{v15Range.surroundContents(span)}catch(e){const frag=v15Range.extractContents();span.appendChild(frag);v15Range.insertNode(span)}const sel=window.getSelection();sel.removeAllRanges();host.dispatchEvent(new Event('input',{bubbles:true}));v15Range=null;}
+function paintSelection(){if(!v15Range||v15Range.collapsed)return;const host=(v15Range.commonAncestorContainer.nodeType===1?v15Range.commonAncestorContainer:v15Range.commonAncestorContainer.parentElement).closest('.v15-editable');if(!host)return;const span=document.createElement('span');span.className='v15-hl-'+activeColor;try{v15Range.surroundContents(span)}catch(e){const frag=v15Range.extractContents();span.appendChild(frag);v15Range.insertNode(span)}const sel=window.getSelection();sel.removeAllRanges();
+/* V28 : si le texte vient d'être surligné RDV (Slate Pebble) dans une plage horaire,
+   créer le rendez-vous DIRECTEMENT ici, sans dépendre d'un balayage ultérieur. */
+if(activeColor==='rdv' && host.closest('#schedule')){
+  const row=host.closest('.slot'), lab=row&&row.querySelector('.time');
+  const date=(typeof keyForDate==='function')?keyForDate(current):'';
+  const rawTime=lab?lab.textContent.trim():'';
+  const mm=rawTime.match(/^(\d{1,2}):(\d{2})$/);
+  const time=mm?String(Number(mm[1])).padStart(2,'0')+':'+mm[2]:rawTime;
+  const key=(date&&rawTime)?`agenda:${date}:${rawTime}`:'';
+  const text=span.textContent.trim();
+  if(date&&time&&key&&text&&typeof apptLoad==='function'&&typeof apptSave==='function'){
+    let id=span.dataset.apptId;
+    if(!id){id='appt-daily:'+Date.now()+':'+Math.random().toString(36).slice(2);span.dataset.apptId=id;}
+    let items=apptLoad(), a=items.find(x=>x.id===id);
+    if(!a){a={id,source:'daily',date,time,type:'P',person:'',what:text,address:'',dailyKey:key};items.push(a);}
+    else{a.source=a.source||'daily';a.date=date;a.time=time;a.what=text;a.dailyKey=key;if(a.type!=='P'&&a.type!=='T')a.type='P';}
+    localStorage.setItem(key,host.innerText);localStorage.setItem(key+':html',host.innerHTML);
+    apptSave(items);if(typeof renderAppointments==='function')renderAppointments();
+  }
+}
+host.dispatchEvent(new Event('input',{bubbles:true}));if(typeof syncDailyTodos==='function')syncDailyTodos();if(activeColor==='rdv'&&typeof syncDailyAppointments==='function')setTimeout(syncDailyAppointments,0);v15Range=null;}
 function restorePaint(){}
 document.querySelectorAll('.v13-color').forEach(b=>{b.addEventListener('pointerdown',e=>e.preventDefault());b.addEventListener('click',()=>{activeColor=b.dataset.color;localStorage.setItem('agenda-v13-color',activeColor);document.querySelectorAll('.v13-color').forEach(x=>x.classList.toggle('active',x===b));paintSelection()});b.classList.toggle('active',b.dataset.color===activeColor)});
 function miniCalendar(){const root=document.getElementById('miniCalendar'),y=current.getFullYear(),m=current.getMonth(),first=new Date(y,m,1),days=new Date(y,m+1,0).getDate();let html=`<div class="v13-mini-title">${first.toLocaleDateString('fr-CA',{month:'long',year:'numeric'}).replace(/^./,c=>c.toUpperCase())}</div><div class="v13-mini-grid">`;['D','L','M','M','J','V','S'].forEach(x=>html+=`<b>${x}</b>`);for(let i=0;i<first.getDay();i++)html+='<span></span>';for(let d=1;d<=days;d++)html+=`<span class="${d===current.getDate()?'today':''}">${d}</span>`;root.innerHTML=html+'</div>'}
 function setupEditable(el,key,placeholder){el.classList.add('v15-editable');el.contentEditable='true';el.dataset.placeholder=placeholder||'';el.innerHTML=localStorage.getItem(key+':html')||escapeHtml(localStorage.getItem(key)||'');el.oninput=()=>{localStorage.setItem(key,el.innerText);localStorage.setItem(key+':html',el.innerHTML);if(typeof agendaV5FillWeekSummaries==='function')agendaV5FillWeekSummaries()};}
 function escapeHtml(v){return String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
-function makeList(rootId,prefix,count){const root=document.getElementById(rootId),dk=keyForDate(current);root.innerHTML='';for(let i=1;i<=count;i++){const row=document.createElement('div');row.className='v13-checkrow';const cb=document.createElement('input');cb.type='checkbox';const ed=document.createElement('div');ed.className='v13-entry';const key=`agenda-v13:${dk}:${prefix}${i}`;setupEditable(ed,key,`${prefix}${i}...`);cb.checked=localStorage.getItem(key+':done')==='1';row.classList.toggle('done',cb.checked);cb.onchange=()=>{row.classList.toggle('done',cb.checked);localStorage.setItem(key+':done',cb.checked?'1':'0')};row.append(cb,ed);root.append(row)}}
+function makeList(rootId,prefix,count){const root=document.getElementById(rootId),dk=keyForDate(current);root.innerHTML='';for(let i=1;i<=count;i++){const row=document.createElement('div');row.className='v13-checkrow';const cb=document.createElement('input');cb.type='checkbox';const ed=document.createElement('div');ed.className='v13-entry';const key=`agenda-v13:${dk}:${prefix}${i}`;setupEditable(ed,key,`${prefix}${i}...`);row.dataset.dailyKey=key;row.dataset.dailyDate=dk;row.dataset.kind=prefix;row.dataset.index=i;cb.checked=localStorage.getItem(key+':done')==='1';row.classList.toggle('done',cb.checked);cb.onchange=()=>{row.classList.toggle('done',cb.checked);localStorage.setItem(key+':done',cb.checked?'1':'0');if(typeof syncDailyTodos==='function')syncDailyTodos()};ed.addEventListener('input',()=>{if(typeof syncDailyTodos==='function')syncDailyTodos()});row.append(cb,ed);root.append(row)}}
 function render(){document.getElementById('dateLabel').textContent=formatDate(current);miniCalendar();makeList('priorities','P',3);makeList('tasks','T',5);const dk=keyForDate(current),notes=document.getElementById('dailyNotes'),nk=`agenda-v13:${dk}:notes`;setupEditable(notes,nk,'Notes...');const schedule=document.getElementById('schedule');schedule.innerHTML='';times().forEach(t=>{const row=document.createElement('div');row.className='slot';const lab=document.createElement('div');lab.className='time';lab.textContent=t;const ed=document.createElement('div');ed.className='note v15-editable';const key=`agenda:${dk}:${t}`;setupEditable(ed,key,'Écrire ici...');row.append(lab,ed);schedule.append(row)});document.getElementById('prevDay').disabled=current<=START}
 document.getElementById('prevDay').onclick=()=>{if(current>START){current.setDate(current.getDate()-1);render()}};document.getElementById('nextDay').onclick=()=>{current.setDate(current.getDate()+1);render()};window.addEventListener('resize',()=>document.querySelectorAll('.note,.v13-entry').forEach(autoGrow));setTheme(localStorage.getItem('agenda-theme')||'light');render();
 </script>
@@ -1016,7 +1361,7 @@ document.getElementById('prevDay').onclick=()=>{if(current>START){current.setDat
         <svg class="ui-svg" viewBox="0 0 24 24"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/></svg>
       </button>
     </div>
-    <h1 class="week-title">Agenda semaine</h1>
+    <h1 class="week-title">Ma semaine</h1>
     <div id="weekRange" class="week-range"></div>
     <button class="silver-round week-prev" type="button" onclick="changeWeek(-7)" aria-label="Semaine précédente">‹</button>
     <button class="silver-round week-next" type="button" onclick="changeWeek(7)" aria-label="Semaine suivante">›</button>
@@ -1240,7 +1585,7 @@ document.addEventListener('input', function(e){
         <svg class="ui-svg" viewBox="0 0 24 24"><path d="M20.5 15.3A8.7 8.7 0 0 1 8.7 3.5 9 9 0 1 0 20.5 15.3Z" fill="currentColor"/></svg>
       </button>
     </div>
-    <h1 class="month-title">Agenda mensuel</h1>
+    <h1 class="month-title">Mon Mois</h1>
     <div id="monthLabel" class="month-label"></div>
     <button class="silver-round month-prev" id="prevMonth" type="button" aria-label="Mois précédent">‹</button>
     <button class="silver-round month-next" id="nextMonth" type="button" aria-label="Mois suivant">›</button>
@@ -1371,6 +1716,856 @@ body:not(.dark) #yearPage .silver-round{color:#000!important;-webkit-text-fill-c
  window.yearGoHome=()=>{let p=document.getElementById('yearPage');p.classList.remove('active');p.style.display='none';let h=document.getElementById('home');h.style.display='block';h.classList.add('active');document.querySelector('.top-actions').style.display='flex';window.scrollTo(0,0)};
  window.changeYear=n=>{y+=n;render()}; const slider=document.getElementById('yearSize'),val=document.getElementById('yearSizeValue');function size(v){v=Math.max(18,Math.min(46,+v));slider.value=v;val.textContent=v;document.documentElement.style.setProperty('--year-row-h',v+'px');localStorage.setItem('agenda-year-row-size',v)}slider.oninput=()=>size(slider.value);document.getElementById('yearSmaller').onclick=()=>size(+slider.value-2);document.getElementById('yearLarger').onclick=()=>size(+slider.value+2);size(localStorage.getItem('agenda-year-row-size')||22);
  const tile=document.querySelector('[data-page="year"]');if(tile)tile.onclick=e=>{e.preventDefault();showYear()};
+})();
+</script>
+
+
+<style>
+/* ===== V20 — Page Année : palette Pearl Shell ===== */
+#yearPage .year-head,
+#yearPage .year-month-title,
+#yearPage .year-mini-day.weekend,
+#yearPage .year-mini-day.today,
+#yearPage .year-row.weekend,
+#yearPage .year-row.today,
+body.dark #yearPage .year-head,
+body.dark #yearPage .year-month-title,
+body.dark #yearPage .year-mini-day.weekend,
+body.dark #yearPage .year-mini-day.today,
+body.dark #yearPage .year-row.weekend,
+body.dark #yearPage .year-row.today { background:var(--pearl-shell) !important; color:#000 !important; -webkit-text-fill-color:#000 !important; }
+#yearPage .year-month, #yearPage .year-mini, #yearPage .year-mini-day, #yearPage .year-row, #yearPage .year-note,
+body.dark #yearPage .year-month, body.dark #yearPage .year-mini, body.dark #yearPage .year-mini-day, body.dark #yearPage .year-row, body.dark #yearPage .year-note { border-color:var(--pearl-shell) !important; }
+#yearPage .year-home,#yearPage .year-theme .silver-round,#yearPage .year-prev,#yearPage .year-next,#yearPage .year-size .silver-round,
+body.dark #yearPage .year-home,body.dark #yearPage .year-theme .silver-round,body.dark #yearPage .year-prev,body.dark #yearPage .year-next,body.dark #yearPage .year-size .silver-round { background:var(--pearl-shell) !important; color:#000 !important; -webkit-text-fill-color:#000 !important; }
+#yearPage .silver-round svg,body.dark #yearPage .silver-round svg { color:#000 !important; stroke:#000 !important; }
+</style>
+
+<style>
+/* ===== V21 — TO DO LIST synchronisées ===== */
+.todo-page{display:none;min-height:100vh;max-width:1100px;margin:auto;padding:18px 22px 45px}.todo-page.active{display:block}.todo-head{position:relative;min-height:195px;border-radius:30px;background:var(--coastal-sand);padding:28px 90px;text-align:center;display:flex;align-items:center;justify-content:center}.todo-page.work .todo-head{background:var(--soft-pastel-violet)}.todo-title{font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;font-size:clamp(44px,6vw,74px);font-weight:400;margin:0;color:#000!important;-webkit-text-fill-color:#000!important}.todo-home{position:absolute;left:18px;top:18px}.todo-theme{position:absolute;right:18px;top:18px;display:flex;gap:8px}.todo-list{margin-top:22px}.todo-cols,.todo-row{display:grid;grid-template-columns:145px 42px minmax(0,1fr) 145px;gap:10px;align-items:start}.todo-cols{font-weight:800;padding:0 10px 8px}.todo-row{padding:10px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--field)}.todo-row input[type=checkbox]{width:21px;height:21px;margin-top:10px}.todo-desc{min-height:42px;border:0;outline:0;background:transparent;color:var(--text);padding:9px 4px;line-height:1.35;overflow-wrap:anywhere}.todo-row.done .todo-desc{text-decoration:line-through;opacity:.68}.todo-date{padding-top:10px;font-weight:650;font-size:14px}.todo-add{margin:16px 0 0;border:1px solid var(--line);background:var(--pearl-shell);color:#000;padding:10px 16px;border-radius:12px;font-weight:750}.todo-empty{text-align:center;padding:25px;opacity:.65}.todo-page .silver-round,.todo-page .silver-round svg,body.dark .todo-page .silver-round,body.dark .todo-page .silver-round svg{background:var(--pearl-shell)!important;color:#000!important;stroke:#000!important;-webkit-text-fill-color:#000!important}.todo-page .silver-round svg [fill]:not([fill="none"]){fill:#000!important}body.dark .todo-row{background:#000}body.dark .todo-desc{color:#fff;-webkit-text-fill-color:#fff}@media(max-width:650px){.todo-page{padding:10px 8px 30px}.todo-head{padding:65px 55px 22px}.todo-cols{display:none}.todo-row{grid-template-columns:34px 1fr}.todo-date{font-size:12px}.todo-row .start{grid-column:2}.todo-row .todo-desc{grid-column:2}.todo-row .end{grid-column:2}}
+</style>
+<section id="todoPerso" class="todo-page">
+<header class="todo-head"><button class="silver-round todo-home" onclick="showTodoHome()" aria-label="Accueil"><svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><div class="todo-theme"><button class="silver-round" onclick="setTheme('light')" aria-label="Mode clair">☀</button><button class="silver-round" onclick="setTheme('dark')" aria-label="Mode sombre">☾</button></div><h1 class="todo-title">Mes tâches perso</h1></header>
+<div class="todo-list"><div class="todo-cols"><span>Début</span><span></span><span>Tâche</span><span>Fin</span></div><div id="todoPersoList"></div><button class="todo-add" onclick="addManualTodo('perso')">+ Ajouter une tâche</button></div></section>
+<section id="todoTravail" class="todo-page work">
+<header class="todo-head"><button class="silver-round todo-home" onclick="showTodoHome()" aria-label="Accueil"><svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><div class="todo-theme"><button class="silver-round" onclick="setTheme('light')" aria-label="Mode clair">☀</button><button class="silver-round" onclick="setTheme('dark')" aria-label="Mode sombre">☾</button></div><h1 class="todo-title">Mes tâches travail</h1></header>
+<div class="todo-list"><div class="todo-cols"><span>Début</span><span></span><span>Tâche</span><span>Fin</span></div><div id="todoTravailList"></div><button class="todo-add" onclick="addManualTodo('travail')">+ Ajouter une tâche</button></div></section>
+<script>
+const TODO_STORE='agenda-v21-todos';
+function todoLoad(){try{return JSON.parse(localStorage.getItem(TODO_STORE)||'[]')}catch(e){return []}}
+function todoSave(a){localStorage.setItem(TODO_STORE,JSON.stringify(a))}
+function todayISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function prettyISO(x){if(!x)return '';const p=x.split('-');return `${p[2]}/${p[1]}/${p[0]}`}
+function dailyCategory(ed){if(ed.querySelector('.v15-hl-trav'))return 'travail';if(ed.querySelector('.v15-hl-perso'))return 'perso';return null}
+function syncDailyTodos(){let a=todoLoad();document.querySelectorAll('#tasks .v13-checkrow').forEach(row=>{const ed=row.querySelector('.v13-entry'),cb=row.querySelector('input[type=checkbox]'),cat=dailyCategory(ed),id='daily:'+row.dataset.dailyKey,text=ed.innerText.trim();let ix=a.findIndex(t=>t.id===id);if(cat&&text){const obj=ix>=0?a[ix]:{id,source:'daily',start:row.dataset.dailyDate,end:'',done:false};obj.category=cat;obj.text=text;obj.done=cb.checked;obj.end=cb.checked?(obj.end||todayISO()):'';if(ix>=0)a[ix]=obj;else a.push(obj)}else if(ix>=0){a.splice(ix,1)}});todoSave(a);renderTodoLists()}
+function setTodoDone(id,done){let a=todoLoad(),t=a.find(x=>x.id===id);if(!t)return;t.done=done;t.end=done?todayISO():'';todoSave(a);if(t.source==='daily'){localStorage.setItem(t.id.slice(6)+':done',done?'1':'0');const row=[...document.querySelectorAll('#tasks .v13-checkrow')].find(r=>'daily:'+r.dataset.dailyKey===id);if(row){row.classList.toggle('done',done);row.querySelector('input').checked=done}}renderTodoLists()}
+function updateTodoText(id,text){let a=todoLoad(),t=a.find(x=>x.id===id);if(!t)return;t.text=text;todoSave(a);if(t.source==='daily'){const key=t.id.slice(6);localStorage.setItem(key,text);localStorage.setItem(key+':html',text);const row=[...document.querySelectorAll('#tasks .v13-checkrow')].find(r=>'daily:'+r.dataset.dailyKey===id);if(row)row.querySelector('.v13-entry').innerText=text}renderTodoLists()}
+function addManualTodo(cat){let a=todoLoad();a.push({id:'manual:'+Date.now()+':'+Math.random().toString(36).slice(2),source:'manual',category:cat,start:todayISO(),end:'',done:false,text:''});todoSave(a);renderTodoLists();setTimeout(()=>{const list=document.getElementById(cat==='perso'?'todoPersoList':'todoTravailList');const es=list.querySelectorAll('.todo-desc');if(es.length)es[es.length-1].focus()},0)}
+function renderTodo(cat,rootId){const root=document.getElementById(rootId);if(!root)return;const items=todoLoad().filter(t=>t.category===cat);root.innerHTML='';if(!items.length){root.innerHTML='<div class="todo-empty">Aucune tâche pour le moment.</div>';return}items.forEach(t=>{const r=document.createElement('div');r.className='todo-row'+(t.done?' done':'');const st=document.createElement('div');st.className='todo-date start';st.textContent=prettyISO(t.start);const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!t.done;cb.onchange=()=>setTodoDone(t.id,cb.checked);const d=document.createElement('div');d.className='todo-desc';d.contentEditable='true';d.innerText=t.text;d.onblur=()=>updateTodoText(t.id,d.innerText.trim());const en=document.createElement('div');en.className='todo-date end';en.textContent=prettyISO(t.end);r.append(st,cb,d,en);root.append(r)})}
+function renderTodoLists(){renderTodo('perso','todoPersoList');renderTodo('travail','todoTravailList')}
+function openTodo(cat){document.querySelectorAll('.page,.week-page,.todo-page,#monthPage,#yearPage').forEach(x=>{x.classList.remove('active');x.style.display='none'});const p=document.getElementById(cat==='perso'?'todoPerso':'todoTravail');p.style.display='block';p.classList.add('active');document.querySelector('.top-actions').style.display='none';syncDailyTodos();window.scrollTo(0,0)}
+function showTodoHome(){document.querySelectorAll('.todo-page').forEach(x=>{x.classList.remove('active');x.style.display='none'});show('home')}
+document.querySelector('[data-page="todo-perso"]').onclick=()=>openTodo('perso');document.querySelector('[data-page="todo-travail"]').onclick=()=>openTodo('travail');
+const oldRender=render;render=function(){oldRender();syncDailyTodos()};renderTodoLists();
+</script>
+
+
+<script>
+/* ===== V24 — conversion d'heure Ma journée ↔ Mes rendez-vous ===== */
+window.apptTimeForInput=function(value){
+  const m=String(value||'').trim().match(/^(\d{1,2}):(\d{2})$/);
+  if(!m)return '';
+  const h=Number(m[1]);
+  if(h<0||h>23)return '';
+  return String(h).padStart(2,'0')+':'+m[2];
+};
+window.apptTimeForDaily=function(value){
+  const m=String(value||'').trim().match(/^(\d{1,2}):(\d{2})$/);
+  if(!m)return String(value||'');
+  const h=Number(m[1]);
+  return (h===24?'24':String(h))+':'+m[2];
+};
+</script>
+
+<style>
+/* ===== V22 — Rendez-vous synchronisés avec Ma journée ===== */
+.appt-page{display:none;min-height:100vh;max-width:1100px;margin:auto;padding:18px 22px 45px}.appt-page.active{display:block}
+.appt-head{position:relative;min-height:195px;border-radius:30px;background:var(--pearl-shell);padding:28px 90px;text-align:center;display:flex;align-items:center;justify-content:center}
+.appt-title{font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;font-size:clamp(44px,6vw,74px);font-weight:400;margin:0;color:#000!important;-webkit-text-fill-color:#000!important}
+.appt-home{position:absolute;left:18px;top:18px}.appt-theme{position:absolute;right:18px;top:18px;display:flex;gap:8px}
+.appt-list{margin-top:22px}.appt-cols,.appt-row{display:grid;grid-template-columns:130px 92px minmax(130px,.8fr) minmax(180px,1.2fr) minmax(190px,1.25fr) 44px;gap:9px;align-items:start}
+.appt-cols{font-weight:800;padding:0 9px 8px}.appt-row{padding:9px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--field)}
+.appt-row input,.appt-row textarea{width:100%;border:1px solid var(--line);border-radius:9px;background:transparent;color:var(--text);padding:9px;outline:0;resize:none;min-height:42px}.appt-row input[type=date],.appt-row input[type=time]{min-height:42px}
+.appt-delete{border:0;background:transparent;font-size:22px;line-height:42px;cursor:pointer;color:var(--text)}.appt-add{margin:16px 0 0;border:1px solid var(--line);background:var(--pearl-shell);color:#000;padding:10px 16px;border-radius:12px;font-weight:750}
+.appt-empty{text-align:center;padding:25px;opacity:.65}.appt-page .silver-round,.appt-page .silver-round svg,body.dark .appt-page .silver-round,body.dark .appt-page .silver-round svg{background:var(--pearl-shell)!important;color:#000!important;stroke:#000!important;-webkit-text-fill-color:#000!important}.appt-page .silver-round svg [fill]:not([fill="none"]){fill:#000!important}body.dark .appt-row{background:#000}body.dark .appt-row input,body.dark .appt-row textarea{color:#fff;-webkit-text-fill-color:#fff}
+@media(max-width:800px){.appt-page{padding:10px 8px 30px}.appt-head{padding:65px 55px 22px}.appt-cols{display:none}.appt-row{grid-template-columns:1fr 1fr 44px}.appt-row .appt-person,.appt-row .appt-what,.appt-row .appt-address{grid-column:1/4}.appt-delete{grid-column:3;grid-row:1}}
+</style>
+<section id="appointmentsPage" class="appt-page">
+<header class="appt-head"><button class="silver-round appt-home" onclick="showAppointmentsHome()" aria-label="Accueil"><svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><div class="appt-theme"><button class="silver-round" onclick="setTheme('light')" aria-label="Mode clair">☀</button><button class="silver-round" onclick="setTheme('dark')" aria-label="Mode sombre">☾</button></div><h1 class="appt-title">Mes rendez-vous</h1></header>
+<div class="appt-list"><div class="appt-cols"><span>Date</span><span>Heure</span><span>Qui</span><span>Rendez-vous</span><span>Adresse</span><span></span></div><div id="appointmentsList"></div><button class="appt-add" onclick="addAppointment()">+ Ajouter un rendez-vous</button></div></section>
+<script>
+const APPT_STORE='agenda-v22-appointments';
+function apptLoad(){try{return JSON.parse(localStorage.getItem(APPT_STORE)||'[]')}catch(e){return []}}
+function apptSave(a){localStorage.setItem(APPT_STORE,JSON.stringify(a))}
+function apptDailyKey(date,time){return `agenda:${date}:${time}`}
+function parseRdv(text){const raw=(text||'').trim();if(!/^rdv\b/i.test(raw))return null;let rest=raw.replace(/^rdv\s*[:\-]?\s*/i,'').trim();let p=rest.split('|').map(x=>x.trim());if(p.length>=3)return {person:p[0]||'',what:p[1]||'',address:p.slice(2).join(' | ')||''};return {person:'',what:rest,address:''}}
+function apptDailyText(a){if(a.person||a.address)return `Rdv | ${a.person||''} | ${a.what||''} | ${a.address||''}`;return `Rdv ${a.what||''}`.trim()}
+function syncDailyAppointments(){let a=apptLoad(),seen=new Set();for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i)||'';const m=k.match(/^agenda:(\d{4}-\d{2}-\d{2}):(\d{2}:\d{2})$/);if(!m)continue;const parsed=parseRdv(localStorage.getItem(k)||'');if(!parsed)continue;const id='daily-rdv:'+k,ix=a.findIndex(x=>x.id===id),obj=ix>=0?a[ix]:{id,source:'daily'};obj.date=m[1];obj.time=m[2];obj.person=parsed.person;obj.what=parsed.what;obj.address=parsed.address;obj.dailyKey=k;if(ix>=0)a[ix]=obj;else a.push(obj);seen.add(id)}
+// Retirer uniquement les rendez-vous issus de Ma journée qui n'existent plus dans leur case.
+a=a.filter(x=>x.source!=='daily'||seen.has(x.id));apptSave(a);renderAppointments()}
+function writeAppointmentToDaily(a,oldKey){const newKey=apptDailyKey(a.date,a.time);if(oldKey&&oldKey!==newKey){const old=localStorage.getItem(oldKey)||'';if(/^rdv\b/i.test(old.trim())){localStorage.removeItem(oldKey);localStorage.removeItem(oldKey+':html')}}const txt=apptDailyText(a);localStorage.setItem(newKey,txt);localStorage.setItem(newKey+':html',txt);a.dailyKey=newKey;if(a.source==='manual')a.source='linked'}
+function updateAppointment(id,field,value){let a=apptLoad(),x=a.find(z=>z.id===id);if(!x)return;const old=x.dailyKey;x[field]=value;if(x.date&&x.time)writeAppointmentToDaily(x,old);apptSave(a);if(typeof render==='function'&&document.getElementById('daily').classList.contains('active'))render();renderAppointments()}
+function addAppointment(){let a=apptLoad(),d=(typeof keyForDate==='function'?keyForDate(current):todayISO());let x={id:'appt:'+Date.now()+':'+Math.random().toString(36).slice(2),source:'manual',date:d,time:'09:00',person:'',what:'',address:'',dailyKey:''};a.push(x);writeAppointmentToDaily(x,'');apptSave(a);renderAppointments();setTimeout(()=>{const rows=document.querySelectorAll('#appointmentsList .appt-row');if(rows.length)rows[rows.length-1].querySelector('.appt-person').focus()},0)}
+function deleteAppointment(id){let a=apptLoad(),x=a.find(z=>z.id===id);if(x&&x.dailyKey){const v=localStorage.getItem(x.dailyKey)||'';if(/^rdv\b/i.test(v.trim())){localStorage.removeItem(x.dailyKey);localStorage.removeItem(x.dailyKey+':html')}}apptSave(a.filter(z=>z.id!==id));renderAppointments()}
+function renderAppointments(){const root=document.getElementById('appointmentsList');if(!root)return;const items=apptLoad().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));root.innerHTML='';if(!items.length){root.innerHTML='<div class="appt-empty">Aucun rendez-vous pour le moment.</div>';return}items.forEach(a=>{const r=document.createElement('div');r.className='appt-row';const date=document.createElement('input');date.type='date';date.value=a.date||'';date.onchange=()=>updateAppointment(a.id,'date',date.value);const time=document.createElement('input');time.type='time';time.step='1800';time.value=apptTimeForInput(a.time);time.onchange=()=>updateAppointment(a.id,'time',time.value);const person=document.createElement('textarea');person.className='appt-person';person.rows=1;person.value=a.person||'';person.onchange=()=>updateAppointment(a.id,'person',person.value.trim());const what=document.createElement('textarea');what.className='appt-what';what.rows=1;what.value=a.what||'';what.onchange=()=>updateAppointment(a.id,'what',what.value.trim());const address=document.createElement('textarea');address.className='appt-address';address.rows=1;address.value=a.address||'';address.onchange=()=>updateAppointment(a.id,'address',address.value.trim());[person,what,address].forEach(t=>t.oninput=()=>autoGrow(t));const del=document.createElement('button');del.className='appt-delete';del.title='Supprimer';del.textContent='×';del.onclick=()=>deleteAppointment(a.id);r.append(date,time,person,what,address,del);root.append(r);[person,what,address].forEach(autoGrow)})}
+function openAppointments(){document.querySelectorAll('.page,.week-page,.todo-page,.appt-page,#monthPage,#yearPage').forEach(x=>{x.classList.remove('active');x.style.display='none'});const p=document.getElementById('appointmentsPage');p.style.display='block';p.classList.add('active');document.querySelector('.top-actions').style.display='none';syncDailyAppointments();window.scrollTo(0,0)}
+function showAppointmentsHome(){document.getElementById('appointmentsPage').classList.remove('active');document.getElementById('appointmentsPage').style.display='none';show('home')}
+document.querySelector('[data-page="appointments"]').onclick=openAppointments;
+// Synchroniser dès qu'une case horaire de Ma journée change.
+document.addEventListener('input',e=>{if(e.target&&e.target.matches&&e.target.matches('#schedule .note')){clearTimeout(window.__apptSyncTimer);window.__apptSyncTimer=setTimeout(syncDailyAppointments,180)}});
+const v22Render=render;render=function(){v22Render();syncDailyAppointments()};syncDailyAppointments();
+</script>
+
+<script>
+/* ===== V23 — Rendez-vous = texte surligné Slate Pebble ===== */
+(function(){
+  const OLD_STORE='agenda-v22-appointments';
+
+  function slotInfo(host){
+    const row=host && host.closest ? host.closest('.slot') : null;
+    const time=row && row.querySelector('.time') ? row.querySelector('.time').textContent.trim() : '';
+    const date=(typeof keyForDate==='function') ? keyForDate(current) : '';
+    return {date,time,key:(date&&time)?`agenda:${date}:${time}`:''};
+  }
+  function saveHost(host,key){
+    if(!host||!key)return;
+    localStorage.setItem(key,host.innerText);
+    localStorage.setItem(key+':html',host.innerHTML);
+  }
+  function appointmentSpanHTML(a){
+    const txt=(a.what||a.person||a.address||'Rendez-vous').trim();
+    return `<span class="v15-hl-rdv" data-appt-id="${a.id}">${escapeHtml(txt)}</span>`;
+  }
+  function findDailySpan(id){
+    return document.querySelector(`#schedule .v15-hl-rdv[data-appt-id="${CSS.escape(id)}"]`);
+  }
+  function removeLinkedSpanFromStorage(a){
+    if(!a||!a.dailyKey)return;
+    const html=localStorage.getItem(a.dailyKey+':html')||'';
+    if(!html)return;
+    const box=document.createElement('div');box.innerHTML=html;
+    const q=`.v15-hl-rdv[data-appt-id="${CSS.escape(a.id)}"]`;
+    box.querySelectorAll(q).forEach(n=>n.remove());
+    const clean=box.innerHTML.replace(/^(\s|<br\s*\/?>)+|((\s|<br\s*\/?>)+)$/gi,'');
+    if(clean){localStorage.setItem(a.dailyKey+':html',clean);localStorage.setItem(a.dailyKey,box.innerText)}
+    else {localStorage.removeItem(a.dailyKey+':html');localStorage.removeItem(a.dailyKey)}
+  }
+  function appendAppointmentToDaily(a){
+    if(!a.date||!a.time)return;
+    const newKey=`agenda:${a.date}:${apptTimeForDaily(a.time)}`;
+    if(a.dailyKey && a.dailyKey!==newKey) removeLinkedSpanFromStorage(a);
+    let html=localStorage.getItem(newKey+':html')||escapeHtml(localStorage.getItem(newKey)||'');
+    const box=document.createElement('div');box.innerHTML=html;
+    const existing=box.querySelector(`.v15-hl-rdv[data-appt-id="${CSS.escape(a.id)}"]`);
+    if(existing){ existing.textContent=(a.what||a.person||a.address||'Rendez-vous').trim(); }
+    else {
+      if(box.innerHTML.trim() && !/\s$/.test(box.innerHTML)) box.append(document.createTextNode(' '));
+      const wrap=document.createElement('span');wrap.className='v15-hl-rdv';wrap.dataset.apptId=a.id;wrap.textContent=(a.what||a.person||a.address||'Rendez-vous').trim();box.append(wrap);
+    }
+    localStorage.setItem(newKey+':html',box.innerHTML);localStorage.setItem(newKey,box.innerText);a.dailyKey=newKey;
+  }
+
+  window.syncDailyAppointments=function(){
+    let items=apptLoad();
+    const seen=new Set();
+    document.querySelectorAll('#schedule .note.v15-editable').forEach(host=>{
+      const info=slotInfo(host); if(!info.key)return;
+      host.querySelectorAll('.v15-hl-rdv').forEach(span=>{
+        const text=span.textContent.trim(); if(!text)return;
+        let id=span.dataset.apptId;
+        if(!id){id='appt-daily:'+Date.now()+':'+Math.random().toString(36).slice(2);span.dataset.apptId=id;saveHost(host,info.key)}
+        let a=items.find(x=>x.id===id);
+        if(!a){a={id,source:'daily',date:info.date,time:info.time,person:'',what:text,address:'',dailyKey:info.key};items.push(a)}
+        else {a.date=info.date;a.time=info.time;a.what=text;a.dailyKey=info.key;if(a.source==='manual')a.source='linked'}
+        seen.add(id);
+      });
+    });
+    /* Balayer aussi les journées non affichées déjà enregistrées. */
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i)||''; const m=k.match(/^agenda:(\d{4}-\d{2}-\d{2}):(\d{2}:\d{2}):html$/); if(!m)continue;
+      const box=document.createElement('div');box.innerHTML=localStorage.getItem(k)||'';
+      box.querySelectorAll('.v15-hl-rdv').forEach(span=>{
+        const text=span.textContent.trim(); if(!text)return;
+        let id=span.dataset.apptId;
+        if(!id){id='appt-daily:'+Date.now()+':'+Math.random().toString(36).slice(2);span.dataset.apptId=id;localStorage.setItem(k,box.innerHTML);localStorage.setItem(k.replace(/:html$/,''),box.innerText)}
+        let a=items.find(x=>x.id===id);
+        if(!a){a={id,source:'daily',date:m[1],time:m[2],person:'',what:text,address:'',dailyKey:k.replace(/:html$/,'')};items.push(a)}
+        else {a.date=m[1];a.time=m[2];a.what=text;a.dailyKey=k.replace(/:html$/,'')}
+        seen.add(id);
+      });
+    }
+    items=items.filter(a=>a.source!=='daily'||seen.has(a.id));
+    apptSave(items);renderAppointments();
+  };
+
+  window.writeAppointmentToDaily=function(a,oldKey){appendAppointmentToDaily(a)};
+  window.updateAppointment=function(id,field,value){
+    let items=apptLoad(),a=items.find(x=>x.id===id);if(!a)return;
+    const oldKey=a.dailyKey;a[field]=value;
+    if(a.date&&a.time)appendAppointmentToDaily(a);
+    apptSave(items);
+    if(document.getElementById('daily').classList.contains('active'))render();
+    renderAppointments();
+  };
+  window.addAppointment=function(){
+    let items=apptLoad(),d=(typeof keyForDate==='function'?keyForDate(current):todayISO());
+    let a={id:'appt:'+Date.now()+':'+Math.random().toString(36).slice(2),source:'manual',date:d,time:'09:00',person:'',what:'Rendez-vous',address:'',dailyKey:''};
+    items.push(a);appendAppointmentToDaily(a);apptSave(items);renderAppointments();
+    if(document.getElementById('daily').classList.contains('active'))render();
+    setTimeout(()=>{const rows=document.querySelectorAll('#appointmentsList .appt-row');if(rows.length)rows[rows.length-1].querySelector('.appt-person').focus()},0);
+  };
+  window.deleteAppointment=function(id){
+    let items=apptLoad(),a=items.find(x=>x.id===id);if(a)removeLinkedSpanFromStorage(a);apptSave(items.filter(x=>x.id!==id));
+    if(document.getElementById('daily').classList.contains('active'))render();renderAppointments();
+  };
+
+  /* Après un surlignage Slate Pebble, créer/synchroniser immédiatement le rendez-vous. */
+  document.querySelectorAll('.v13-color[data-color="rdv"]').forEach(b=>b.addEventListener('click',()=>setTimeout(syncDailyAppointments,0)));
+  document.addEventListener('input',e=>{if(e.target&&e.target.closest&&e.target.closest('#schedule .note')){clearTimeout(window.__apptSlateTimer);window.__apptSlateTimer=setTimeout(syncDailyAppointments,180)}});
+  setTimeout(syncDailyAppointments,0);
+})();
+</script>
+
+
+<style>
+/* ===== V25 — Type P/T et tri décroissant des rendez-vous ===== */
+.appt-cols,.appt-row{grid-template-columns:130px 92px 110px minmax(130px,.8fr) minmax(180px,1.2fr) minmax(190px,1.25fr) 44px}
+.appt-row select{width:100%;border:1px solid var(--line);border-radius:9px;background:transparent;color:var(--text);padding:9px;outline:0;min-height:42px}
+body.dark .appt-row select{background:#000;color:#fff;-webkit-text-fill-color:#fff}
+@media(max-width:800px){
+ .appt-row{grid-template-columns:1fr 1fr 1fr 44px}
+ .appt-row .appt-person,.appt-row .appt-what,.appt-row .appt-address{grid-column:1/5}
+ .appt-delete{grid-column:4;grid-row:1}
+}
+</style>
+<script>
+/* ===== V25 — Type Personnel/Travail + plus récent au plus ancien ===== */
+(function(){
+  const cols=document.querySelector('#appointmentsPage .appt-cols');
+  if(cols) cols.innerHTML='<span>Date</span><span>Heure</span><span>Type</span><span>Qui</span><span>Rendez-vous</span><span>Adresse</span><span></span>';
+
+  window.renderAppointments=function(){
+    const root=document.getElementById('appointmentsList');if(!root)return;
+    const items=apptLoad().slice().sort((a,b)=>{
+      const ak=(a.date||'')+'T'+apptTimeForInput(a.time||'00:00');
+      const bk=(b.date||'')+'T'+apptTimeForInput(b.time||'00:00');
+      return bk.localeCompare(ak); // plus récent -> plus ancien
+    });
+    root.innerHTML='';
+    if(!items.length){root.innerHTML='<div class="appt-empty">Aucun rendez-vous pour le moment.</div>';return}
+    items.forEach(a=>{
+      const r=document.createElement('div');r.className='appt-row';r.dataset.apptId=a.id;
+      const date=document.createElement('input');date.type='date';date.value=a.date||'';date.onchange=()=>updateAppointment(a.id,'date',date.value);
+      const time=document.createElement('input');time.type='time';time.step='1800';time.value=apptTimeForInput(a.time);time.onchange=()=>updateAppointment(a.id,'time',time.value);
+      const type=document.createElement('select');type.className='appt-type';
+      type.innerHTML='<option value="P">P — Personnel</option><option value="T">T — Travail</option>';
+      type.value=(a.type==='T'?'T':'P');type.onchange=()=>updateAppointment(a.id,'type',type.value);
+      const person=document.createElement('textarea');person.className='appt-person';person.rows=1;person.value=a.person||'';person.onchange=()=>updateAppointment(a.id,'person',person.value.trim());
+      const what=document.createElement('textarea');what.className='appt-what';what.rows=1;what.value=a.what||'';what.onchange=()=>updateAppointment(a.id,'what',what.value.trim());
+      const address=document.createElement('textarea');address.className='appt-address';address.rows=1;address.value=a.address||'';address.onchange=()=>updateAppointment(a.id,'address',address.value.trim());
+      [person,what,address].forEach(t=>t.oninput=()=>autoGrow(t));
+      const del=document.createElement('button');del.className='appt-delete';del.title='Supprimer';del.textContent='×';del.onclick=()=>deleteAppointment(a.id);
+      r.append(date,time,type,person,what,address,del);root.append(r);[person,what,address].forEach(autoGrow);
+    });
+  };
+
+  window.addAppointment=function(){
+    let items=apptLoad(),d=(typeof keyForDate==='function'?keyForDate(current):todayISO());
+    let a={id:'appt:'+Date.now()+':'+Math.random().toString(36).slice(2),source:'manual',date:d,time:'09:00',type:'P',person:'',what:'Rendez-vous',address:'',dailyKey:''};
+    items.push(a);writeAppointmentToDaily(a,'');apptSave(items);renderAppointments();
+    if(document.getElementById('daily').classList.contains('active'))render();
+    setTimeout(()=>{const row=document.querySelector('#appointmentsList .appt-row[data-appt-id="'+CSS.escape(a.id)+'"]');if(row)row.querySelector('.appt-person').focus()},0);
+  };
+
+  // Rendez-vous existants : P par défaut, sans perdre aucune donnée.
+  const items=apptLoad();let changed=false;items.forEach(a=>{if(a.type!=='P'&&a.type!=='T'){a.type='P';changed=true}});if(changed)apptSave(items);
+  renderAppointments();
+})();
+</script>
+
+
+<script>
+/* ===== V26 — récupération des rendez-vous existants (heures 1 ou 2 chiffres) ===== */
+(function(){
+  function normDailyTime(t){
+    const m=String(t||'').trim().match(/^(\d{1,2}):(\d{2})$/);
+    if(!m) return String(t||'');
+    return String(Number(m[1])).padStart(2,'0')+':'+m[2];
+  }
+
+  window.syncDailyAppointments=function(){
+    let items=apptLoad();
+    const seen=new Set();
+
+    // 1) Journée actuellement affichée.
+    document.querySelectorAll('#schedule .note.v15-editable').forEach(host=>{
+      const row=host.closest('.slot');
+      const rawTime=row&&row.querySelector('.time')?row.querySelector('.time').textContent.trim():'';
+      const date=(typeof keyForDate==='function')?keyForDate(current):'';
+      if(!date||!rawTime)return;
+      const key=`agenda:${date}:${rawTime}`;
+      host.querySelectorAll('.v15-hl-rdv').forEach(span=>{
+        const text=span.textContent.trim();if(!text)return;
+        let id=span.dataset.apptId;
+        if(!id){id='appt-daily:'+Date.now()+':'+Math.random().toString(36).slice(2);span.dataset.apptId=id;localStorage.setItem(key+':html',host.innerHTML);localStorage.setItem(key,host.innerText)}
+        let a=items.find(x=>x.id===id);
+        if(!a){a={id,source:'daily',date,time:normDailyTime(rawTime),type:'P',person:'',what:text,address:'',dailyKey:key};items.push(a)}
+        else {a.date=date;a.time=normDailyTime(rawTime);a.what=text;a.dailyKey=key;if(a.type!=='P'&&a.type!=='T')a.type='P'}
+        seen.add(id);
+      });
+    });
+
+    // 2) Toutes les journées sauvegardées, y compris les anciennes clés 9:30 au lieu de 09:30.
+    const keys=[];for(let i=0;i<localStorage.length;i++)keys.push(localStorage.key(i)||'');
+    keys.forEach(k=>{
+      const m=k.match(/^agenda:(\d{4}-\d{2}-\d{2}):(\d{1,2}:\d{2}):html$/);if(!m)return;
+      const box=document.createElement('div');box.innerHTML=localStorage.getItem(k)||'';
+      let changed=false;
+      box.querySelectorAll('.v15-hl-rdv').forEach(span=>{
+        const text=span.textContent.trim();if(!text)return;
+        let id=span.dataset.apptId;
+        if(!id){id='appt-daily:'+Date.now()+':'+Math.random().toString(36).slice(2);span.dataset.apptId=id;changed=true}
+        let a=items.find(x=>x.id===id);
+        if(!a){a={id,source:'daily',date:m[1],time:normDailyTime(m[2]),type:'P',person:'',what:text,address:'',dailyKey:k.replace(/:html$/,'')};items.push(a)}
+        else {a.date=m[1];a.time=normDailyTime(m[2]);a.what=text;a.dailyKey=k.replace(/:html$/,'');if(a.type!=='P'&&a.type!=='T')a.type='P'}
+        seen.add(id);
+      });
+      if(changed){localStorage.setItem(k,box.innerHTML);localStorage.setItem(k.replace(/:html$/,''),box.innerText)}
+    });
+
+    // Ne jamais supprimer ici un ancien rendez-vous : la suppression doit être explicite.
+    items.forEach(a=>{if(a.type!=='P'&&a.type!=='T')a.type='P'});
+    apptSave(items);renderAppointments();
+  };
+
+  // Réimporte immédiatement les rendez-vous existants (ex. Dentiste) depuis Ma journée.
+  setTimeout(syncDailyAppointments,0);
+})();
+</script>
+
+
+<script>
+/* ===== V27 — correction immédiate Slate Pebble → Mes rendez-vous ===== */
+(function(){
+  function syncRdvNow(){
+    if(typeof window.syncDailyAppointments==='function'){
+      // Laisse le navigateur terminer l'insertion du span de surlignage avant le balayage.
+      requestAnimationFrame(()=>requestAnimationFrame(()=>window.syncDailyAppointments()));
+    }
+  }
+  document.querySelectorAll('.v13-color[data-color="rdv"]').forEach(btn=>{
+    btn.addEventListener('click',syncRdvNow);
+  });
+  // Filet de sécurité : toute modification d'une plage horaire resynchronise les RDV.
+  document.getElementById('schedule')?.addEventListener('input',()=>{
+    clearTimeout(window.__v27RdvTimer);
+    window.__v27RdvTimer=setTimeout(syncRdvNow,80);
+  });
+})();
+</script>
+
+<!-- V28 : création directe Slate Pebble -> Mes rendez-vous -->
+
+<script>
+/* ===== V30 — synchronisation RDV robuste et compatible iPad ===== */
+(function(){
+  function normalizeTime(t){
+    var m=String(t||'').trim().match(/^(\d{1,2}):(\d{2})$/);
+    return m ? String(parseInt(m[1],10)).padStart(2,'0')+':'+m[2] : String(t||'').trim();
+  }
+  function ensureAppointment(span){
+    if(!span || !span.closest) return;
+    var host=span.closest('#schedule .v15-editable');
+    if(!host) return;
+    var row=host.closest('.slot');
+    var lab=row && row.querySelector('.time');
+    var text=(span.textContent||'').trim();
+    var date=(typeof keyForDate==='function' && typeof current!=='undefined') ? keyForDate(current) : '';
+    var rawTime=lab ? lab.textContent.trim() : '';
+    var time=normalizeTime(rawTime);
+    if(!text || !date || !time || typeof apptLoad!=='function' || typeof apptSave!=='function') return;
+    var id=span.getAttribute('data-appt-id');
+    if(!id){ id='appt-daily:'+Date.now()+':'+Math.random().toString(36).slice(2); span.setAttribute('data-appt-id',id); }
+    var key='agenda:'+date+':'+rawTime;
+    var items=apptLoad();
+    var a=items.find(function(x){return x.id===id});
+    if(!a){
+      a={id:id,source:'daily',date:date,time:time,type:'P',person:'',what:text,address:'',dailyKey:key};
+      items.push(a);
+    }else{
+      a.date=date; a.time=time; a.what=text; a.dailyKey=key;
+      if(!a.type) a.type='P';
+    }
+    localStorage.setItem(key,host.innerText);
+    localStorage.setItem(key+':html',host.innerHTML);
+    apptSave(items);
+    if(typeof renderAppointments==='function') renderAppointments();
+  }
+  function scan(){
+    document.querySelectorAll('#schedule .v15-hl-rdv').forEach(ensureAppointment);
+  }
+  var schedule=document.getElementById('schedule');
+  if(schedule){
+    new MutationObserver(function(){ setTimeout(scan,0); }).observe(schedule,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','data-appt-id']});
+    schedule.addEventListener('input',function(){setTimeout(scan,0)});
+  }
+  document.querySelectorAll('.v13-color[data-color="rdv"]').forEach(function(btn){
+    btn.addEventListener('click',function(){setTimeout(scan,0)});
+  });
+  setTimeout(scan,0);
+})();
+</script>
+
+<script>
+/* ===== V32 — synchronisation bidirectionnelle des suppressions RDV ===== */
+(function(){
+  function syncAppointmentDeletions(){
+    if(typeof apptLoad!=='function'||typeof apptSave!=='function') return;
+    var items=apptLoad(), changed=false;
+    var kept=items.filter(function(a){
+      if(a.source!=='daily' && a.source!=='linked') return true;
+      if(!a.dailyKey) return true;
+      var html=localStorage.getItem(a.dailyKey+':html')||'';
+      if(!html){ changed=true; return false; }
+      var box=document.createElement('div'); box.innerHTML=html;
+      var found=false;
+      try{ found=!!box.querySelector('.v15-hl-rdv[data-appt-id="'+CSS.escape(a.id)+'"]'); }catch(e){}
+      if(!found){ changed=true; return false; }
+      return true;
+    });
+    if(changed){ apptSave(kept); if(typeof renderAppointments==='function') renderAppointments(); }
+  }
+  var oldSync=window.syncDailyAppointments;
+  window.syncDailyAppointments=function(){
+    if(typeof oldSync==='function') oldSync();
+    syncAppointmentDeletions();
+  };
+  var schedule=document.getElementById('schedule');
+  if(schedule){
+    schedule.addEventListener('input',function(){
+      clearTimeout(window.__v32DeleteSync);
+      window.__v32DeleteSync=setTimeout(function(){
+        /* Le gestionnaire existant a d'abord sauvegardé la case; on peut maintenant comparer. */
+        syncAppointmentDeletions();
+      },260);
+    });
+  }
+  var oldOpen=window.openAppointments;
+  window.openAppointments=function(){
+    if(typeof oldOpen==='function') oldOpen();
+    syncAppointmentDeletions();
+  };
+})();
+</script>
+
+
+<style>
+/* ===== V33 — Rendez-vous : synchronisation robuste + corbeille ===== */
+.appt-delete{display:grid!important;place-items:center!important;width:40px!important;height:40px!important;min-width:40px!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--pearl-shell)!important;color:#000!important;-webkit-text-fill-color:#000!important;line-height:1!important;padding:0!important}
+.appt-delete svg{width:19px;height:19px;fill:none;stroke:#000;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+</style>
+<script>
+/* ===== V33 — Rendez-vous créés dans Mes rendez-vous -> Ma journée ===== */
+(function(){
+  function esc(s){return String(s||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]})}
+  function dailyTime(t){
+    var m=String(t||'').match(/^(\d{1,2}):(\d{2})$/); if(!m)return String(t||'');
+    return String(Number(m[1]))+':'+m[2];
+  }
+  function removeFromKey(key,id){
+    if(!key||!id)return;
+    var html=localStorage.getItem(key+':html')||''; if(!html)return;
+    var box=document.createElement('div'); box.innerHTML=html;
+    var nodes=box.querySelectorAll('.v15-hl-rdv');
+    nodes.forEach(function(n){if(n.getAttribute('data-appt-id')===id)n.remove()});
+    var clean=box.innerHTML.replace(/^(\s|<br\s*\/?\s*>)+|((\s|<br\s*\/?\s*>)+)$/gi,'');
+    if(clean){localStorage.setItem(key+':html',clean);localStorage.setItem(key,box.innerText)}
+    else{localStorage.removeItem(key+':html');localStorage.removeItem(key)}
+  }
+  function putInDaily(a,oldKey){
+    if(!a||!a.id||!a.date||!a.time)return;
+    var key='agenda:'+a.date+':'+dailyTime(a.time);
+    if(oldKey&&oldKey!==key)removeFromKey(oldKey,a.id);
+    var html=localStorage.getItem(key+':html');
+    if(html==null)html=esc(localStorage.getItem(key)||'');
+    var box=document.createElement('div');box.innerHTML=html;
+    var node=null;box.querySelectorAll('.v15-hl-rdv').forEach(function(n){if(n.getAttribute('data-appt-id')===a.id)node=n});
+    var text=String(a.what||a.person||a.address||'Rendez-vous').trim()||'Rendez-vous';
+    if(!node){
+      if(box.innerText.trim())box.appendChild(document.createTextNode(' '));
+      node=document.createElement('span');node.className='v15-hl-rdv';node.setAttribute('data-appt-id',a.id);box.appendChild(node);
+    }
+    node.textContent=text;
+    localStorage.setItem(key+':html',box.innerHTML);localStorage.setItem(key,box.innerText);a.dailyKey=key;
+  }
+  window.updateAppointment=function(id,field,value){
+    var items=apptLoad(),a=items.find(function(x){return x.id===id});if(!a)return;
+    var old=a.dailyKey||'';a[field]=value;
+    if(a.date&&a.time)putInDaily(a,old);
+    apptSave(items);
+    if(typeof renderAppointments==='function')renderAppointments();
+    var daily=document.getElementById('daily');if(daily&&daily.classList.contains('active')&&typeof render==='function')render();
+  };
+  window.addAppointment=function(){
+    var items=apptLoad();
+    var d=(typeof keyForDate==='function'&&typeof current!=='undefined')?keyForDate(current):(new Date().toISOString().slice(0,10));
+    var a={id:'appt:'+Date.now()+':'+Math.random().toString(36).slice(2),source:'linked',date:d,time:'09:00',type:'P',person:'',what:'Rendez-vous',address:'',dailyKey:''};
+    putInDaily(a,'');items.push(a);apptSave(items);renderAppointments();
+    setTimeout(function(){var r=document.querySelector('#appointmentsList .appt-row[data-appt-id="'+a.id+'"]');if(r){var f=r.querySelector('.appt-person');if(f)f.focus()}},0);
+  };
+  window.deleteAppointment=function(id){
+    var items=apptLoad(),a=items.find(function(x){return x.id===id});
+    if(a)removeFromKey(a.dailyKey,id);
+    apptSave(items.filter(function(x){return x.id!==id}));
+    if(typeof renderAppointments==='function')renderAppointments();
+    var daily=document.getElementById('daily');if(daily&&daily.classList.contains('active')&&typeof render==='function')render();
+  };
+  var oldRender=window.renderAppointments;
+  window.renderAppointments=function(){
+    oldRender();
+    document.querySelectorAll('#appointmentsList .appt-delete').forEach(function(b){
+      b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"/></svg>';
+      b.setAttribute('aria-label','Supprimer ce rendez-vous');b.title='Supprimer ce rendez-vous';
+    });
+  };
+  window.renderAppointments();
+})();
+</script>
+
+
+<script>
+/* ===== V34 — suppression Rendez-vous -> Ma journée, recherche globale par identifiant ===== */
+(function(){
+  function cleanAppointmentFromDaily(id, preferredKey){
+    if(!id)return;
+    var keys=[];
+    if(preferredKey)keys.push(preferredKey+':html');
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i)||'';
+      if(/^agenda:\d{4}-\d{2}-\d{2}:\d{1,2}:\d{2}:html$/.test(k) && keys.indexOf(k)<0) keys.push(k);
+    }
+    keys.forEach(function(htmlKey){
+      var html=localStorage.getItem(htmlKey)||'';
+      if(!html || html.indexOf(id)<0)return;
+      var box=document.createElement('div');box.innerHTML=html;
+      var changed=false;
+      box.querySelectorAll('.v15-hl-rdv[data-appt-id]').forEach(function(n){
+        if(n.getAttribute('data-appt-id')===id){n.remove();changed=true;}
+      });
+      if(!changed)return;
+      var baseKey=htmlKey.replace(/:html$/,'');
+      var clean=box.innerHTML.replace(/^(\s|<br\s*\/?\s*>)+|((\s|<br\s*\/?\s*>)+)$/gi,'');
+      if(clean && box.innerText.trim()){
+        localStorage.setItem(htmlKey,clean);
+        localStorage.setItem(baseKey,box.innerText);
+      }else{
+        localStorage.removeItem(htmlKey);
+        localStorage.removeItem(baseKey);
+      }
+    });
+  }
+  window.deleteAppointment=function(id){
+    var items=apptLoad();
+    var a=items.find(function(x){return x.id===id});
+    cleanAppointmentFromDaily(id,a&&a.dailyKey?a.dailyKey:'');
+    apptSave(items.filter(function(x){return x.id!==id}));
+    if(typeof renderAppointments==='function')renderAppointments();
+    var d=document.getElementById('daily');
+    if(d&&d.classList.contains('active')&&typeof render==='function')render();
+  };
+})();
+</script>
+
+
+<script>
+/* ===== V36 — Mes rendez-vous : plus proche rendez-vous à venir en premier ===== */
+(function(){
+  function rdvDateTime(row){
+    if(!row) return Number.POSITIVE_INFINITY;
+    const dateInput = row.querySelector('input[type="date"]');
+    const timeInput = row.querySelector('input[type="time"]');
+    if(!dateInput || !dateInput.value) return Number.POSITIVE_INFINITY;
+    const t = (timeInput && timeInput.value) ? timeInput.value : '23:59';
+    const d = new Date(dateInput.value + 'T' + t + ':00');
+    return isNaN(d.getTime()) ? Number.POSITIVE_INFINITY : d.getTime();
+  }
+
+  function sortRdvRows(){
+    const page = document.getElementById('appointmentsPage') ||
+                 document.getElementById('rdvPage') ||
+                 document.querySelector('.appointments-page');
+    if(!page) return;
+
+    const candidates = Array.from(page.querySelectorAll('tbody, .appointments-list, .rdv-list, .appointment-list'));
+    candidates.forEach(container => {
+      const rows = Array.from(container.children).filter(el =>
+        el.querySelector && el.querySelector('input[type="date"]')
+      );
+      if(rows.length < 2) return;
+      rows.sort((a,b) => rdvDateTime(a) - rdvDateTime(b));
+      rows.forEach(r => container.appendChild(r));
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    sortRdvRows();
+    setTimeout(sortRdvRows, 50);
+  });
+
+  document.addEventListener('input', function(e){
+    const page = e.target.closest && (e.target.closest('#appointmentsPage') ||
+                 e.target.closest('#rdvPage') || e.target.closest('.appointments-page'));
+    if(page && (e.target.matches('input[type="date"]') || e.target.matches('input[type="time"]'))){
+      setTimeout(sortRdvRows, 0);
+    }
+  });
+
+  document.addEventListener('change', function(e){
+    const page = e.target.closest && (e.target.closest('#appointmentsPage') ||
+                 e.target.closest('#rdvPage') || e.target.closest('.appointments-page'));
+    if(page) setTimeout(sortRdvRows, 0);
+  });
+
+  // Re-sort when the appointments page is opened or data changes.
+  const obs = new MutationObserver(function(){ sortRdvRows(); });
+  document.addEventListener('DOMContentLoaded', function(){
+    const page = document.getElementById('appointmentsPage') ||
+                 document.getElementById('rdvPage') ||
+                 document.querySelector('.appointments-page');
+    if(page) obs.observe(page, {childList:true, subtree:true});
+  });
+})();
+</script>
+
+
+<script>
+/* ===== V37 — Impression de la page active en format Lettre ===== */
+(function(){
+  const control = document.getElementById('printControl');
+  const btn = document.getElementById('printBtn');
+  const orientation = document.getElementById('printOrientation');
+
+  function onHome(){
+    const home = document.getElementById('home');
+    return !!(home && home.classList.contains('active'));
+  }
+  function updatePrintControl(){
+    if(!control) return;
+    control.classList.toggle('visible', !onHome());
+  }
+  function setPrintPageRule(mode){
+    let style = document.getElementById('dynamicPrintPage');
+    if(!style){
+      style = document.createElement('style');
+      style.id = 'dynamicPrintPage';
+      document.head.appendChild(style);
+    }
+    style.textContent = mode === 'landscape'
+      ? '@media print{@page{size:Letter landscape;margin:.45in}}'
+      : '@media print{@page{size:Letter portrait;margin:.45in}}';
+  }
+
+  if(btn){
+    btn.addEventListener('click', function(){
+      const mode = orientation ? orientation.value : 'portrait';
+      setPrintPageRule(mode);
+      document.body.classList.toggle('print-landscape', mode === 'landscape');
+      setTimeout(function(){ window.print(); }, 60);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    updatePrintControl();
+    const obs = new MutationObserver(updatePrintControl);
+    document.querySelectorAll('.page,.week-page,#monthPage').forEach(function(el){
+      obs.observe(el,{attributes:true,attributeFilter:['class']});
+    });
+  });
+})();
+</script>
+
+
+<script>
+/* ===== V38 — bouton Imprimer adjacent à Accueil sur chaque page ===== */
+(function(){
+  const printerSvg = '<svg class="ui-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function printCurrentPage(){
+    let mode = 'portrait';
+    const oldChoice = document.getElementById('printOrientation');
+    if(oldChoice && oldChoice.value) mode = oldChoice.value;
+    let s = document.getElementById('dynamicPrintPage');
+    if(!s){ s=document.createElement('style'); s.id='dynamicPrintPage'; document.head.appendChild(s); }
+    s.textContent = mode==='landscape'
+      ? '@media print{@page{size:Letter landscape;margin:.45in}}'
+      : '@media print{@page{size:Letter portrait;margin:.45in}}';
+    setTimeout(function(){window.print();},50);
+  }
+
+  function addBeside(homeBtn){
+    if(!homeBtn || homeBtn.dataset.printAdded==='1') return;
+    const p=document.createElement('button');
+    p.type='button';
+    p.className=(homeBtn.classList.contains('silver-round')?'silver-round ':'icon-btn ')+'page-print-btn';
+    p.title='Imprimer';
+    p.setAttribute('aria-label','Imprimer');
+    p.innerHTML=printerSvg;
+    p.addEventListener('click',printCurrentPage);
+    homeBtn.insertAdjacentElement('afterend',p);
+    homeBtn.dataset.printAdded='1';
+  }
+
+  function install(){
+    document.querySelectorAll('button[aria-label="Accueil"]').forEach(function(b){
+      // Ignore the global home button used on the dashboard itself.
+      if(b.id==='homeBtn') return;
+      addBeside(b);
+    });
+
+    // Daily page uses the global home button; create a companion button in the same fixed area
+    // when no local home button exists.
+    const dailyControls=document.querySelector('.daily-controls');
+    if(dailyControls){
+      const hb=dailyControls.querySelector('button[aria-label="Accueil"]');
+      if(hb) addBeside(hb);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    install();
+    new MutationObserver(install).observe(document.body,{childList:true,subtree:true});
+  });
+})();
+</script>
+
+
+<script>
+/* ===== V40 — Impression toujours immédiatement à droite d'Accueil ===== */
+(function(){
+  function visible(el){
+    if(!el) return false;
+    const s=getComputedStyle(el), r=el.getBoundingClientRect();
+    return s.display!=='none' && s.visibility!=='hidden' && r.width>0 && r.height>0;
+  }
+
+  function alignPrintButtons(){
+    document.querySelectorAll('.page-print-btn').forEach(function(p){
+      let home=null;
+
+      // Prefer the immediately preceding home button.
+      let prev=p.previousElementSibling;
+      if(prev && prev.matches('button[aria-label="Accueil"]')) home=prev;
+
+      // Otherwise find the visible home button in the same page/header.
+      if(!home){
+        const scope=p.closest('.page,.week-page,#monthPage,.month-page,.daily,.week-head,.month-head') || document;
+        home=Array.from(scope.querySelectorAll('button[aria-label="Accueil"]')).find(visible);
+      }
+      if(!home || !visible(home) || !visible(p)) return;
+
+      const r=home.getBoundingClientRect();
+      p.style.setProperty('position','fixed','important');
+      p.style.setProperty('left',(r.right+8)+'px','important');
+      p.style.setProperty('top',r.top+'px','important');
+      p.style.setProperty('right','auto','important');
+      p.style.setProperty('bottom','auto','important');
+    });
+  }
+
+  function run(){
+    requestAnimationFrame(function(){
+      alignPrintButtons();
+      setTimeout(alignPrintButtons,40);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',run);
+  window.addEventListener('resize',run);
+  window.addEventListener('orientationchange',run);
+  document.addEventListener('click',function(){setTimeout(run,0);});
+  document.addEventListener('change',function(){setTimeout(run,0);});
+
+  new MutationObserver(run).observe(document.documentElement,{
+    attributes:true,childList:true,subtree:true,attributeFilter:['class','style']
+  });
+})();
+</script>
+
+
+<script>
+/* ===== V41 — positionnement précis dans la case colorée du titre ===== */
+(function(){
+  function isVisible(el){
+    if(!el) return false;
+    const s=getComputedStyle(el), r=el.getBoundingClientRect();
+    return s.display!=='none' && s.visibility!=='hidden' && r.width>0 && r.height>0;
+  }
+
+  function headerFor(home){
+    return home.closest('.daily-head,.week-head,.month-head,.year-head,.appointments-head,.todo-head') ||
+           home.closest('header') ||
+           home.parentElement;
+  }
+
+  function placePair(){
+    document.querySelectorAll('.page-print-btn').forEach(function(printBtn){
+      let home = printBtn.previousElementSibling &&
+                 printBtn.previousElementSibling.matches('button[aria-label="Accueil"]')
+                 ? printBtn.previousElementSibling : null;
+
+      if(!home){
+        const page = printBtn.closest('.page,.week-page,#monthPage,.month-page') || document;
+        home = Array.from(page.querySelectorAll('button[aria-label="Accueil"]')).find(isVisible);
+      }
+      if(!home || !isVisible(home)) return;
+
+      const head = headerFor(home);
+      if(!head) return;
+
+      /* Put both controls inside the title/header box itself. */
+      if(printBtn.parentElement !== head) head.appendChild(printBtn);
+      if(home.parentElement !== head) head.appendChild(home);
+
+      head.style.setProperty('position','relative','important');
+
+      home.style.setProperty('position','absolute','important');
+      home.style.setProperty('left','18px','important');
+      home.style.setProperty('top','18px','important');
+      home.style.setProperty('right','auto','important');
+      home.style.setProperty('bottom','auto','important');
+      home.style.setProperty('margin','0','important');
+      home.style.setProperty('transform','none','important');
+      home.style.setProperty('z-index','90','important');
+
+      printBtn.style.setProperty('position','absolute','important');
+      printBtn.style.setProperty('left','70px','important');
+      printBtn.style.setProperty('top','18px','important');
+      printBtn.style.setProperty('right','auto','important');
+      printBtn.style.setProperty('bottom','auto','important');
+      printBtn.style.setProperty('margin','0','important');
+      printBtn.style.setProperty('transform','none','important');
+      printBtn.style.setProperty('z-index','90','important');
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    placePair();
+    setTimeout(placePair,80);
+  });
+  window.addEventListener('resize',placePair);
+  window.addEventListener('orientationchange',function(){setTimeout(placePair,80);});
+  document.addEventListener('click',function(){setTimeout(placePair,0);});
 })();
 </script>
 
