@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V13</title>
+<title>Mon Agenda V14</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -818,6 +818,33 @@ body.dark #home .grid .tile .ico svg text {
   color:#000 !important;
   stroke:#000 !important;
 }
+</style>
+
+<style>
+/* ===== V14 — boutons fixes Pearl Shell ===== */
+:root{ --pearl-shell:#EDE7E0; }
+/* Accueil, soleil et lune restent Pearl Shell avec pictogrammes noirs,
+   en mode clair comme en mode sombre, sur toutes les pages. */
+.icon-btn, .theme button, .silver-round,
+body:not(.dark) .icon-btn, body:not(.dark) .theme button, body:not(.dark) .silver-round,
+body.dark .icon-btn, body.dark .theme button, body.dark .silver-round,
+.week-head .silver-round {
+  background:var(--pearl-shell) !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+  border:2px solid rgba(255,255,255,.88) !important;
+  box-shadow:0 5px 10px rgba(0,0,0,.18), inset 0 1px 2px rgba(255,255,255,.9) !important;
+}
+.icon-btn svg, .theme button svg, .silver-round svg,
+body:not(.dark) .icon-btn svg, body:not(.dark) .theme button svg, body:not(.dark) .silver-round svg,
+body.dark .icon-btn svg, body.dark .theme button svg, body.dark .silver-round svg {
+  color:#000 !important;
+  stroke:#000 !important;
+}
+.icon-btn svg [fill]:not([fill="none"]),
+.theme button svg [fill]:not([fill="none"]),
+.silver-round svg [fill]:not([fill="none"]) { fill:#000 !important; }
+/* Les flèches précédent/suivant ne sont pas visées par la règle Pearl Shell. */
 </style>
 </head>
 <body>
