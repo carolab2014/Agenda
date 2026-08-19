@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Agenda V9</title>
+<title>Mon Agenda V11</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -667,6 +667,81 @@ body.dark #monthPage .silver-round{color:#fff!important;-webkit-text-fill-color:
   }
 }
 
+
+/* ===== V10 — Nouvelle page d’accueil, palette bord de mer ===== */
+:root{
+  --pearl-shell:#EDE7E0; --coastal-sand:#C9BCAD; --weathered-driftwood:#8F8476;
+  --slate-pebble:#5E6C74; --ocean-mist:#CBD5DB;
+}
+#home{
+  background:
+    radial-gradient(circle at 50% 18%,rgba(255,255,255,.72),transparent 35%),
+    linear-gradient(135deg,#f6f1eb 0%,var(--pearl-shell) 52%,#f2ece5 100%);
+  position:relative; overflow:hidden;
+}
+#home::before,#home::after{content:"";position:fixed;pointer-events:none;z-index:0;width:260px;height:520px;opacity:.13;background-repeat:no-repeat;background-size:contain;}
+#home::before{left:-55px;top:115px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 500'%3E%3Cg fill='none' stroke='%235E6C74' stroke-width='3'%3E%3Cpath d='M45 490C58 360 77 215 150 40'/%3E%3Cellipse cx='78' cy='350' rx='22' ry='55' transform='rotate(-48 78 350)'/%3E%3Cellipse cx='104' cy='280' rx='22' ry='55' transform='rotate(48 104 280)'/%3E%3Cellipse cx='124' cy='205' rx='21' ry='52' transform='rotate(-45 124 205)'/%3E%3Cellipse cx='151' cy='130' rx='20' ry='48' transform='rotate(45 151 130)'/%3E%3C/g%3E%3C/svg%3E");}
+#home::after{right:-55px;bottom:20px;transform:scaleX(-1);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 500'%3E%3Cg fill='none' stroke='%238F8476' stroke-width='3'%3E%3Cpath d='M45 490C58 360 77 215 150 40'/%3E%3Cellipse cx='78' cy='350' rx='22' ry='55' transform='rotate(-48 78 350)'/%3E%3Cellipse cx='104' cy='280' rx='22' ry='55' transform='rotate(48 104 280)'/%3E%3Cellipse cx='124' cy='205' rx='21' ry='52' transform='rotate(-45 124 205)'/%3E%3Cellipse cx='151' cy='130' rx='20' ry='48' transform='rotate(45 151 130)'/%3E%3C/g%3E%3C/svg%3E");}
+#home .dashboard{position:relative;z-index:1;padding-top:70px;}
+#home .title{font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;font-size:clamp(64px,8vw,108px);font-weight:500;line-height:.95;color:#26343a!important;-webkit-text-fill-color:#26343a!important;text-shadow:0 3px 10px rgba(94,108,116,.12);margin:0;}
+#home .home-subtitle{text-align:center;margin:18px auto 30px;font-size:clamp(16px,1.7vw,22px);color:#36444a;letter-spacing:.01em;}
+#home .agenda-flourish{display:none;}
+#home .grid{gap:22px;}
+#home .tile{min-height:150px;border:1.5px solid rgba(255,255,255,.78);border-radius:25px;box-shadow:0 10px 24px rgba(76,69,61,.15),inset 0 1px 0 rgba(255,255,255,.75);text-shadow:none!important;color:#172126!important;-webkit-text-fill-color:#172126!important;}
+#home .grid .tile:nth-child(5n+1){background:linear-gradient(145deg,#f7f2ed,var(--pearl-shell))!important;}
+#home .grid .tile:nth-child(5n+2){background:linear-gradient(145deg,#ddd2c6,var(--coastal-sand))!important;}
+#home .grid .tile:nth-child(5n+3){background:linear-gradient(145deg,#a59a8d,var(--weathered-driftwood))!important;}
+#home .grid .tile:nth-child(5n+4){background:linear-gradient(145deg,#708089,var(--slate-pebble))!important;color:#fff!important;-webkit-text-fill-color:#fff!important;}
+#home .grid .tile:nth-child(5n){background:linear-gradient(145deg,#e2e9ed,var(--ocean-mist))!important;}
+#home .tile .ico,#home .tile .ico svg{color:currentColor!important;stroke:currentColor!important;}
+#home .tile .ico svg text{fill:currentColor!important;}
+#home .top-actions{}
+body:not(.dark) .top-actions .icon-btn,body:not(.dark) .top-actions .theme button{background:linear-gradient(145deg,#fffdf9 0%,#e8e0d6 55%,#cfc3b6 100%)!important;border:2px solid rgba(255,255,255,.96)!important;color:#111!important;box-shadow:inset 0 2px 4px rgba(255,255,255,.9),inset 0 -3px 5px rgba(143,132,118,.18),0 5px 12px rgba(72,64,56,.20)!important;}
+body:not(.dark) .top-actions .icon-btn svg,body:not(.dark) .top-actions .theme button svg{stroke:#111!important;color:#111!important;}
+body.dark #home{background:linear-gradient(135deg,#263238,#35434a 55%,#46545b);} body.dark #home .title,body.dark #home .home-subtitle{color:#f4eee8!important;-webkit-text-fill-color:#f4eee8!important;}
+@media(max-width:700px){#home .dashboard{padding-top:74px}.home-subtitle{margin-bottom:22px!important}}
+
+</style>
+
+<style>
+/* ===== V11 — palette finale demandée ===== */
+:root{
+  --pearl-shell:#EDE7E0;
+  --coastal-sand:#C9BCAD;
+  --weathered-driftwood:#8F8476;
+  --slate-pebble:#5E6C74;
+  --ocean-mist:#CBD5DB;
+  --soft-pastel-violet:#D9CBE6;
+  --light-oak-wood:#CDA878;
+}
+body:not(.dark){--bg:#fff;--text:#000;--panel:#fff;--field:#fff;background:#fff!important;color:#000!important;}
+body.dark{--bg:#000;--text:#fff;--panel:#000;--field:#0b0b0b;background:#000!important;color:#fff!important;}
+#home,body:not(.dark) #home{background:#fff!important;}
+body.dark #home{background:#000!important;}
+#home::before,#home::after{display:none!important;}
+#home .title{font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive!important;}
+body:not(.dark) #home .title,body:not(.dark) #home .home-subtitle{color:#000!important;-webkit-text-fill-color:#000!important;}
+body.dark #home .title,body.dark #home .home-subtitle{color:#fff!important;-webkit-text-fill-color:#fff!important;}
+/* 6 rangées : Pearl Shell, Coastal Sand, Weathered Driftwood, Slate Pebble, Ocean Mist, violet pastel */
+#home .grid .tile:nth-child(-n+4){background:var(--pearl-shell)!important;}
+#home .grid .tile:nth-child(n+5):nth-child(-n+8){background:var(--coastal-sand)!important;}
+#home .grid .tile:nth-child(n+9):nth-child(-n+12){background:var(--weathered-driftwood)!important;}
+#home .grid .tile:nth-child(n+13):nth-child(-n+16){background:var(--slate-pebble)!important;}
+#home .grid .tile:nth-child(n+17):nth-child(-n+20){background:var(--ocean-mist)!important;}
+#home .grid .tile:nth-child(n+21):nth-child(-n+24){background:var(--soft-pastel-violet)!important;}
+body:not(.dark) #home .tile,body:not(.dark) #home .tile .ico,body:not(.dark) #home .tile .ico svg{color:#000!important;-webkit-text-fill-color:#000!important;stroke:#000!important;}
+body.dark #home .tile,body.dark #home .tile .ico,body.dark #home .tile .ico svg{color:#fff!important;-webkit-text-fill-color:#fff!important;stroke:#fff!important;}
+body:not(.dark) #home .tile .ico svg text{fill:#000!important;}
+body.dark #home .tile .ico svg text{fill:#fff!important;}
+/* Accueil, soleil et lune : Light Oak Wood dans les deux modes */
+.icon-btn,.theme button,.silver-round,
+body:not(.dark) .icon-btn,body:not(.dark) .theme button,body:not(.dark) .silver-round,
+body.dark .icon-btn,body.dark .theme button,body.dark .silver-round,
+.week-head .silver-round{background:var(--light-oak-wood)!important;border:2px solid rgba(255,255,255,.72)!important;}
+body:not(.dark) .icon-btn,body:not(.dark) .theme button,body:not(.dark) .silver-round{color:#000!important;-webkit-text-fill-color:#000!important;}
+body:not(.dark) .icon-btn svg,body:not(.dark) .theme button svg,body:not(.dark) .silver-round svg{color:#000!important;stroke:#000!important;}
+body.dark .icon-btn,body.dark .theme button,body.dark .silver-round{color:#fff!important;-webkit-text-fill-color:#fff!important;}
+body.dark .icon-btn svg,body.dark .theme button svg,body.dark .silver-round svg{color:#fff!important;stroke:#fff!important;}
 </style>
 </head>
 <body>
@@ -677,7 +752,7 @@ body.dark #monthPage .silver-round{color:#fff!important;-webkit-text-fill-color:
 
 <section id="home" class="page active">
  <main class="dashboard">
-  <h1 class="title">Agenda</h1><div class="agenda-flourish" aria-hidden="true"><svg viewBox="0 0 260 30"><path d="M4 16c25 0 28-10 45-10 13 0 15 9 5 12-9 3-18-1-12-6 7-6 22 4 39 4h29"/><path d="M150 16h29c17 0 32-10 39-4 6 5-3 9-12 6-10-3-8-12 5-12 17 0 20 10 45 10"/><path d="M130 23s-13-8-13-15c0-7 10-9 13-2 3-7 13-5 13 2 0 7-13 15-13 15Z"/></svg></div>
+  <h1 class="title">Mon Agenda</h1><p class="home-subtitle">Bienvenue ! Organisez votre quotidien en toute simplicité.</p><div class="agenda-flourish" aria-hidden="true"><svg viewBox="0 0 260 30"><path d="M4 16c25 0 28-10 45-10 13 0 15 9 5 12-9 3-18-1-12-6 7-6 22 4 39 4h29"/><path d="M150 16h29c17 0 32-10 39-4 6 5-3 9-12 6-10-3-8-12 5-12 17 0 20 10 45 10"/><path d="M130 23s-13-8-13-15c0-7 10-9 13-2 3-7 13-5 13 2 0 7-13 15-13 15Z"/></svg></div>
   <div class="grid">
    <button class="tile c1" data-page="daily"><span class="ico"><svg viewBox="0 0 64 64"><rect x="10" y="14" width="44" height="40" rx="5"/><path d="M10 25h44M20 9v11M44 9v11"/><path d="M20 33h4M30 33h4M40 33h4M20 42h4M30 42h4M40 42h4"/></svg></span>JOUR</button>
    <button class="tile c1 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="8" y="13" width="39" height="35" rx="5"/><path d="M8 24h39M17 8v10M38 8v10"/><circle cx="45" cy="43" r="13"/><path d="M45 35v8l6 3"/></svg></span>SEMAINE</button>
