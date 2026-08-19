@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V14</title>
+<title>Mon Agenda V15</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -846,6 +846,26 @@ body.dark .icon-btn svg, body.dark .theme button svg, body.dark .silver-round sv
 .silver-round svg [fill]:not([fill="none"]) { fill:#000 !important; }
 /* Les flèches précédent/suivant ne sont pas visées par la règle Pearl Shell. */
 </style>
+
+<style>
+/* ===== V15 — corrections demandées ===== */
+/* Accueil, soleil et lune : Pearl Shell + pictogrammes noirs, toujours. */
+.icon-btn,.theme button,.daily-theme .silver-round,.week-home,.week-theme .silver-round,.month-home,.month-theme .silver-round,.year-home,.year-theme .silver-round,
+body.dark .icon-btn,body.dark .theme button,body.dark .daily-theme .silver-round,body.dark .week-home,body.dark .week-theme .silver-round,body.dark .month-home,body.dark .month-theme .silver-round,body.dark .year-home,body.dark .year-theme .silver-round{background:var(--pearl-shell)!important;color:#000!important;-webkit-text-fill-color:#000!important;}
+.icon-btn svg,.theme button svg,.daily-theme .silver-round svg,.week-home svg,.week-theme .silver-round svg,.month-home svg,.month-theme .silver-round svg,.year-home svg,.year-theme .silver-round svg,
+body.dark .icon-btn svg,body.dark .theme button svg,body.dark .daily-theme .silver-round svg,body.dark .week-home svg,body.dark .week-theme .silver-round svg,body.dark .month-home svg,body.dark .month-theme .silver-round svg,body.dark .year-home svg,body.dark .year-theme .silver-round svg{color:#000!important;stroke:#000!important;}
+.icon-btn svg [fill]:not([fill="none"]),.theme button svg [fill]:not([fill="none"]),.daily-theme .silver-round svg [fill]:not([fill="none"]),.week-home svg [fill]:not([fill="none"]),.week-theme .silver-round svg [fill]:not([fill="none"]),.month-home svg [fill]:not([fill="none"]),.month-theme .silver-round svg [fill]:not([fill="none"]),.year-home svg [fill]:not([fill="none"]),.year-theme .silver-round svg [fill]:not([fill="none"]){fill:#000!important;}
+/* Titre Ma journée plus léger, comme Mon Agenda. */
+.v13-head h1{font-weight:500!important;}
+/* Heures Pearl Shell même en mode sombre. */
+.v13-agenda .time,body.dark .v13-agenda .time{background:var(--pearl-shell)!important;color:#000!important;-webkit-text-fill-color:#000!important;}
+/* Surlignage limité au texte sélectionné. */
+.v15-editable{white-space:pre-wrap;overflow-wrap:anywhere;cursor:text;}
+.v15-editable:empty:before{content:attr(data-placeholder);color:#8c8c98;font-style:italic;pointer-events:none;}
+.v15-hl-rdv{background:rgba(94,108,116,.38);border-radius:2px}.v15-hl-perso{background:rgba(201,188,173,.55);border-radius:2px}.v15-hl-trav{background:rgba(217,203,230,.65);border-radius:2px}.v15-hl-autres{background:rgba(203,213,219,.70);border-radius:2px}
+/* Désactive l'ancien remplissage de case. */
+.v13-entry.hl-rdv,.note.hl-rdv,.v13-entry.hl-perso,.note.hl-perso,.v13-entry.hl-trav,.note.hl-trav,.v13-entry.hl-autres,.note.hl-autres{background:var(--field)!important;}
+</style>
 </head>
 <body>
 <div class="top-actions">
@@ -902,7 +922,7 @@ body.dark .icon-btn svg, body.dark .theme button svg, body.dark .silver-round sv
    <div class="v13-legend" aria-label="Surligneur"><button class="v13-color" data-color="rdv"><i></i>Rdv</button><button class="v13-color" data-color="perso"><i></i>Perso</button><button class="v13-color" data-color="trav"><i></i>Trav</button><button class="v13-color" data-color="autres"><i></i>Autres</button></div>
   </header>
   <div class="v13-layout">
-   <aside class="v13-left"><div id="miniCalendar" class="v13-mini"></div><section><h2>Priorités</h2><div id="priorities"></div></section><section><h2>Tâches</h2><div id="tasks"></div></section><section><h2>Notes</h2><textarea id="dailyNotes" class="v13-entry" placeholder="Notes..."></textarea></section></aside>
+   <aside class="v13-left"><div id="miniCalendar" class="v13-mini"></div><section><h2>Priorités</h2><div id="priorities"></div></section><section><h2>Tâches</h2><div id="tasks"></div></section><section><h2>Notes</h2><div id="dailyNotes" class="v13-entry v15-editable" contenteditable="true" data-placeholder="Notes..."></div></section></aside>
    <section class="v13-agenda"><h2>Horaire</h2><div id="schedule" class="schedule"></div></section>
   </div>
  </main>
@@ -926,11 +946,17 @@ function show(page){const wp=document.getElementById('weekPage');if(wp){wp.class
 homeBtn.onclick=()=>show('home');document.getElementById('dailyHome').onclick=()=>show('home');document.getElementById('dailyLight').onclick=()=>setTheme('light');document.getElementById('dailyDark').onclick=()=>setTheme('dark');document.querySelector('[data-page="daily"]').onclick=()=>show('daily');
 const START=new Date(2026,7,1);let current=new Date(Math.max(Date.now(),START.getTime()));current.setHours(12,0,0,0);let activeColor=localStorage.getItem('agenda-v13-color')||'rdv';
 function keyForDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}function formatDate(d){return d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).replace(/^./,c=>c.toUpperCase())}function times(){const a=[];for(let h=5;h<24;h++)a.push(`${h}:00`,`${h}:30`);a.push('24:00');return a}function autoGrow(el){el.style.height='0px';el.style.height=Math.max(42,el.scrollHeight)+'px'}
-function paint(el,key){['rdv','perso','trav','autres'].forEach(c=>el.classList.remove('hl-'+c));el.classList.add('hl-'+activeColor);localStorage.setItem(key+':color',activeColor)}function restorePaint(el,key){const c=localStorage.getItem(key+':color');if(c)el.classList.add('hl-'+c)}
-document.querySelectorAll('.v13-color').forEach(b=>{b.addEventListener('click',()=>{activeColor=b.dataset.color;localStorage.setItem('agenda-v13-color',activeColor);document.querySelectorAll('.v13-color').forEach(x=>x.classList.toggle('active',x===b))});b.classList.toggle('active',b.dataset.color===activeColor)});
+let v15Range=null;
+function saveSelection(){const sel=window.getSelection();if(sel&&sel.rangeCount){const r=sel.getRangeAt(0);const el=r.commonAncestorContainer.nodeType===1?r.commonAncestorContainer:r.commonAncestorContainer.parentElement;if(el&&el.closest&&el.closest('.v15-editable')&&!r.collapsed)v15Range=r.cloneRange();}}
+document.addEventListener('selectionchange',saveSelection);
+function paintSelection(){if(!v15Range||v15Range.collapsed)return;const host=(v15Range.commonAncestorContainer.nodeType===1?v15Range.commonAncestorContainer:v15Range.commonAncestorContainer.parentElement).closest('.v15-editable');if(!host)return;const span=document.createElement('span');span.className='v15-hl-'+activeColor;try{v15Range.surroundContents(span)}catch(e){const frag=v15Range.extractContents();span.appendChild(frag);v15Range.insertNode(span)}const sel=window.getSelection();sel.removeAllRanges();host.dispatchEvent(new Event('input',{bubbles:true}));v15Range=null;}
+function restorePaint(){}
+document.querySelectorAll('.v13-color').forEach(b=>{b.addEventListener('pointerdown',e=>e.preventDefault());b.addEventListener('click',()=>{activeColor=b.dataset.color;localStorage.setItem('agenda-v13-color',activeColor);document.querySelectorAll('.v13-color').forEach(x=>x.classList.toggle('active',x===b));paintSelection()});b.classList.toggle('active',b.dataset.color===activeColor)});
 function miniCalendar(){const root=document.getElementById('miniCalendar'),y=current.getFullYear(),m=current.getMonth(),first=new Date(y,m,1),days=new Date(y,m+1,0).getDate();let html=`<div class="v13-mini-title">${first.toLocaleDateString('fr-CA',{month:'long',year:'numeric'}).replace(/^./,c=>c.toUpperCase())}</div><div class="v13-mini-grid">`;['D','L','M','M','J','V','S'].forEach(x=>html+=`<b>${x}</b>`);for(let i=0;i<first.getDay();i++)html+='<span></span>';for(let d=1;d<=days;d++)html+=`<span class="${d===current.getDate()?'today':''}">${d}</span>`;root.innerHTML=html+'</div>'}
-function makeList(rootId,prefix,count){const root=document.getElementById(rootId),dk=keyForDate(current);root.innerHTML='';for(let i=1;i<=count;i++){const row=document.createElement('div');row.className='v13-checkrow';const cb=document.createElement('input');cb.type='checkbox';const ta=document.createElement('textarea');ta.className='v13-entry';ta.placeholder=`${prefix}${i}...`;const key=`agenda-v13:${dk}:${prefix}${i}`;ta.value=localStorage.getItem(key)||'';cb.checked=localStorage.getItem(key+':done')==='1';row.classList.toggle('done',cb.checked);restorePaint(ta,key);cb.onchange=()=>{row.classList.toggle('done',cb.checked);localStorage.setItem(key+':done',cb.checked?'1':'0')};ta.oninput=()=>{autoGrow(ta);localStorage.setItem(key,ta.value)};ta.addEventListener('dblclick',()=>paint(ta,key));ta.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&e.isPrimary){clearTimeout(ta._pt);ta._pt=setTimeout(()=>paint(ta,key),500)}});ta.addEventListener('pointerup',()=>clearTimeout(ta._pt));row.append(cb,ta);root.append(row);requestAnimationFrame(()=>autoGrow(ta))}}
-function render(){document.getElementById('dateLabel').textContent=formatDate(current);miniCalendar();makeList('priorities','P',3);makeList('tasks','T',5);const dk=keyForDate(current),notes=document.getElementById('dailyNotes'),nk=`agenda-v13:${dk}:notes`;notes.value=localStorage.getItem(nk)||'';restorePaint(notes,nk);notes.oninput=()=>{autoGrow(notes);localStorage.setItem(nk,notes.value)};notes.ondblclick=()=>paint(notes,nk);requestAnimationFrame(()=>autoGrow(notes));const schedule=document.getElementById('schedule');schedule.innerHTML='';times().forEach(t=>{const row=document.createElement('div');row.className='slot';const lab=document.createElement('div');lab.className='time';lab.textContent=t;const ta=document.createElement('textarea');ta.className='note';ta.placeholder='Écrire ici...';const key=`agenda:${dk}:${t}`;ta.value=localStorage.getItem(key)||'';restorePaint(ta,key);ta.oninput=()=>{autoGrow(ta);localStorage.setItem(key,ta.value);if(typeof agendaV5FillWeekSummaries==='function')agendaV5FillWeekSummaries()};ta.ondblclick=()=>paint(ta,key);ta.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){clearTimeout(ta._pt);ta._pt=setTimeout(()=>paint(ta,key),500)}});ta.addEventListener('pointerup',()=>clearTimeout(ta._pt));row.append(lab,ta);schedule.append(row);requestAnimationFrame(()=>autoGrow(ta))});document.getElementById('prevDay').disabled=current<=START}
+function setupEditable(el,key,placeholder){el.classList.add('v15-editable');el.contentEditable='true';el.dataset.placeholder=placeholder||'';el.innerHTML=localStorage.getItem(key+':html')||escapeHtml(localStorage.getItem(key)||'');el.oninput=()=>{localStorage.setItem(key,el.innerText);localStorage.setItem(key+':html',el.innerHTML);if(typeof agendaV5FillWeekSummaries==='function')agendaV5FillWeekSummaries()};}
+function escapeHtml(v){return String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function makeList(rootId,prefix,count){const root=document.getElementById(rootId),dk=keyForDate(current);root.innerHTML='';for(let i=1;i<=count;i++){const row=document.createElement('div');row.className='v13-checkrow';const cb=document.createElement('input');cb.type='checkbox';const ed=document.createElement('div');ed.className='v13-entry';const key=`agenda-v13:${dk}:${prefix}${i}`;setupEditable(ed,key,`${prefix}${i}...`);cb.checked=localStorage.getItem(key+':done')==='1';row.classList.toggle('done',cb.checked);cb.onchange=()=>{row.classList.toggle('done',cb.checked);localStorage.setItem(key+':done',cb.checked?'1':'0')};row.append(cb,ed);root.append(row)}}
+function render(){document.getElementById('dateLabel').textContent=formatDate(current);miniCalendar();makeList('priorities','P',3);makeList('tasks','T',5);const dk=keyForDate(current),notes=document.getElementById('dailyNotes'),nk=`agenda-v13:${dk}:notes`;setupEditable(notes,nk,'Notes...');const schedule=document.getElementById('schedule');schedule.innerHTML='';times().forEach(t=>{const row=document.createElement('div');row.className='slot';const lab=document.createElement('div');lab.className='time';lab.textContent=t;const ed=document.createElement('div');ed.className='note v15-editable';const key=`agenda:${dk}:${t}`;setupEditable(ed,key,'Écrire ici...');row.append(lab,ed);schedule.append(row)});document.getElementById('prevDay').disabled=current<=START}
 document.getElementById('prevDay').onclick=()=>{if(current>START){current.setDate(current.getDate()-1);render()}};document.getElementById('nextDay').onclick=()=>{current.setDate(current.getDate()+1);render()};window.addEventListener('resize',()=>document.querySelectorAll('.note,.v13-entry').forEach(autoGrow));setTheme(localStorage.getItem('agenda-theme')||'light');render();
 </script>
 <section id="weekPage" class="week-page">
