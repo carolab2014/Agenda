@@ -866,6 +866,21 @@ body.dark .icon-btn svg,body.dark .theme button svg,body.dark .daily-theme .silv
 /* Désactive l'ancien remplissage de case. */
 .v13-entry.hl-rdv,.note.hl-rdv,.v13-entry.hl-perso,.note.hl-perso,.v13-entry.hl-trav,.note.hl-trav,.v13-entry.hl-autres,.note.hl-autres{background:var(--field)!important;}
 </style>
+
+<style>
+/* ===== V15.1 — correction finale des pictogrammes en mode sombre ===== */
+body.dark #lightBtn, body.dark #lightBtn svg,
+body.dark #dailyHome, body.dark #dailyHome svg,
+body.dark #dailyLight, body.dark #dailyLight svg,
+body.dark #dailyDark, body.dark #dailyDark svg {
+  color:#000 !important;
+  stroke:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+body.dark #lightBtn, body.dark #dailyHome, body.dark #dailyLight, body.dark #dailyDark {
+  background:#EDE7E0 !important;
+}
+</style>
 </head>
 <body>
 <div class="top-actions">
