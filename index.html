@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V42</title>
+<title>Mon Agenda V43</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -1221,6 +1221,105 @@ button[aria-label="Accueil"]{
 }
 </style>
 
+
+<style>
+/* ===== V43 — entêtes plus compacts + Mon année + impression stable ===== */
+
+/* Entêtes colorés : hauteur réduite et uniforme. */
+.daily-head,
+.week-head,
+.month-head,
+.year-head,
+.todo-head,
+.appt-head{
+  height:160px !important;
+  min-height:160px !important;
+  max-height:160px !important;
+  box-sizing:border-box !important;
+  border-radius:30px !important;
+}
+
+/* Rééquilibrage vertical des contenus. */
+.daily-head{padding:10px 80px 12px !important;}
+.week-head{padding:14px 105px 14px !important;}
+.month-head{padding:14px 95px 16px !important;}
+.year-head{padding:14px 92px 16px !important;}
+.todo-head,.appt-head{padding:18px 90px !important;}
+
+/* Titres calligraphiés uniformes. */
+.year-title{
+  font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive !important;
+  font-weight:400 !important;
+  line-height:.95 !important;
+}
+.week-title,.month-title,.todo-title,.appt-title{
+  font-weight:400 !important;
+}
+
+/* Navigation dans les entêtes compacts. */
+.week-prev,.week-next,
+.month-prev,.month-next,
+.year-prev,.year-next{bottom:12px !important;}
+.week-range{margin-top:8px !important;}
+
+/* Accueil + impression : ancrés ensemble dans le haut gauche de l'entête.
+   Ils ne suivent plus le contenu ni le titre pendant le défilement interne. */
+.daily-head button[aria-label="Accueil"],
+.week-home,.month-home,.year-home,.todo-home,.appt-home{
+  position:absolute !important;
+  left:18px !important;
+  top:18px !important;
+  margin:0 !important;
+  transform:none !important;
+  z-index:96 !important;
+}
+.daily-head .page-print-btn,
+.week-head .page-print-btn,
+.month-head .page-print-btn,
+.year-head .page-print-btn,
+.todo-head .page-print-btn,
+.appt-head .page-print-btn{
+  position:absolute !important;
+  left:70px !important;
+  top:18px !important;
+  right:auto !important;
+  bottom:auto !important;
+  margin:0 !important;
+  transform:none !important;
+  z-index:96 !important;
+}
+
+/* Les boutons clair/sombre restent en haut à droite. */
+.daily-theme,.week-theme,.month-theme,.year-theme,.todo-theme,.appt-theme{
+  position:absolute !important;
+  right:18px !important;
+  top:18px !important;
+  left:auto !important;
+  margin:0 !important;
+  z-index:96 !important;
+}
+
+/* Empêche tout ancien script de déplacer visuellement l'imprimante. */
+.page-print-btn{
+  width:44px !important;
+  height:44px !important;
+  min-width:44px !important;
+  min-height:44px !important;
+}
+
+/* iPad / petits écrans : même logique, entête compact. */
+@media(max-width:700px){
+  .daily-head,.week-head,.month-head,.year-head,.todo-head,.appt-head{
+    height:160px !important;
+    min-height:160px !important;
+    max-height:160px !important;
+  }
+  .daily-head{padding:58px 10px 10px !important;}
+  .week-head,.month-head,.year-head{padding:54px 58px 12px !important;}
+  .todo-head,.appt-head{padding:56px 55px 14px !important;}
+}
+</style>
+
 </head>
 <body>
 
@@ -1699,7 +1798,7 @@ body:not(.dark) #yearPage .silver-round{color:#000!important;-webkit-text-fill-c
  <div class="year-head">
   <button class="silver-round year-home" aria-label="Accueil" onclick="yearGoHome()"><svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
   <div class="year-theme"><button class="silver-round" aria-label="Mode clair" onclick="setTheme('light')"><svg class="ui-svg sun-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><button class="silver-round" aria-label="Mode sombre" onclick="setTheme('dark')"><svg class="ui-svg" viewBox="0 0 24 24"><path d="M20.5 15.3A8.7 8.7 0 0 1 8.7 3.5 9 9 0 1 0 20.5 15.3Z" fill="currentColor"/></svg></button></div>
-  <h1 class="year-title">Agenda annuelle</h1><div id="yearLabel" class="year-label">2026</div>
+  <h1 class="year-title">Mon année</h1><div id="yearLabel" class="year-label">2026</div>
   <button class="silver-round year-prev" aria-label="Année précédente" onclick="changeYear(-1)">‹</button><button class="silver-round year-next" aria-label="Année suivante" onclick="changeYear(1)">›</button>
  </div>
  <div id="yearColumns" class="year-columns"></div>
