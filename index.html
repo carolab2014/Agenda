@@ -2700,6 +2700,21 @@ body.dark .appt-row select{background:#000;color:#fff;-webkit-text-fill-color:#f
 body.dark .objective-row{background:#000}body.dark .objective-row input[type=date],body.dark .objective-desc{color:#fff!important;-webkit-text-fill-color:#fff!important;color-scheme:dark}
 @media(max-width:800px){.objectives-page{padding:10px 8px 30px}.objectives-head{padding:56px 55px 14px}.objectives-cols{display:none}.objective-row{grid-template-columns:34px 1fr 1fr}.objective-row .objective-desc{grid-column:2/4}.objective-row .objective-end{grid-column:2/4}}
 @media print{.objectives-page .objectives-head button,.objective-add{display:none!important}}
+
+/* ===== V46 — Coastal Sand pour Rendez-vous / To do / Objectifs; boutons d’en-tête Pearl Shell ===== */
+.appt-head,.todo-head,.objectives-head{background:var(--coastal-sand)!important;}
+.appt-row,.todo-row,.objective-row,
+.appt-row input,.appt-row select,.appt-row textarea,
+.todo-row input,.todo-row textarea,
+.objective-row input[type=date],.objective-desc{background:var(--coastal-sand)!important;color:#000!important;-webkit-text-fill-color:#000!important;}
+.appt-add,.todo-add,.objective-add{background:var(--coastal-sand)!important;color:#000!important;}
+.appt-head .silver-round,.todo-head .silver-round,.objectives-head .silver-round,
+body.dark .appt-head .silver-round,body.dark .todo-head .silver-round,body.dark .objectives-head .silver-round{background:var(--pearl-shell)!important;color:#000!important;-webkit-text-fill-color:#000!important;}
+.appt-head .silver-round svg,.todo-head .silver-round svg,.objectives-head .silver-round svg{stroke:#000!important;color:#000!important;}
+body.dark .appt-row,body.dark .todo-row,body.dark .objective-row,
+body.dark .appt-row input,body.dark .appt-row select,body.dark .appt-row textarea,
+body.dark .todo-row input,body.dark .todo-row textarea,
+body.dark .objective-row input[type=date],body.dark .objective-desc{background:var(--coastal-sand)!important;color:#000!important;-webkit-text-fill-color:#000!important;color-scheme:light!important;}
 </style>
 
 <section id="objectivesPage" class="objectives-page">
