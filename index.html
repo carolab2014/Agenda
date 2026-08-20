@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V43</title>
+<title>Mon Agenda V44</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -1352,7 +1352,7 @@ button[aria-label="Accueil"]{
    <button class="tile c2" data-page="appointments"><span class="ico"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="23"/><path d="M32 17v16l10 7"/><path d="M32 11v4M32 49v4M11 32h4M49 32h4"/></svg></span>RENDEZ-VOUS</button>
    <button class="tile c2" data-page="todo-perso"><span class="ico"><svg viewBox="0 0 64 64"><rect x="15" y="12" width="38" height="45" rx="4"/><path d="M25 12v-3h18v3M23 25l3 3 6-7M23 37l3 3 6-7M23 49l3 3 6-7M36 25h10M36 37h10M36 49h10"/></svg></span>TO DO LIST PERSO</button>
    <button class="tile c2" data-page="todo-travail"><span class="ico"><svg viewBox="0 0 64 64"><rect x="9" y="20" width="46" height="32" rx="5"/><path d="M23 20v-6h18v6M9 31h46M27 30h10v7H27z"/></svg></span>TO DO LIST TRAVAIL</button>
-   <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><circle cx="30" cy="34" r="20"/><circle cx="30" cy="34" r="12"/><circle cx="30" cy="34" r="4"/><path d="M30 34 51 13M45 13h6v6"/></svg></span>OBJECTIFS</button>
+   <button class="tile c2" data-page="objectives"><span class="ico"><svg viewBox="0 0 64 64"><circle cx="30" cy="34" r="20"/><circle cx="30" cy="34" r="12"/><circle cx="30" cy="34" r="4"/><path d="M30 34 51 13M45 13h6v6"/></svg></span>OBJECTIFS</button>
 
    <button class="tile c3 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><path d="M15 33h34v22H15zM19 25h26v8H19z"/><path d="M15 43c5-5 10 5 17 0 7-5 12 5 17 0M32 25V15"/><path d="M32 15c-5-5 0-10 0-10s5 5 0 10"/></svg></span>DATE ANNIVERSAIRE</button>
    <button class="tile c3 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><path d="M32 55S9 41 9 24c0-9 11-15 23-3 12-12 23-6 23 3 0 17-23 31-23 31Z"/><path d="M16 34h9l4-9 7 18 5-9h8"/></svg></span>SUIVI DE SANTÉ</button>
@@ -2665,6 +2665,79 @@ body.dark .appt-row select{background:#000;color:#fff;-webkit-text-fill-color:#f
   window.addEventListener('resize',placePair);
   window.addEventListener('orientationchange',function(){setTimeout(placePair,80);});
   document.addEventListener('click',function(){setTimeout(placePair,0);});
+})();
+</script>
+
+
+<style>
+/* ===== V44 — Objectifs ===== */
+.objectives-page{display:none;min-height:100vh;max-width:1100px;margin:auto;padding:18px 22px 45px}.objectives-page.active{display:block}
+.objectives-head{position:relative;height:160px!important;min-height:160px!important;max-height:160px!important;border-radius:30px;background:var(--coastal-sand);padding:28px 90px;text-align:center;display:flex;align-items:center;justify-content:center;box-shadow:0 7px 18px rgba(0,0,0,.10)}
+.objectives-title{font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;font-size:clamp(44px,6vw,74px);font-weight:400;margin:0;color:#000!important;-webkit-text-fill-color:#000!important}
+.objectives-home{position:absolute;left:18px;top:18px}.objectives-theme{position:absolute!important;right:18px!important;top:18px!important;display:flex;gap:8px;z-index:96}
+.objectives-list{margin-top:22px}.objectives-cols,.objective-row{display:grid;grid-template-columns:34px 130px 130px minmax(260px,1fr) 130px;gap:10px;align-items:start}
+.objectives-cols{font-weight:800;padding:0 10px 8px}.objective-row{padding:10px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--field)}
+.objective-row input[type=checkbox]{width:21px;height:21px;margin:10px auto 0;accent-color:var(--slate-pebble)}
+.objective-row input[type=date],.objective-desc{width:100%;min-height:42px;border:1px solid var(--line);border-radius:9px;background:transparent;color:var(--text);padding:9px;outline:0}
+.objective-desc{resize:none;overflow:hidden;line-height:1.35}
+.objective-row.done input[type=date],.objective-row.done .objective-desc{text-decoration:line-through;opacity:.62}
+.objective-add{margin:16px 0 0;border:1px solid var(--line);background:var(--pearl-shell);color:#000;padding:10px 16px;border-radius:12px;font-weight:750;cursor:pointer}
+.objective-empty{text-align:center;padding:25px;opacity:.65}
+.objectives-page .silver-round,.objectives-page .silver-round svg,body.dark .objectives-page .silver-round,body.dark .objectives-page .silver-round svg{background:var(--pearl-shell)!important;color:#000!important;stroke:#000!important;-webkit-text-fill-color:#000!important}.objectives-page .silver-round svg [fill]:not([fill="none"]){fill:#000!important}
+body.dark .objective-row{background:#000}body.dark .objective-row input[type=date],body.dark .objective-desc{color:#fff!important;-webkit-text-fill-color:#fff!important;color-scheme:dark}
+@media(max-width:800px){.objectives-page{padding:10px 8px 30px}.objectives-head{padding:56px 55px 14px}.objectives-cols{display:none}.objective-row{grid-template-columns:34px 1fr 1fr}.objective-row .objective-desc{grid-column:2/4}.objective-row .objective-end{grid-column:2/4}}
+@media print{.objectives-page .objectives-head button,.objective-add{display:none!important}}
+</style>
+
+<section id="objectivesPage" class="objectives-page">
+<header class="objectives-head">
+ <button class="silver-round objectives-home" onclick="showObjectivesHome()" aria-label="Accueil" title="Accueil"><svg class="ui-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+ <div class="objectives-theme"><button class="silver-round" onclick="setTheme('light')" aria-label="Mode clair" title="Mode clair"><svg class="ui-svg sun-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button class="silver-round" onclick="setTheme('dark')" aria-label="Mode sombre" title="Mode sombre"><svg class="ui-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.3A8.7 8.7 0 0 1 8.7 3.5 9 9 0 1 0 20.5 15.3Z" fill="currentColor"/></svg></button></div>
+ <h1 class="objectives-title">Mes objectifs</h1>
+</header>
+<div class="objectives-list"><div class="objectives-cols"><span></span><span>Date de début</span><span>Date visée</span><span>Description de l’objectif</span><span>Date de fin</span></div><div id="objectivesList"></div><button class="objective-add" onclick="addManualObjective()">+ Ajouter un objectif</button></div>
+</section>
+
+<script>
+/* ===== V44 — synchronisation Priorités → Objectifs, à sens unique ===== */
+(function(){
+ const STORE='agenda-v44-objectives';
+ function load(){try{return JSON.parse(localStorage.getItem(STORE)||'[]')}catch(e){return []}}
+ function save(a){localStorage.setItem(STORE,JSON.stringify(a))}
+ function isoToday(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+ function grow(el){el.style.height='0px';el.style.height=Math.max(42,el.scrollHeight)+'px'}
+ function allPriorityKeys(){const out=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i)||'';if(/^agenda-v13:\d{4}-\d{2}-\d{2}:P[1-3]$/.test(k))out.push(k)}return out}
+ function syncPriorities(){
+   let a=load(), seen=new Set();
+   allPriorityKeys().forEach(key=>{
+     const text=(localStorage.getItem(key)||'').trim(); if(!text)return;
+     const id='priority:'+key, date=(key.match(/^agenda-v13:(\d{4}-\d{2}-\d{2}):/)||[])[1]||''; seen.add(id);
+     let o=a.find(x=>x.id===id); if(!o){o={id,source:'priority',start:date,target:'',description:text,end:'',done:false};a.push(o)}
+     o.start=date;o.description=text;o.done=localStorage.getItem(key+':done')==='1';o.end=o.done?(o.end||isoToday()):'';
+   });
+   a=a.filter(o=>o.source!=='priority'||seen.has(o.id)); save(a); return a;
+ }
+ function update(id,field,value){let a=load(),o=a.find(x=>x.id===id);if(!o)return;o[field]=value;save(a);if(o.source==='priority'){
+   const key=o.id.slice(9);
+   if(field==='description'){localStorage.setItem(key,value);localStorage.setItem(key+':html',value);const row=[...document.querySelectorAll('#priorities .v13-checkrow')].find(r=>r.dataset.dailyKey===key);if(row)row.querySelector('.v13-entry').innerText=value}
+   if(field==='done'){localStorage.setItem(key+':done',value?'1':'0');const row=[...document.querySelectorAll('#priorities .v13-checkrow')].find(r=>r.dataset.dailyKey===key);if(row){row.classList.toggle('done',!!value);row.querySelector('input[type=checkbox]').checked=!!value}}
+ } renderObjectives(false)}
+ window.addManualObjective=function(){let a=load();a.push({id:'manual:'+Date.now()+':'+Math.random().toString(36).slice(2),source:'manual',start:isoToday(),target:'',description:'',end:'',done:false});save(a);renderObjectives(false);setTimeout(()=>{const ds=document.querySelectorAll('#objectivesList .objective-desc');if(ds.length)ds[ds.length-1].focus()},0)};
+ window.renderObjectives=function(doSync=true){const root=document.getElementById('objectivesList');if(!root)return;const a=doSync?syncPriorities():load();root.innerHTML='';if(!a.length){root.innerHTML='<div class="objective-empty">Aucun objectif pour le moment.</div>';return}
+   a.sort((x,y)=>(x.start||'').localeCompare(y.start||'')).forEach(o=>{const r=document.createElement('div');r.className='objective-row'+(o.done?' done':'');
+     const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!o.done;cb.onchange=()=>{let arr=load(),z=arr.find(x=>x.id===o.id);if(!z)return;z.done=cb.checked;z.end=cb.checked?isoToday():'';save(arr);update(o.id,'done',cb.checked)};
+     const st=document.createElement('input');st.type='date';st.value=o.start||'';st.disabled=o.source==='priority';st.onchange=()=>update(o.id,'start',st.value);
+     const tg=document.createElement('input');tg.type='date';tg.value=o.target||'';tg.onchange=()=>update(o.id,'target',tg.value);
+     const d=document.createElement('textarea');d.className='objective-desc';d.placeholder='Décrire l’objectif...';d.value=o.description||'';d.oninput=()=>{grow(d);update(o.id,'description',d.value)};setTimeout(()=>grow(d),0);
+     const en=document.createElement('input');en.type='date';en.className='objective-end';en.value=o.end||'';en.onchange=()=>update(o.id,'end',en.value);
+     r.append(cb,st,tg,d,en);root.append(r)});
+ };
+ window.openObjectives=function(){document.querySelectorAll('.page,.week-page,.todo-page,.appt-page,.objectives-page,#monthPage,#yearPage').forEach(x=>{x.classList.remove('active');x.style.display='none'});const p=document.getElementById('objectivesPage');p.style.display='block';p.classList.add('active');document.querySelector('.top-actions').style.display='none';renderObjectives(true);window.scrollTo(0,0)};
+ window.showObjectivesHome=function(){const p=document.getElementById('objectivesPage');p.classList.remove('active');p.style.display='none';show('home')};
+ const tile=document.querySelector('[data-page="objectives"]');if(tile)tile.onclick=e=>{e.preventDefault();openObjectives()};
+ document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('#priorities'))setTimeout(()=>renderObjectives(true),0)});
+ document.addEventListener('change',e=>{if(e.target.closest&&e.target.closest('#priorities'))setTimeout(()=>renderObjectives(true),0)});
+ document.addEventListener('DOMContentLoaded',()=>renderObjectives(true));
 })();
 </script>
 
