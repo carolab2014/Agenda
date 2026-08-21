@@ -1351,6 +1351,39 @@ body.dark .agenda-tab{color:#111;border-color:rgba(255,255,255,.22)}
 @media print{.agenda-side-tabs{display:none!important}}
 </style>
 
+
+<style>
+/* ===== V52 — onglets hors accueil + marges de sécurité ===== */
+body.tabs-hidden .agenda-side-tabs{display:none!important}
+body.tabs-visible{--rail-left-safe:56px;--rail-right-safe:48px}
+body.tabs-visible #daily.active,
+body.tabs-visible #weekPage.active,
+body.tabs-visible #monthPage.active,
+body.tabs-visible #yearPage.active,
+body.tabs-visible #appointmentsPage.active,
+body.tabs-visible #todoPerso.active,
+body.tabs-visible #todoTravail.active,
+body.tabs-visible #objectivesPage.active{
+  width:auto!important;max-width:none!important;
+  margin-left:var(--rail-left-safe)!important;
+  margin-right:var(--rail-right-safe)!important;
+}
+.agenda-side-tabs.left .agenda-tab{
+  width:46px!important;min-height:64px!important;padding:5px 2px!important;
+  font-size:9px!important;line-height:1.05!important;letter-spacing:0!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:clip!important;
+}
+.agenda-side-tabs.left .agenda-tab[data-nav="appointments"]{font-size:8px!important;min-height:76px!important}
+.agenda-side-tabs.left .agenda-tab[data-nav="todo-travail"],
+.agenda-side-tabs.left .agenda-tab[data-nav="objectives"]{font-size:8.5px!important}
+.agenda-side-tabs.right .agenda-tab{font-size:9px!important;white-space:nowrap!important;overflow:hidden!important}
+@media(max-width:760px){
+ body.tabs-visible{--rail-left-safe:45px;--rail-right-safe:38px}
+ .agenda-side-tabs.left .agenda-tab{width:36px!important;font-size:7.5px!important;min-height:56px!important}
+ .agenda-side-tabs.left .agenda-tab[data-nav="appointments"]{font-size:7px!important;min-height:68px!important}
+}
+</style>
+
 </head>
 <body>
 
@@ -2837,6 +2870,9 @@ body.dark .objective-row input[type=date],body.dark .objective-desc{background:v
   return current.getMonth();
  }
  function refresh(){
+  const homeActive=document.getElementById('home')?.classList.contains('active');
+  document.body.classList.toggle('tabs-hidden',!!homeActive);
+  document.body.classList.toggle('tabs-visible',!homeActive);
   let key='';
   if(document.getElementById('daily')?.classList.contains('active'))key='daily';
   else if(document.getElementById('weekPage')?.classList.contains('active'))key='week';
