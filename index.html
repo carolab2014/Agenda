@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V49</title>
+<title>Mon Agenda V50</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -1344,8 +1344,8 @@ button[aria-label="Accueil"]{
 .agenda-tab{border:1px solid rgba(70,60,50,.16);box-shadow:0 2px 7px rgba(0,0,0,.10);font-weight:800;color:#171717;cursor:pointer;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);line-height:1;letter-spacing:.15px;padding:7px 4px;border-radius:0 9px 9px 0;min-height:58px;width:var(--tab-w);font-size:10px;background:#d8c8b6}
 .agenda-side-tabs.right .agenda-tab{transform:none;writing-mode:vertical-rl;border-radius:9px 0 0 9px;width:var(--month-tab-w);min-height:48px;padding:5px 3px;background:#d8c8b6}
 .agenda-tab.group-c1{background:#eee7de}.agenda-tab.group-c2{background:#d8c8b6}.agenda-tab.group-c3{background:#c7b8aa}.agenda-tab.group-c4{background:#dbe7e2}.agenda-tab.group-c5{background:#d8d0eb}
-.agenda-tab.active{filter:brightness(.88);box-shadow:0 2px 9px rgba(0,0,0,.22);transform:rotate(180deg) translateX(-2px)}
-.agenda-side-tabs.right .agenda-tab.active{transform:translateX(-2px)}
+.agenda-tab.active{filter:brightness(.78);box-shadow:0 3px 12px rgba(0,0,0,.34),inset 0 0 0 2px rgba(255,255,255,.92);transform:rotate(180deg) translateX(-4px);font-weight:900}
+.agenda-side-tabs.right .agenda-tab.active{transform:translateX(-4px);filter:brightness(.78);box-shadow:0 3px 12px rgba(0,0,0,.34),inset 0 0 0 2px rgba(255,255,255,.92)}
 body.dark .agenda-tab{color:#111;border-color:rgba(255,255,255,.22)}
 @media(max-width:760px){:root{--tab-w:34px;--month-tab-w:32px}.agenda-tab{font-size:8px;min-height:50px;padding:5px 2px}.agenda-side-tabs.right .agenda-tab{min-height:42px;font-size:9px}}
 @media print{.agenda-side-tabs{display:none!important}}
@@ -2830,6 +2830,12 @@ body.dark .objective-row input[type=date],body.dark .objective-desc{background:v
    // Dans les autres sections, on reste dans la même section; le mois choisi devient la date de référence de Ma journée.
    const day=Math.min(current.getDate(),new Date(2026,i+1,0).getDate());current=new Date(2026,i,day,12,0,0,0);
  };right.appendChild(b)});
+ function activeMonthIndex(){
+  if(document.getElementById('daily')?.classList.contains('active'))return current.getMonth();
+  if(document.getElementById('weekPage')?.classList.contains('active'))return (window.agendaWeekStart||current).getMonth();
+  if(document.getElementById('monthPage')?.classList.contains('active')){const txt=(document.getElementById('monthLabel')?.textContent||'').toLowerCase();const names=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];const ix=names.findIndex(n=>txt.includes(n));if(ix>=0)return ix;}
+  return current.getMonth();
+ }
  function refresh(){
   let key='';
   if(document.getElementById('daily')?.classList.contains('active'))key='daily';
@@ -2837,10 +2843,14 @@ body.dark .objective-row input[type=date],body.dark .objective-desc{background:v
   else if(document.getElementById('monthPage')?.classList.contains('active'))key='month';
   else if(document.getElementById('yearPage')?.classList.contains('active'))key='year';
   else if(document.getElementById('appointmentsPage')?.classList.contains('active'))key='appointments';
+  else if(document.getElementById('todoPerso')?.classList.contains('active'))key='todo-perso';
+  else if(document.getElementById('todoTravail')?.classList.contains('active'))key='todo-travail';
   else if(document.getElementById('objectivesPage')?.classList.contains('active'))key='objectives';
   document.querySelectorAll('.agenda-side-tabs.left .agenda-tab').forEach(b=>b.classList.toggle('active',b.dataset.nav===key));
+  const mi=activeMonthIndex();document.querySelectorAll('.agenda-side-tabs.right .agenda-tab').forEach(b=>b.classList.toggle('active',Number(b.dataset.month)===mi));
  }
- new MutationObserver(refresh).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style']});
+ new MutationObserver(refresh).observe(document.body,{subtree:true,attributes:true,characterData:true,childList:true,attributeFilter:['class','style']});
+ document.addEventListener('click',()=>setTimeout(refresh,0),true);
  refresh();
 })();
 </script>
