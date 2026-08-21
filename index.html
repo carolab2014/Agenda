@@ -3076,5 +3076,33 @@ body.dark #yearPage .year-columns .year-row{background:var(--ym)!important;color
   });
 })();
 </script>
+
+<style>
+/* ===== V62 — Onglets latéraux : navigation plus fluide et surbrillance propre ===== */
+.agenda-tab{
+  -webkit-tap-highlight-color:transparent!important;
+  transition:filter .12s ease, box-shadow .12s ease, opacity .12s ease!important;
+}
+.agenda-side-tabs.left .agenda-tab.active{
+  transform:rotate(180deg)!important;
+  filter:brightness(.90)!important;
+  box-shadow:0 2px 7px rgba(0,0,0,.14), inset 0 0 0 2px rgba(255,255,255,.72)!important;
+}
+.agenda-side-tabs.right .agenda-tab.active{
+  transform:none!important;
+  filter:brightness(.90)!important;
+  box-shadow:0 2px 7px rgba(0,0,0,.14), inset 0 0 0 2px rgba(255,255,255,.72)!important;
+}
+.agenda-tab:active{opacity:.88!important;}
+</style>
+<script>
+/* V62 — ouverture directe et stable des onglets Rendez-vous / Perso */
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.agenda-side-tabs.left .agenda-tab[data-nav="appointments"], .agenda-side-tabs.left .agenda-tab[data-nav="todo-perso"]').forEach(function(b){
+    b.addEventListener('pointerdown',function(e){ e.currentTarget.blur(); },{passive:true});
+  });
+});
+</script>
+
 </body>
 </html>
