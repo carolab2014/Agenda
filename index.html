@@ -1347,6 +1347,15 @@ button[aria-label="Accueil"]{
 .agenda-tab.active{filter:brightness(.78);box-shadow:0 3px 12px rgba(0,0,0,.34),inset 0 0 0 2px rgba(255,255,255,.92);transform:rotate(180deg) translateX(-4px);font-weight:900}
 .agenda-side-tabs.right .agenda-tab.active{transform:translateX(-4px);filter:brightness(.78);box-shadow:0 3px 12px rgba(0,0,0,.34),inset 0 0 0 2px rgba(255,255,255,.92)}
 body.dark .agenda-tab{color:#111;border-color:rgba(255,255,255,.22)}
+/* ===== V55 — palette cyclique des onglets de mois ===== */
+.agenda-side-tabs.right .agenda-tab[data-month="0"],.agenda-side-tabs.right .agenda-tab[data-month="6"]{background:#EDE7E0}
+.agenda-side-tabs.right .agenda-tab[data-month="1"],.agenda-side-tabs.right .agenda-tab[data-month="7"]{background:#C9BCAD}
+.agenda-side-tabs.right .agenda-tab[data-month="2"],.agenda-side-tabs.right .agenda-tab[data-month="8"]{background:#8F8476;color:#fff}
+.agenda-side-tabs.right .agenda-tab[data-month="3"],.agenda-side-tabs.right .agenda-tab[data-month="9"]{background:#5E6C74;color:#fff}
+.agenda-side-tabs.right .agenda-tab[data-month="4"],.agenda-side-tabs.right .agenda-tab[data-month="10"]{background:#CBD5DB}
+.agenda-side-tabs.right .agenda-tab[data-month="5"],.agenda-side-tabs.right .agenda-tab[data-month="11"]{background:#D9CBE6}
+body.dark .agenda-side-tabs.right .agenda-tab[data-month="2"],body.dark .agenda-side-tabs.right .agenda-tab[data-month="3"]{color:#fff}
+
 @media(max-width:760px){:root{--tab-w:34px;--month-tab-w:32px}.agenda-tab{font-size:8px;min-height:50px;padding:5px 2px}.agenda-side-tabs.right .agenda-tab{min-height:42px;font-size:9px}}
 @media print{.agenda-side-tabs{display:none!important}}
 </style>
