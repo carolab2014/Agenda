@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V59</title>
+<title>Mon Agenda V60</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -3032,5 +3032,35 @@ body.dark #yearPage .year-columns .year-row{background:var(--ym)!important;color
 #yearPage .year-columns .year-row,
 #yearPage .year-columns .year-note{border-color:rgba(0,0,0,.14)!important;}
 </style>
+
+<script>
+/* ===== V60 — correction isolation des pages ===== */
+(function(){
+  function hideOtherPages(keepId){
+    document.querySelectorAll('.page,.week-page,.todo-page,.appt-page,.objectives-page,.tracker-page,#monthPage,#yearPage').forEach(function(el){
+      if(el.id!==keepId){ el.classList.remove('active'); el.style.display='none'; }
+    });
+  }
+
+  const oldShow=window.show;
+  if(typeof oldShow==='function'){
+    window.show=function(page){
+      const keepId=page==='home'?'home':page==='daily'?'daily':null;
+      hideOtherPages(keepId);
+      oldShow(page);
+    };
+  }
+
+  [['showWeek','weekPage'],['showMonth','monthPage'],['showYear','yearPage']].forEach(function(pair){
+    const name=pair[0], keepId=pair[1], original=window[name];
+    if(typeof original==='function'){
+      window[name]=function(){
+        hideOtherPages(keepId);
+        return original.apply(this,arguments);
+      };
+    }
+  });
+})();
+</script>
 </body>
 </html>
