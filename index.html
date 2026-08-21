@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V47</title>
+<title>Mon Agenda V48</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -1332,6 +1332,25 @@ button[aria-label="Accueil"]{
 .todo-head .silver-round svg [fill]:not([fill="none"]),.appt-head .silver-round svg [fill]:not([fill="none"]),.objectives-head .silver-round svg [fill]:not([fill="none"]){fill:#000!important;}
 @media print{.page-print-btn{display:none!important;}}
 </style>
+
+<style>
+/* ===== V48 — navigation par onglets latéraux ===== */
+:root{--tab-w:42px;--month-tab-w:38px}
+.agenda-side-tabs{position:fixed;top:52px;bottom:12px;z-index:850;display:flex;flex-direction:column;gap:3px;pointer-events:none}
+.agenda-side-tabs.left{left:0;align-items:flex-start}
+.agenda-side-tabs.right{right:0;align-items:flex-end;justify-content:center}
+.agenda-side-tabs .tabs-scroll{max-height:100%;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:3px;padding:2px 0;scrollbar-width:none;pointer-events:auto}
+.agenda-side-tabs .tabs-scroll::-webkit-scrollbar{display:none}
+.agenda-tab{border:1px solid rgba(70,60,50,.16);box-shadow:0 2px 7px rgba(0,0,0,.10);font-weight:800;color:#171717;cursor:pointer;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);line-height:1;letter-spacing:.15px;padding:7px 4px;border-radius:0 9px 9px 0;min-height:58px;width:var(--tab-w);font-size:10px;background:#d8c8b6}
+.agenda-side-tabs.right .agenda-tab{transform:none;writing-mode:vertical-rl;border-radius:9px 0 0 9px;width:var(--month-tab-w);min-height:48px;padding:5px 3px;background:#d8c8b6}
+.agenda-tab.group-c1{background:#eee7de}.agenda-tab.group-c2{background:#d8c8b6}.agenda-tab.group-c3{background:#c7b8aa}.agenda-tab.group-c4{background:#dbe7e2}.agenda-tab.group-c5{background:#d8d0eb}
+.agenda-tab.active{filter:brightness(.88);box-shadow:0 2px 9px rgba(0,0,0,.22);transform:rotate(180deg) translateX(-2px)}
+.agenda-side-tabs.right .agenda-tab.active{transform:translateX(-2px)}
+body.dark .agenda-tab{color:#111;border-color:rgba(255,255,255,.22)}
+@media(max-width:760px){:root{--tab-w:34px;--month-tab-w:32px}.agenda-tab{font-size:8px;min-height:50px;padding:5px 2px}.agenda-side-tabs.right .agenda-tab{min-height:42px;font-size:9px}}
+@media print{.agenda-side-tabs{display:none!important}}
+</style>
+
 </head>
 <body>
 
@@ -1763,6 +1782,7 @@ document.addEventListener('input', function(e){
    const mp=document.getElementById('monthPage');mp.classList.remove('active');mp.style.display='none';
    show('home');
  }
+ window.openAgendaMonth=function(i){i=Math.max(0,Math.min(11,Number(i)||0));monthCursor=new Date(monthCursor.getFullYear(),i,1,12,0,0,0);showMonth();};
  document.getElementById('monthHome').onclick=closeMonth;
  document.getElementById('monthLight').onclick=()=>setTheme('light');
  document.getElementById('monthDark').onclick=()=>setTheme('dark');
@@ -2766,6 +2786,48 @@ body.dark .objective-row input[type=date],body.dark .objective-desc{background:v
  document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('#priorities'))setTimeout(()=>renderObjectives(true),0)});
  document.addEventListener('change',e=>{if(e.target.closest&&e.target.closest('#priorities'))setTimeout(()=>renderObjectives(true),0)});
  document.addEventListener('DOMContentLoaded',()=>renderObjectives(true));
+})();
+</script>
+
+
+<script>
+/* ===== V48 — onglets latéraux permanents ===== */
+(function(){
+ const categories=[
+  ['JOUR','daily','c1'],['SEMAINE','week','c1'],['MOIS','month','c1'],['ANNÉE','year','c1'],
+  ['RENDEZ-VOUS','appointments','c2'],['PERSO','todo-perso','c2'],['TRAVAIL','todo-travail','c2'],['OBJECTIFS','objectives','c2'],
+  ['ANNIVERSAIRE',null,'c3'],['SANTÉ',null,'c3'],['CYCLE',null,'c3'],['EXERCICES',null,'c3'],
+  ['FILMS',null,'c2'],['SÉRIES TV',null,'c2'],['LIVRES',null,'c2'],['LOISIRS',null,'c2'],
+  ['PRÊTS',null,'c5'],['COMPTES',null,'c5'],['BUDGETS',null,'c5'],['ÉPARGNES',null,'c5'],
+  ['MENUS',null,'c4'],['ÉPICERIES',null,'c4'],['RECETTES',null,'c4'],['ACHATS',null,'c4']
+ ];
+ const months=['JAN','FÉV','MAR','AVR','MAI','JUN','JUL','AOÛ','SEP','OCT','NOV','DÉC'];
+ function makeRail(side){const rail=document.createElement('nav');rail.className='agenda-side-tabs '+side;rail.setAttribute('aria-label',side==='left'?'Navigation principale':'Navigation par mois');const sc=document.createElement('div');sc.className='tabs-scroll';rail.appendChild(sc);document.body.appendChild(rail);return sc}
+ const left=makeRail('left'),right=makeRail('right');
+ function openPage(key){
+  if(key==='daily'){show('daily');return}
+  if(key==='week'&&window.showWeek){showWeek();return}
+  if(key==='month'&&window.showMonth){showMonth();return}
+  if(key==='year'&&window.showYear){showYear();return}
+  if(key==='appointments'&&window.openAppointments){openAppointments();return}
+  if(key==='todo-perso'&&window.openTodo){openTodo('perso');return}
+  if(key==='todo-travail'&&window.openTodo){openTodo('travail');return}
+  if(key==='objectives'&&window.openObjectives){openObjectives();return}
+ }
+ categories.forEach(([label,key,grp])=>{const b=document.createElement('button');b.className='agenda-tab group-'+grp;b.type='button';b.textContent=label;b.dataset.nav=key||'';b.onclick=()=>{if(key)openPage(key)};left.appendChild(b)});
+ months.forEach((label,i)=>{const b=document.createElement('button');b.className='agenda-tab';b.type='button';b.textContent=label;b.dataset.month=i;b.onclick=()=>{if(window.openAgendaMonth)window.openAgendaMonth(i)};right.appendChild(b)});
+ function refresh(){
+  let key='';
+  if(document.getElementById('daily')?.classList.contains('active'))key='daily';
+  else if(document.getElementById('weekPage')?.classList.contains('active'))key='week';
+  else if(document.getElementById('monthPage')?.classList.contains('active'))key='month';
+  else if(document.getElementById('yearPage')?.classList.contains('active'))key='year';
+  else if(document.getElementById('appointmentsPage')?.classList.contains('active'))key='appointments';
+  else if(document.getElementById('objectivesPage')?.classList.contains('active'))key='objectives';
+  document.querySelectorAll('.agenda-side-tabs.left .agenda-tab').forEach(b=>b.classList.toggle('active',b.dataset.nav===key));
+ }
+ new MutationObserver(refresh).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style']});
+ refresh();
 })();
 </script>
 
