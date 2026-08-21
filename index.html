@@ -2002,7 +2002,7 @@ function updateTodoText(id,text){let a=todoLoad(),t=a.find(x=>x.id===id);if(!t)r
 function addManualTodo(cat){let a=todoLoad();a.push({id:'manual:'+Date.now()+':'+Math.random().toString(36).slice(2),source:'manual',category:cat,start:todayISO(),end:'',done:false,text:''});todoSave(a);renderTodoLists();setTimeout(()=>{const list=document.getElementById(cat==='perso'?'todoPersoList':'todoTravailList');const es=list.querySelectorAll('.todo-desc');if(es.length)es[es.length-1].focus()},0)}
 function renderTodo(cat,rootId){const root=document.getElementById(rootId);if(!root)return;const items=todoLoad().filter(t=>t.category===cat);root.innerHTML='';if(!items.length){root.innerHTML='<div class="todo-empty">Aucune tâche pour le moment.</div>';return}items.forEach(t=>{const r=document.createElement('div');r.className='todo-row'+(t.done?' done':'');const st=document.createElement('div');st.className='todo-date start';st.textContent=prettyISO(t.start);const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!t.done;cb.onchange=()=>setTodoDone(t.id,cb.checked);const d=document.createElement('div');d.className='todo-desc';d.contentEditable='true';d.innerText=t.text;d.onblur=()=>updateTodoText(t.id,d.innerText.trim());const en=document.createElement('div');en.className='todo-date end';en.textContent=prettyISO(t.end);r.append(st,cb,d,en);root.append(r)})}
 function renderTodoLists(){renderTodo('perso','todoPersoList');renderTodo('travail','todoTravailList')}
-function openTodo(cat){document.querySelectorAll('.page,.week-page,.todo-page,#monthPage,#yearPage').forEach(x=>{x.classList.remove('active');x.style.display='none'});const p=document.getElementById(cat==='perso'?'todoPerso':'todoTravail');p.style.display='block';p.classList.add('active');document.querySelector('.top-actions').style.display='none';syncDailyTodos();window.scrollTo(0,0)}
+function openTodo(cat){document.querySelectorAll('.page,.week-page,.todo-page,.appt-page,.objectives-page,.tracker-page,#monthPage,#yearPage,#appointmentsPage,#objectivesPage').forEach(x=>{x.classList.remove('active');x.style.display='none'});const p=document.getElementById(cat==='perso'?'todoPerso':'todoTravail');if(!p)return;p.style.display='block';p.classList.add('active');const ta=document.querySelector('.top-actions');if(ta)ta.style.display='none';syncDailyTodos();window.scrollTo(0,0)}
 function showTodoHome(){document.querySelectorAll('.todo-page').forEach(x=>{x.classList.remove('active');x.style.display='none'});show('home')}
 document.querySelector('[data-page="todo-perso"]').onclick=()=>openTodo('perso');document.querySelector('[data-page="todo-travail"]').onclick=()=>openTodo('travail');
 const oldRender=render;render=function(){oldRender();syncDailyTodos()};renderTodoLists();
@@ -3104,5 +3104,14 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 </script>
 
+
+<style>
+/* ===== V63 — correction navigation Rendez-vous / Tâches perso ===== */
+.agenda-side-tabs.left .agenda-tab.active{
+  transform:rotate(180deg)!important;
+  filter:brightness(.82)!important;
+  box-shadow:0 3px 10px rgba(0,0,0,.28),inset 0 0 0 2px rgba(255,255,255,.92)!important;
+}
+</style>
 </body>
 </html>
