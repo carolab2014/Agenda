@@ -1474,6 +1474,7 @@ body.dark #yearPage .year-note {
 
 <div class="top-actions">
   <button id="homeBtn" class="icon-btn" aria-label="Accueil" title="Accueil" style="visibility:hidden"><svg class="ui-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <button id="homePrintAllBtn" class="icon-btn home-print-all" aria-label="Imprimer tout l’agenda" title="Imprimer l’agenda complet 2026" style="visibility:visible"><svg class="ui-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <div class="theme" aria-label="Thème"><button id="lightBtn" class="on" title="Mode clair"><svg class="ui-svg sun-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button id="darkBtn" title="Mode sombre"><svg class="ui-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.3A8.7 8.7 0 0 1 8.7 3.5 9 9 0 1 0 20.5 15.3Z" fill="currentColor"/></svg></button></div>
 </div>
 
@@ -3124,5 +3125,57 @@ document.addEventListener('DOMContentLoaded',function(){
 body.dark .tracker-page[data-tracker="menus"] .tracker-dow,
 body.dark .tracker-page[data-tracker="menus"] .tracker-num{background:var(--soft-pastel-violet,#D9CBE6)!important;color:#000!important;}
 </style>
+<style>
+/* ===== V66 — impression complète annuelle ===== */
+.home-print-all{pointer-events:auto!important;margin-right:auto!important}
+#printAnnualReport{display:none}
+@media print{
+ body.print-all-agenda > *:not(#printAnnualReport){display:none!important}
+ body.print-all-agenda #printAnnualReport{display:block!important;color:#000!important;background:#fff!important}
+ #printAnnualReport .pa-cover{page-break-after:always;text-align:center;padding-top:35vh}
+ #printAnnualReport .pa-cover h1{font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;font-size:64px;font-weight:400;margin:0}
+ #printAnnualReport .pa-section{page-break-before:always}
+ #printAnnualReport h2{font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;font-size:38px;font-weight:400;border-bottom:2px solid #D9CBE6;padding-bottom:8px;margin:0 0 18px}
+ #printAnnualReport h3{font-size:18px;margin:18px 0 8px;background:#D9CBE6;padding:7px 10px;border-radius:8px}
+ #printAnnualReport table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:16px}
+ #printAnnualReport th,#printAnnualReport td{border:1px solid #bbb;padding:5px;vertical-align:top;text-align:left}
+ #printAnnualReport th{background:#EDE7E0}
+ #printAnnualReport .pa-empty{font-style:italic;color:#666;margin:12px 0}
+ #printAnnualReport .pa-month{break-inside:avoid-page}
+}
+</style>
+<script>
+/* ===== V66 — bouton accueil + impression de toutes les rubriques 1 janv.-31 déc. ===== */
+(function(){
+ const printerSvg='<svg class="ui-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+ const months=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+ const trackers={anniversary:'Date anniversaire',health:'Suivi de santé',cycle:'Cycle féminin',exercise:'Exercices',menus:'Menus'};
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function reportRoot(){let r=document.getElementById('printAnnualReport');if(!r){r=document.createElement('main');r.id='printAnnualReport';document.body.appendChild(r)}return r}
+ function stored(k){return localStorage.getItem(k)||''}
+ function trackerRows(key,m){let rows='';let days=new Date(2026,m+1,0).getDate();for(let d=1;d<=days;d++){let date=`2026-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,v=stored(`agenda-v56:${key}:${date}`);if(v.trim())rows+=`<tr><td>${d}</td><td>${esc(v)}</td></tr>`}return rows}
+ function allDaily(){let rows='';for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i)||'',m=k.match(/^agenda:(2026-\d\d-\d\d):(\d\d:\d\d)$/);if(m){let v=stored(k);if(v.trim())rows+=`<tr><td>${m[1]}</td><td>${m[2]}</td><td>${esc(v)}</td></tr>`}}return rows}
+ function jsonRows(store,cols){let a=[];try{a=JSON.parse(stored(store)||'[]')}catch(e){};return a.filter(x=>!x.date||String(x.date).startsWith('2026-')).map(x=>'<tr>'+cols.map(c=>`<td>${esc(x[c]||'')}</td>`).join('')+'</tr>').join('')}
+ function section(title,body){return `<section class="pa-section"><h2>${title}</h2>${body||'<p class="pa-empty">Aucune donnée enregistrée.</p>'}</section>`}
+ function build(){let html='<div class="pa-cover"><h1>Mon Agenda</h1><h2 style="border:0;font-family:inherit">2026</h2><p>1 janvier au 31 décembre</p></div>';
+ let d=allDaily();html+=section('Jour',d?`<table><thead><tr><th>Date</th><th>Heure</th><th>Contenu</th></tr></thead><tbody>${d}</tbody></table>`:'');
+ html+=section('Semaine','<p>Vue annuelle — les entrées détaillées sont reprises dans les sections Jour et Mois.</p>');
+ html+=section('Mois','<p>Janvier à décembre 2026 — les contenus enregistrés sont repris dans les rubriques correspondantes ci-dessous.</p>');
+ html+=section('Année','<p>Année 2026 complète : du 1 janvier au 31 décembre.</p>');
+ let ap=jsonRows('agenda-v22-appointments',['date','time','person','what','address']);html+=section('Rendez-vous',ap?`<table><tr><th>Date</th><th>Heure</th><th>Qui</th><th>Rendez-vous</th><th>Adresse</th></tr>${ap}</table>`:'');
+ ['perso','travail'].forEach(cat=>{let candidates=['agenda-v21-todos-'+cat,'agenda-v22-todos-'+cat,'agenda-todos-'+cat],rows='';for(const k of candidates){rows=jsonRows(k,['start','text','end']);if(rows)break}html+=section(cat==='perso'?'To do list perso':'To do list travail',rows?`<table><tr><th>Début</th><th>Tâche</th><th>Fin</th></tr>${rows}</table>`:'')});
+ let obj='';for(const k of ['agenda-v56-objectives','agenda-objectives','agenda-v25-objectives']){obj=jsonRows(k,['start','target','description','end']);if(obj)break}html+=section('Objectifs',obj?`<table><tr><th>Début</th><th>Date visée</th><th>Objectif</th><th>Fin</th></tr>${obj}</table>`:'');
+ Object.entries(trackers).forEach(([key,title])=>{let body='';months.forEach((mn,m)=>{let rows=trackerRows(key,m);if(rows)body+=`<div class="pa-month"><h3>${mn} 2026</h3><table><tr><th>Jour</th><th>${title}</th></tr>${rows}</table></div>`});html+=section(title,body)});
+ ['Films','Séries TV','Livres','Loisirs créatifs','Finances (Prêts)','Finances (Comptes)','Finances (Budgets)','Finances (Épargnes)','Liste épiceries','Recettes','Liste achats'].forEach(t=>html+=section(t,''));
+ reportRoot().innerHTML=html;
+ }
+ function printAll(){build();document.body.classList.add('print-all-agenda');let s=document.getElementById('dynamicPrintPage');if(!s){s=document.createElement('style');s.id='dynamicPrintPage';document.head.appendChild(s)}s.textContent='@media print{@page{size:Letter portrait;margin:.45in}}';setTimeout(()=>window.print(),80);setTimeout(()=>document.body.classList.remove('print-all-agenda'),1200)}
+ document.getElementById('homePrintAllBtn')?.addEventListener('click',printAll);
+ function installHome(){const ta=document.querySelector('.top-actions');if(!ta||ta.querySelector('.home-print-all'))return;const b=document.createElement('button');b.className='icon-btn home-print-all';b.type='button';b.title="Imprimer l’agenda complet 2026";b.setAttribute('aria-label','Imprimer tout l’agenda');b.innerHTML=printerSvg;b.onclick=printAll;const hb=ta.querySelector('#homeBtn');if(hb)hb.insertAdjacentElement('afterend',b);else ta.prepend(b)}
+ function installMissing(){document.querySelectorAll('.tracker-home').forEach(b=>{if(!b.getAttribute('aria-label'))b.setAttribute('aria-label','Accueil')});document.querySelectorAll('button[aria-label="Accueil"]:not(#homeBtn)').forEach(h=>{if(h.dataset.printAdded==='1'||h.nextElementSibling?.classList.contains('page-print-btn'))return;const p=document.createElement('button');p.type='button';p.className=(h.classList.contains('silver-round')?'silver-round ':'icon-btn ')+'page-print-btn';p.title='Imprimer cette page';p.setAttribute('aria-label','Imprimer');p.innerHTML=printerSvg;p.onclick=()=>window.print();h.insertAdjacentElement('afterend',p);h.dataset.printAdded='1'})}
+ document.addEventListener('DOMContentLoaded',()=>{installHome();installMissing();new MutationObserver(installMissing).observe(document.body,{childList:true,subtree:true})});
+})();
+</script>
+
 </body>
 </html>
