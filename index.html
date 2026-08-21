@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V50</title>
+<title>Mon Agenda V58</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -1418,6 +1418,30 @@ body:not(.print-mode) #appointmentsPage:not(.active),
 body:not(.print-mode) #todoPerso:not(.active),
 body:not(.print-mode) #todoTravail:not(.active),
 body:not(.print-mode) #objectivesPage:not(.active){display:none!important;}
+</style>
+
+<style>
+/* ===== V58 — couleurs des onglets de section et des titres = cases d’accueil ===== */
+/* Onglets de navigation principale : même couleur que la rangée correspondante de l’accueil */
+.agenda-side-tabs.left .agenda-tab:nth-child(-n+4){background:var(--pearl-shell,#EDE7E0)!important;color:#000!important;}
+.agenda-side-tabs.left .agenda-tab:nth-child(n+5):nth-child(-n+8){background:var(--coastal-sand,#C9BCAD)!important;color:#000!important;}
+.agenda-side-tabs.left .agenda-tab:nth-child(n+9):nth-child(-n+12){background:var(--weathered-driftwood,#8F8476)!important;color:#000!important;}
+.agenda-side-tabs.left .agenda-tab:nth-child(n+13):nth-child(-n+16){background:var(--slate-pebble,#5E6C74)!important;color:#000!important;}
+.agenda-side-tabs.left .agenda-tab:nth-child(n+17):nth-child(-n+20){background:var(--ocean-mist,#CBD5DB)!important;color:#000!important;}
+.agenda-side-tabs.left .agenda-tab:nth-child(n+21):nth-child(-n+24){background:var(--soft-pastel-violet,#D9CBE6)!important;color:#000!important;}
+
+/* Titres des pages : même couleur que leur case sur l’accueil */
+.daily-head,.week-head,.month-head,.year-head{background:var(--pearl-shell,#EDE7E0)!important;color:#000!important;}
+.appt-head,.todo-head,.objectives-head{background:var(--coastal-sand,#C9BCAD)!important;color:#000!important;}
+.tracker-page[data-tracker="anniversary"] .tracker-head,
+.tracker-page[data-tracker="health"] .tracker-head,
+.tracker-page[data-tracker="cycle"] .tracker-head,
+.tracker-page[data-tracker="exercise"] .tracker-head{background:var(--weathered-driftwood,#8F8476)!important;color:#000!important;}
+.tracker-page[data-tracker="menus"] .tracker-head{background:var(--soft-pastel-violet,#D9CBE6)!important;color:#000!important;}
+
+/* Conserver les boutons d’en-tête en Pearl Shell */
+.daily-head .silver-round,.week-head .silver-round,.month-head .silver-round,.year-head .silver-round,
+.appt-head .silver-round,.todo-head .silver-round,.objectives-head .silver-round,.tracker-head .silver-round{background:var(--pearl-shell,#EDE7E0)!important;color:#000!important;-webkit-text-fill-color:#000!important;}
 </style>
 </head>
 <body>
