@@ -1443,6 +1443,20 @@ body:not(.print-mode) #objectivesPage:not(.active){display:none!important;}
 .daily-head .silver-round,.week-head .silver-round,.month-head .silver-round,.year-head .silver-round,
 .appt-head .silver-round,.todo-head .silver-round,.objectives-head .silver-round,.tracker-head .silver-round{background:var(--pearl-shell,#EDE7E0)!important;color:#000!important;-webkit-text-fill-color:#000!important;}
 </style>
+
+<style>
+/* ===== V61 — Année : zones de texte neutres selon le mode ===== */
+body:not(.dark) #yearPage .year-note {
+  background:#fff !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+body.dark #yearPage .year-note {
+  background:#000 !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+</style>
 </head>
 <body>
 
