@@ -1395,6 +1395,21 @@ body.dark .objective-row input[type=date],body.dark .objective-row .objective-de
 .objectives-cols{grid-template-columns:34px minmax(145px,1.15fr) minmax(145px,1.15fr) minmax(300px,4.5fr) minmax(145px,1.15fr)!important;gap:12px!important;}
 @media(max-width:900px){.objective-row{grid-template-columns:34px minmax(125px,1fr) minmax(125px,1fr) minmax(220px,3fr) minmax(125px,1fr)!important;gap:8px!important}.objectives-cols{grid-template-columns:34px minmax(125px,1fr) minmax(125px,1fr) minmax(220px,3fr) minmax(125px,1fr)!important;gap:8px!important}}
 </style>
+
+<style>
+/* ===== V54 — une seule page visible à la fois ===== */
+body:not(.print-mode) .page:not(.active),
+body:not(.print-mode) .week-page:not(.active),
+body:not(.print-mode) .todo-page:not(.active),
+body:not(.print-mode) .appt-page:not(.active),
+body:not(.print-mode) .objectives-page:not(.active),
+body:not(.print-mode) #monthPage:not(.active),
+body:not(.print-mode) #yearPage:not(.active),
+body:not(.print-mode) #appointmentsPage:not(.active),
+body:not(.print-mode) #todoPerso:not(.active),
+body:not(.print-mode) #todoTravail:not(.active),
+body:not(.print-mode) #objectivesPage:not(.active){display:none!important;}
+</style>
 </head>
 <body>
 
