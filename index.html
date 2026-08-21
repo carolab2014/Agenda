@@ -3113,5 +3113,36 @@ document.addEventListener('DOMContentLoaded',function(){
   box-shadow:0 3px 10px rgba(0,0,0,.28),inset 0 0 0 2px rgba(255,255,255,.92)!important;
 }
 </style>
+
+<style>
+/* ===== V64 — palette uniforme violet pastel doux ===== */
+:root{--soft-pastel-violet:#D9CBE6!important;}
+#home .grid .tile,
+#home .grid .tile:nth-child(n),
+.agenda-tab,
+.agenda-tab.group-c1,.agenda-tab.group-c2,.agenda-tab.group-c3,.agenda-tab.group-c4,.agenda-tab.group-c5,
+.agenda-side-tabs.right .agenda-tab[data-month],
+.month-head,.month-weekday,.month-daynum,
+.todo-head,.appt-head,.objectives-head,
+.year-head,.year-month-head,
+.calendar-page-head,.special-month-head,
+body:not(.dark) .page-head{
+  background:#D9CBE6!important;
+  color:#111!important;-webkit-text-fill-color:#111!important;
+}
+/* Les onglets des 12 mois utilisent tous le même violet */
+.agenda-side-tabs.right .agenda-tab[data-month]{background:#D9CBE6!important;color:#111!important;}
+/* Les onglets latéraux de gauche utilisent tous le même violet */
+.agenda-side-tabs.left .agenda-tab{background:#D9CBE6!important;color:#111!important;}
+/* Tuiles d'accueil uniformes */
+#home .grid .tile{background:#D9CBE6!important;color:#111!important;-webkit-text-fill-color:#111!important;}
+/* Bandeaux des pages calendrier spécialisées : reprendre le violet */
+#birthdayPage .month-head,#healthPage .month-head,#cyclePage .month-head,#exercisePage .month-head,#menusPage .month-head,
+#birthdayPage .special-head,#healthPage .special-head,#cyclePage .special-head,#exercisePage .special-head,#menusPage .special-head{background:#D9CBE6!important;color:#111!important;}
+/* En-têtes de jours des calendriers */
+#monthPage .month-weekday,#birthdayPage .month-weekday,#healthPage .month-weekday,#cyclePage .month-weekday,#exercisePage .month-weekday,#menusPage .month-weekday{background:#D9CBE6!important;color:#111!important;}
+/* Numéros colorés */
+#monthPage .month-daynum,#birthdayPage .month-daynum,#healthPage .month-daynum,#cyclePage .month-daynum,#exercisePage .month-daynum,#menusPage .month-daynum{background:#D9CBE6!important;color:#111!important;}
+</style>
 </body>
 </html>
