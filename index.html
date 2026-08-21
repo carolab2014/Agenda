@@ -2864,17 +2864,25 @@ body.dark .objective-row input[type=date],body.dark .objective-desc{background:v
 /* ===== V56 — pages mensuelles thématiques ===== */
 .tracker-page{display:none;min-height:100vh;padding:38px 82px 70px;margin:0}
 .tracker-page.active{display:block}
-.tracker-head{position:relative;min-height:210px;border-radius:34px;background:#ede7e0;box-shadow:0 10px 24px rgba(23,38,77,.14);display:flex;align-items:center;justify-content:center;flex-direction:column;margin-bottom:28px}
-.tracker-title{font-family:"Snell Roundhand","Apple Chancery",cursive;font-size:72px;font-weight:400;margin:0;line-height:1.05}
-.tracker-month-label{font-size:38px;font-weight:800;margin-top:8px}
+.tracker-head{position:relative;min-height:165px;border-radius:34px;background:#ede7e0;box-shadow:0 10px 24px rgba(23,38,77,.14);display:flex;align-items:center;justify-content:center;flex-direction:column;margin-bottom:28px}
+.tracker-title{font-family:"Snell Roundhand","Apple Chancery",cursive;font-size:64px;font-weight:400;margin:0;line-height:1.0}
+.tracker-month-label{font-size:34px;font-weight:800;margin-top:4px}
 .tracker-home{position:absolute;left:24px;top:24px}.tracker-theme{position:absolute;right:24px;top:24px;display:flex;gap:10px}
-.tracker-prev{position:absolute;left:18%;bottom:24px}.tracker-next{position:absolute;right:18%;bottom:24px}
+.tracker-prev{position:absolute;left:18%;bottom:14px}.tracker-next{position:absolute;right:18%;bottom:14px}
 .tracker-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid #ded7cf;border-radius:0 0 24px 24px;overflow:hidden;background:#fff}
 .tracker-dow{height:62px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;background:#ede7e0;border-right:1px solid #ded7cf}
 .tracker-day{min-height:155px;padding:12px;border-top:1px solid #ded7cf;border-right:1px solid #ded7cf;background:#fff;position:relative}
 .tracker-day.other{background:#faf9fd}.tracker-num{position:absolute;right:12px;top:10px;background:#ede7e0;border-radius:9px;padding:5px 9px;font-weight:800}
 .tracker-entry{margin-top:34px;min-height:92px;outline:none;white-space:pre-wrap;font-size:16px;line-height:1.35}
 .tracker-entry:empty:before{content:attr(data-placeholder);opacity:.35;font-style:italic}
+/* V57 — couleurs identiques aux cases de la page d’accueil */
+.tracker-page[data-tracker="anniversary"] .tracker-head,.tracker-page[data-tracker="anniversary"] .tracker-dow,.tracker-page[data-tracker="anniversary"] .tracker-num,
+.tracker-page[data-tracker="health"] .tracker-head,.tracker-page[data-tracker="health"] .tracker-dow,.tracker-page[data-tracker="health"] .tracker-num,
+.tracker-page[data-tracker="cycle"] .tracker-head,.tracker-page[data-tracker="cycle"] .tracker-dow,.tracker-page[data-tracker="cycle"] .tracker-num,
+.tracker-page[data-tracker="exercise"] .tracker-head,.tracker-page[data-tracker="exercise"] .tracker-dow,.tracker-page[data-tracker="exercise"] .tracker-num{background:#8F8476;color:#000}
+.tracker-page[data-tracker="menus"] .tracker-head,.tracker-page[data-tracker="menus"] .tracker-dow,.tracker-page[data-tracker="menus"] .tracker-num{background:#5E6C74;color:#000}
+body.dark .tracker-page[data-tracker="anniversary"] .tracker-head,body.dark .tracker-page[data-tracker="anniversary"] .tracker-dow,body.dark .tracker-page[data-tracker="anniversary"] .tracker-num,body.dark .tracker-page[data-tracker="health"] .tracker-head,body.dark .tracker-page[data-tracker="health"] .tracker-dow,body.dark .tracker-page[data-tracker="health"] .tracker-num,body.dark .tracker-page[data-tracker="cycle"] .tracker-head,body.dark .tracker-page[data-tracker="cycle"] .tracker-dow,body.dark .tracker-page[data-tracker="cycle"] .tracker-num,body.dark .tracker-page[data-tracker="exercise"] .tracker-head,body.dark .tracker-page[data-tracker="exercise"] .tracker-dow,body.dark .tracker-page[data-tracker="exercise"] .tracker-num{background:#8F8476;color:#000}
+body.dark .tracker-page[data-tracker="menus"] .tracker-head,body.dark .tracker-page[data-tracker="menus"] .tracker-dow,body.dark .tracker-page[data-tracker="menus"] .tracker-num{background:#5E6C74;color:#000}
 body.dark .tracker-head,body.dark .tracker-dow,body.dark .tracker-num{background:#ede7e0;color:#000}body.dark .tracker-grid,body.dark .tracker-day{background:#111d31;color:#fff}body.dark .tracker-day.other{background:#15233a}
 @media(max-width:900px){.tracker-page{padding-left:68px;padding-right:68px}.tracker-title{font-size:54px}.tracker-day{min-height:125px}}
 </style>
@@ -2890,7 +2898,7 @@ body.dark .tracker-head,body.dark .tracker-dow,body.dark .tracker-num{background
  const monthNames=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
  let activeKey='', trackerMonth=(window.current instanceof Date?current.getMonth():7);
  const homeSvg='<svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
- const sunSvg='<svg class="ui-svg sun-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+ const sunSvg='<svg class="ui-svg sun-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
  const moonSvg='<svg class="ui-svg" viewBox="0 0 24 24"><path d="M20.5 15.3A8.7 8.7 0 0 1 8.7 3.5 9 9 0 1 0 20.5 15.3Z" fill="currentColor"/></svg>';
  function ensure(key){let p=document.getElementById('tracker-'+key);if(p)return p;p=document.createElement('section');p.id='tracker-'+key;p.className='tracker-page';p.dataset.tracker=key;p.innerHTML=`<header class="tracker-head"><button class="silver-round tracker-home" type="button">${homeSvg}</button><div class="tracker-theme"><button class="silver-round tracker-light">${sunSvg}</button><button class="silver-round tracker-dark">${moonSvg}</button></div><h1 class="tracker-title">${cfg[key].title}</h1><div class="tracker-month-label"></div><button class="silver-round tracker-prev">‹</button><button class="silver-round tracker-next">›</button></header><div class="tracker-grid"></div>`;document.body.insertBefore(p,document.querySelector('.agenda-side-tabs.left'));p.querySelector('.tracker-home').onclick=()=>show('home');p.querySelector('.tracker-light').onclick=()=>setTheme('light');p.querySelector('.tracker-dark').onclick=()=>setTheme('dark');p.querySelector('.tracker-prev').onclick=()=>setTrackerMonth((trackerMonth+11)%12);p.querySelector('.tracker-next').onclick=()=>setTrackerMonth((trackerMonth+1)%12);return p}
  function storageKey(key,m,d){return `agenda-v56:${key}:2026-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`}
