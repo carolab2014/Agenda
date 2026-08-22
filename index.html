@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V60</title>
+<title>Mon Agenda V68</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -1480,7 +1480,12 @@ body.dark #yearPage .year-note {
 
 <section id="home" class="page active">
  <main class="dashboard">
-  <h1 class="title">Mon Agenda</h1><p class="home-subtitle">Bienvenue ! Organisez votre quotidien en toute simplicité.</p><div class="agenda-flourish" aria-hidden="true"><svg viewBox="0 0 260 30"><path d="M4 16c25 0 28-10 45-10 13 0 15 9 5 12-9 3-18-1-12-6 7-6 22 4 39 4h29"/><path d="M150 16h29c17 0 32-10 39-4 6 5-3 9-12 6-10-3-8-12 5-12 17 0 20 10 45 10"/><path d="M130 23s-13-8-13-15c0-7 10-9 13-2 3-7 13-5 13 2 0 7-13 15-13 15Z"/></svg></div>
+  <h1 class="title">Mon Agenda</h1><p class="home-subtitle">Bienvenue ! Organisez votre quotidien en toute simplicité.</p><div class="icloud-backup-panel" aria-label="Sauvegarde iCloud">
+    <button id="icloudSaveBtn" type="button" class="icloud-backup-btn" title="Créer une sauvegarde à enregistrer dans iCloud Drive">☁️ Sauvegarder sur iCloud</button>
+    <button id="icloudOpenBtn" type="button" class="icloud-backup-btn" title="Ouvrir une sauvegarde depuis iCloud Drive">📂 Ouvrir ma sauvegarde</button>
+    <input id="icloudOpenInput" type="file" accept=".agenda,.json,application/json" hidden>
+    <div id="icloudBackupStatus" class="icloud-backup-status">Aucune sauvegarde iCloud créée sur cet appareil.</div>
+  </div><div class="agenda-flourish" aria-hidden="true"><svg viewBox="0 0 260 30"><path d="M4 16c25 0 28-10 45-10 13 0 15 9 5 12-9 3-18-1-12-6 7-6 22 4 39 4h29"/><path d="M150 16h29c17 0 32-10 39-4 6 5-3 9-12 6-10-3-8-12 5-12 17 0 20 10 45 10"/><path d="M130 23s-13-8-13-15c0-7 10-9 13-2 3-7 13-5 13 2 0 7-13 15-13 15Z"/></svg></div>
   <div class="grid">
    <button class="tile c1" data-page="daily"><span class="ico"><svg viewBox="0 0 64 64"><rect x="10" y="14" width="44" height="40" rx="5"/><path d="M10 25h44M20 9v11M44 9v11"/><path d="M20 33h4M30 33h4M40 33h4M20 42h4M30 42h4M40 42h4"/></svg></span>JOUR</button>
    <button class="tile c1 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="8" y="13" width="39" height="35" rx="5"/><path d="M8 24h39M17 8v10M38 8v10"/><circle cx="45" cy="43" r="13"/><path d="M45 35v8l6 3"/></svg></span>SEMAINE</button>
@@ -3174,6 +3179,74 @@ body.dark .tracker-page[data-tracker="menus"] .tracker-num{background:var(--soft
  function installHome(){const ta=document.querySelector('.top-actions');if(!ta||ta.querySelector('.home-print-all'))return;const b=document.createElement('button');b.className='icon-btn home-print-all';b.type='button';b.title="Imprimer l’agenda complet 2026";b.setAttribute('aria-label','Imprimer tout l’agenda');b.innerHTML=printerSvg;b.onclick=printAll;const hb=ta.querySelector('#homeBtn');if(hb)hb.insertAdjacentElement('afterend',b);else ta.prepend(b)}
  function installMissing(){document.querySelectorAll('.tracker-home').forEach(b=>{if(!b.getAttribute('aria-label'))b.setAttribute('aria-label','Accueil')});document.querySelectorAll('button[aria-label="Accueil"]:not(#homeBtn)').forEach(h=>{if(h.dataset.printAdded==='1'||h.nextElementSibling?.classList.contains('page-print-btn'))return;const p=document.createElement('button');p.type='button';p.className=(h.classList.contains('silver-round')?'silver-round ':'icon-btn ')+'page-print-btn';p.title='Imprimer cette page';p.setAttribute('aria-label','Imprimer');p.innerHTML=printerSvg;p.onclick=()=>window.print();h.insertAdjacentElement('afterend',p);h.dataset.printAdded='1'})}
  document.addEventListener('DOMContentLoaded',()=>{installHome();installMissing();new MutationObserver(installMissing).observe(document.body,{childList:true,subtree:true})});
+})();
+</script>
+
+
+<style>
+/* ===== V68 — sauvegarde manuelle iCloud Drive ===== */
+.icloud-backup-panel{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px auto 22px;max-width:900px}
+.icloud-backup-btn{border:1px solid rgba(0,0,0,.12);border-radius:16px;padding:11px 16px;background:#EDE7E0;color:#000;font:700 15px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;box-shadow:0 5px 14px rgba(0,0,0,.08);cursor:pointer}
+.icloud-backup-btn:active{transform:scale(.98)}
+.icloud-backup-status{flex-basis:100%;text-align:center;font:500 13px/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;opacity:.72}
+body.dark .icloud-backup-btn{background:#EDE7E0!important;color:#000!important}
+body.dark .icloud-backup-status{color:#fff}
+@media print{.icloud-backup-panel{display:none!important}}
+</style>
+<script>
+/* ===== V68 — export/import complet des données locales ===== */
+(function(){
+ const META_KEY='agenda-icloud-last-backup';
+ function allLocalData(){
+   const data={};
+   for(let i=0;i<localStorage.length;i++){
+     const k=localStorage.key(i);
+     if(k && k!==META_KEY) data[k]=localStorage.getItem(k);
+   }
+   return {format:'Mon Agenda Backup',version:1,createdAt:new Date().toISOString(),data:data};
+ }
+ function stampText(iso){
+   if(!iso)return 'Aucune sauvegarde iCloud créée sur cet appareil.';
+   try{return 'Dernière sauvegarde iCloud : '+new Intl.DateTimeFormat('fr-CA',{dateStyle:'long',timeStyle:'short'}).format(new Date(iso));}
+   catch(e){return 'Dernière sauvegarde iCloud : '+iso;}
+ }
+ function refreshStatus(){const el=document.getElementById('icloudBackupStatus');if(el)el.textContent=stampText(localStorage.getItem(META_KEY));}
+ function filename(){const d=new Date(),p=n=>String(n).padStart(2,'0');return `Mon_Agenda_${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}.agenda`;}
+ async function saveBackup(){
+   const payload=JSON.stringify(allLocalData(),null,2), name=filename();
+   const blob=new Blob([payload],{type:'application/json'});
+   const file=new File([blob],name,{type:'application/json'});
+   try{
+     if(navigator.canShare && navigator.canShare({files:[file]}) && navigator.share){
+       await navigator.share({files:[file],title:'Sauvegarde Mon Agenda'});
+     }else{
+       const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+     }
+     const now=new Date().toISOString();localStorage.setItem(META_KEY,now);refreshStatus();
+   }catch(e){if(e && e.name!=='AbortError')alert('La sauvegarde n’a pas pu être créée. Réessaie et choisis iCloud Drive dans Fichiers.');}
+ }
+ function openBackup(){document.getElementById('icloudOpenInput')?.click();}
+ async function importBackup(file){
+   if(!file)return;
+   try{
+     const obj=JSON.parse(await file.text());
+     if(!obj || obj.format!=='Mon Agenda Backup' || !obj.data || typeof obj.data!=='object')throw new Error('format');
+     if(!confirm('Ouvrir cette sauvegarde remplacera les données actuellement enregistrées sur cet appareil. Continuer ?'))return;
+     const theme=localStorage.getItem('agenda-theme');
+     localStorage.clear();
+     Object.entries(obj.data).forEach(([k,v])=>localStorage.setItem(k,String(v)));
+     if(theme && !localStorage.getItem('agenda-theme'))localStorage.setItem('agenda-theme',theme);
+     localStorage.setItem(META_KEY,new Date().toISOString());
+     alert('Sauvegarde ouverte avec succès. L’agenda va se recharger avec les données iCloud.');
+     location.reload();
+   }catch(e){alert('Ce fichier ne semble pas être une sauvegarde valide de Mon Agenda.');}
+ }
+ document.addEventListener('DOMContentLoaded',function(){
+   document.getElementById('icloudSaveBtn')?.addEventListener('click',saveBackup);
+   document.getElementById('icloudOpenBtn')?.addEventListener('click',openBackup);
+   document.getElementById('icloudOpenInput')?.addEventListener('change',function(){const f=this.files&&this.files[0];importBackup(f);this.value='';});
+   refreshStatus();
+ });
 })();
 </script>
 
