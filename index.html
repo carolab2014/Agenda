@@ -3511,5 +3511,109 @@ body.dark #todoPerso .todo-date, body.dark #todoTravail .todo-date {
 })();
 </script>
 
+
+<script>
+/* ===== V80 — anniversaires importés depuis ANNIVERSAIRES.xlsx ===== */
+(function(){
+ const birthdays={
+  '2026-01-01':'Carmen Guardado',
+  '2026-01-03':'Denise Caron',
+  '2026-01-05':'Richard Michaud',
+  '2026-01-09':'Chantal Lavallée',
+  '2026-01-13':'Florence Mimeault',
+  '2026-01-16':'Colette Gardner',
+  '2026-01-19':'Mario Ouellet',
+  '2026-01-25':'Joe Riccardelli',
+  '2026-02-01':'Steven-Pierre Guay (24 ans en 2025)',
+  '2026-02-13':'Annie Rochon',
+  '2026-02-18':'Thomas Mimeault',
+  '2026-03-02':'Rolando Gonzalez & Ana-Maria Domingues',
+  '2026-03-05':'Mario Gonzalez',
+  '2026-03-14':'Marie-Claude Lavallée',
+  '2026-03-21':'Pierrette Bourgoin',
+  '2026-03-26':'François Charron',
+  '2026-04-10':'Sylvie Lacommande',
+  '2026-04-11':'Jacques Labrie (1968)',
+  '2026-04-22':'Annick Cadieux & Linda Gardner',
+  '2026-05-03':'Melissa Allard (28 ans en 2023)',
+  '2026-05-04':'Annie Girard',
+  '2026-05-07':'Carolina Gonzalez (1976)',
+  '2026-05-27':'Claudia Gonzalez',
+  '2026-05-28':'Kathleen Cool',
+  '2026-06-02':'Mélanie Laurier & Christian Lebeau',
+  '2026-06-08':'Alain Mimeault',
+  '2026-06-15':'Marie-Eve Labrie',
+  '2026-06-18':'Samuel Labrie (2014)',
+  '2026-06-23':'Jean-Pierre Fortin',
+  '2026-06-28':'Feu Denise Duguay (1950)',
+  '2026-06-29':'Helena Romano',
+  '2026-07-10':'Marjolaine Bourgoin (65 ans 2023)',
+  '2026-07-14':'Martin Mimeault & Geneviève Labrie',
+  '2026-07-16':'Cathy Soucy & Normand Pelletier',
+  '2026-07-19':'Alice Boileau & Marie-Julie Mimeault',
+  '2026-07-20':'Ginette Pelletier',
+  '2026-07-24':'Line Fontaine (60 ans 2023)',
+  '2026-07-25':'Angélina Proulx (1947)',
+  '2026-08-01':'Daniel Duguay',
+  '2026-08-07':'Jean-Jacques Labrie (1943) 80 ans 2023',
+  '2026-08-09':'Jean-Marc Laurier',
+  '2026-08-17':'Marie-Josée Labrie (55 en 2024) & Tyra Barton',
+  '2026-08-18':'Marilyn Morel',
+  '2026-08-21':'Paul Boileau',
+  '2026-08-29':'Nancy Ramos (60 ans Mario en 2023)',
+  '2026-09-06':'Diane St-Amour & Suzie Boileau',
+  '2026-09-10':'Alexe Labrie',
+  '2026-09-12':'Alexandre Labrie (2005)',
+  '2026-09-15':'Édouard Gonzalez',
+  '2026-09-17':'Steeve Mimeault 51 ans 2024',
+  '2026-09-18':'Marlène Richer',
+  '2026-09-27':'Manon Raiche 61 ans 2023 & Denise Cool',
+  '2026-10-02':'Milagro Flores Guardado',
+  '2026-10-08':'Elizabeth Labrie',
+  '2026-10-09':'Zoé Labrie',
+  '2026-10-10':'Hector Guardado',
+  '2026-10-12':'Dominic Fortin',
+  '2026-10-15':'Donald Labrie (68 ans 2023)',
+  '2026-10-18':'Richard Gagnon (60 ans en 2023)',
+  '2026-10-24':'Marc Sauvé',
+  '2026-10-27':'Denis Boisclair',
+  '2026-11-15':'Vincent Labrie (2005)',
+  '2026-11-22':'Jonathan Labrie (1978)',
+  '2026-11-24':'Francis Labrie (1974)'
+ };
+ Object.entries(birthdays).forEach(([date,text])=>{
+   const k='agenda-v56:anniversary:'+date;
+   const existing=(localStorage.getItem(k)||'').trim();
+   if(!existing){ localStorage.setItem(k,text); localStorage.setItem(k+':html',text); }
+   else if(!existing.includes(text)){
+     const merged=existing+'\n'+text;
+     localStorage.setItem(k,merged); localStorage.setItem(k+':html',merged.replace(/\n/g,'<br>'));
+   }
+ });
+ // L'Excel contient « Juan-Carlos 1975 » sans jour du mois : conservé séparément pour ne pas inventer de date.
+ localStorage.setItem('agenda-v80:anniversary-undated','Juan-Carlos 1975');
+})();
+</script>
+
+<style>
+.v80-undated-birthday{margin:14px 0 0;padding:10px 14px;border-top:1px solid rgba(143,132,118,.28);font-size:14px;opacity:.78}
+</style>
+<script>
+(function(){
+ const oldOpen=window.openTrackerPage;
+ if(typeof oldOpen==='function') window.openTrackerPage=function(key){oldOpen(key); if(key==='anniversary') setTimeout(showUndated,0)};
+ const oldSet=window.setTrackerMonth;
+ if(typeof oldSet==='function') window.setTrackerMonth=function(i){oldSet(i); setTimeout(showUndated,0)};
+ function showUndated(){
+   document.querySelectorAll('.v80-undated-birthday').forEach(x=>x.remove());
+   const p=document.getElementById('tracker-anniversary'); if(!p||!p.classList.contains('active'))return;
+   const label=p.querySelector('.tracker-month-label')?.textContent||'';
+   if(!label.startsWith('Août'))return;
+   const v=localStorage.getItem('agenda-v80:anniversary-undated'); if(!v)return;
+   const n=document.createElement('div');n.className='v80-undated-birthday';n.textContent='Date à préciser : '+v;p.appendChild(n);
+ }
+})();
+</script>
+
 </body>
 </html>
