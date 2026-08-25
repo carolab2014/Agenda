@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V73</title>
+<title>Mon Agenda V78</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -3384,6 +3384,55 @@ body.dark #appointmentsPage .appt-row,body.dark #appointmentsPage .appt-row inpu
    };
    window.renderAppointments();
  }
+})();
+</script>
+
+
+<style>
+/* ===== V78 — Rendez-vous : case à cocher + ligne barrée ===== */
+#appointmentsPage .appt-cols,#appointmentsPage .appt-row{
+  grid-template-columns:34px 130px 92px 70px minmax(130px,.8fr) minmax(180px,1.2fr) minmax(190px,1.25fr) 44px!important;
+}
+#appointmentsPage .appt-check{width:21px!important;height:21px!important;min-height:21px!important;margin:10px 0 0 2px;accent-color:#8F8476}
+#appointmentsPage .appt-row.done input:not([type="checkbox"]),
+#appointmentsPage .appt-row.done textarea,
+#appointmentsPage .appt-row.done select{text-decoration:line-through!important;opacity:.62}
+#appointmentsPage .appt-type{font-size:inherit!important;font-weight:400!important}
+@media(max-width:800px){
+ #appointmentsPage .appt-row{grid-template-columns:34px 1fr 1fr 70px 44px!important}
+ #appointmentsPage .appt-row .appt-person,#appointmentsPage .appt-row .appt-what,#appointmentsPage .appt-row .appt-address{grid-column:2/6!important}
+ #appointmentsPage .appt-delete{grid-column:5!important;grid-row:1!important}
+}
+</style>
+<script>
+/* V78 — affichage final de Mes rendez-vous */
+(function(){
+ const cols=document.querySelector('#appointmentsPage .appt-cols');
+ if(cols) cols.innerHTML='<span></span><span>Date</span><span>Heure</span><span>Type</span><span>Pour qui</span><span>Rendez-vous</span><span>Adresse</span><span></span>';
+ window.renderAppointments=function(){
+   const root=document.getElementById('appointmentsList'); if(!root)return;
+   const items=apptLoad().slice().sort((a,b)=>{
+     const ak=(a.date||'')+'T'+apptTimeForInput(a.time||'00:00');
+     const bk=(b.date||'')+'T'+apptTimeForInput(b.time||'00:00');
+     return bk.localeCompare(ak);
+   });
+   root.innerHTML='';
+   if(!items.length){root.innerHTML='<div class="appt-empty">Aucun rendez-vous pour le moment.</div>';return;}
+   items.forEach(a=>{
+     const r=document.createElement('div'); r.className='appt-row'+(a.done?' done':''); r.dataset.apptId=a.id;
+     const cb=document.createElement('input'); cb.type='checkbox'; cb.className='appt-check'; cb.checked=!!a.done; cb.setAttribute('aria-label','Rendez-vous terminé'); cb.onchange=()=>updateAppointment(a.id,'done',cb.checked);
+     const date=document.createElement('input'); date.type='date'; date.value=a.date||''; date.onchange=()=>updateAppointment(a.id,'date',date.value);
+     const time=document.createElement('input'); time.type='time'; time.step='1800'; time.value=apptTimeForInput(a.time); time.onchange=()=>updateAppointment(a.id,'time',time.value);
+     const type=document.createElement('select'); type.className='appt-type'; type.innerHTML='<option value="P">P</option><option value="T">T</option>'; type.value=(a.type==='T'?'T':'P'); type.onchange=()=>updateAppointment(a.id,'type',type.value);
+     const person=document.createElement('textarea'); person.className='appt-person'; person.rows=1; person.value=a.person||''; person.onchange=()=>updateAppointment(a.id,'person',person.value.trim());
+     const what=document.createElement('textarea'); what.className='appt-what'; what.rows=1; what.value=a.what||''; what.onchange=()=>updateAppointment(a.id,'what',what.value.trim());
+     const address=document.createElement('textarea'); address.className='appt-address'; address.rows=1; address.value=a.address||''; address.onchange=()=>updateAppointment(a.id,'address',address.value.trim());
+     [person,what,address].forEach(t=>t.oninput=()=>autoGrow(t));
+     const del=document.createElement('button'); del.className='appt-delete'; del.title='Supprimer'; del.setAttribute('aria-label','Supprimer ce rendez-vous'); del.textContent='×'; del.onclick=()=>deleteAppointment(a.id);
+     r.append(cb,date,time,type,person,what,address,del); root.append(r); [person,what,address].forEach(autoGrow);
+   });
+ };
+ renderAppointments();
 })();
 </script>
 
