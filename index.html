@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V78</title>
+<title>Mon Agenda V79</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -1610,7 +1610,7 @@ document.querySelectorAll('.v13-color[data-color]').forEach(b=>{b.addEventListen
 function miniCalendar(){const root=document.getElementById('miniCalendar'),y=current.getFullYear(),m=current.getMonth(),first=new Date(y,m,1),days=new Date(y,m+1,0).getDate();let html=`<div class="v13-mini-title">${first.toLocaleDateString('fr-CA',{month:'long',year:'numeric'}).replace(/^./,c=>c.toUpperCase())}</div><div class="v13-mini-grid">`;['D','L','M','M','J','V','S'].forEach(x=>html+=`<b>${x}</b>`);for(let i=0;i<first.getDay();i++)html+='<span></span>';for(let d=1;d<=days;d++)html+=`<span class="${d===current.getDate()?'today':''}" data-day="${d}" role="button" tabindex="0">${d}</span>`;root.innerHTML=html+'</div>';root.querySelectorAll('[data-day]').forEach(el=>{const openDay=()=>{current=new Date(y,m,Number(el.dataset.day),12,0,0,0);render();window.scrollTo(0,0)};el.onclick=openDay;el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openDay()}}})}
 function setupEditable(el,key,placeholder){el.classList.add('v15-editable');el.contentEditable='true';el.dataset.placeholder=placeholder||'';el.innerHTML=localStorage.getItem(key+':html')||escapeHtml(localStorage.getItem(key)||'');el.oninput=()=>{localStorage.setItem(key,el.innerText);localStorage.setItem(key+':html',el.innerHTML);if(typeof agendaV5FillWeekSummaries==='function')agendaV5FillWeekSummaries()};}
 function escapeHtml(v){return String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
-function makeList(rootId,prefix,count){const root=document.getElementById(rootId),dk=keyForDate(current);root.innerHTML='';for(let i=1;i<=count;i++){const row=document.createElement('div');row.className='v13-checkrow';const cb=document.createElement('input');cb.type='checkbox';const ed=document.createElement('div');ed.className='v13-entry';const key=`agenda-v13:${dk}:${prefix}${i}`;setupEditable(ed,key,`${prefix}${i}...`);row.dataset.dailyKey=key;row.dataset.dailyDate=dk;row.dataset.kind=prefix;row.dataset.index=i;cb.checked=localStorage.getItem(key+':done')==='1';row.classList.toggle('done',cb.checked);cb.onchange=()=>{row.classList.toggle('done',cb.checked);localStorage.setItem(key+':done',cb.checked?'1':'0');if(typeof syncDailyTodos==='function')syncDailyTodos()};ed.addEventListener('input',()=>{if(typeof syncDailyTodos==='function')syncDailyTodos()});row.append(cb,ed);root.append(row)}}
+function makeList(rootId,prefix,count){const root=document.getElementById(rootId),dk=keyForDate(current);root.innerHTML='';for(let i=1;i<=count;i++){const row=document.createElement('div');row.className='v13-checkrow';const cb=document.createElement('input');cb.type='checkbox';const ed=document.createElement('div');ed.className='v13-entry';const key=`agenda-v13:${dk}:${prefix}${i}`;setupEditable(ed,key,'');row.dataset.dailyKey=key;row.dataset.dailyDate=dk;row.dataset.kind=prefix;row.dataset.index=i;cb.checked=localStorage.getItem(key+':done')==='1';row.classList.toggle('done',cb.checked);cb.onchange=()=>{row.classList.toggle('done',cb.checked);localStorage.setItem(key+':done',cb.checked?'1':'0');if(typeof syncDailyTodos==='function')syncDailyTodos()};ed.addEventListener('input',()=>{if(typeof syncDailyTodos==='function')syncDailyTodos()});row.append(cb,ed);root.append(row)}}
 function render(){document.getElementById('dateLabel').textContent=formatDate(current);miniCalendar();makeList('priorities','P',3);makeList('tasks','T',5);const dk=keyForDate(current),notes=document.getElementById('dailyNotes'),nk=`agenda-v13:${dk}:notes`;setupEditable(notes,nk,'Notes...');const schedule=document.getElementById('schedule');schedule.innerHTML='';times().forEach(t=>{const row=document.createElement('div');row.className='slot';const lab=document.createElement('div');lab.className='time';lab.textContent=t;const ed=document.createElement('div');ed.className='note v15-editable';const key=`agenda:${dk}:${t}`;setupEditable(ed,key,'');row.append(lab,ed);schedule.append(row)});document.getElementById('prevDay').disabled=current<=START;document.getElementById('nextDay').disabled=current>=END}
 document.getElementById('prevDay').onclick=()=>{if(current>START){current.setDate(current.getDate()-1);render()}};document.getElementById('nextDay').onclick=()=>{if(current<END){current.setDate(current.getDate()+1);render()}};window.addEventListener('resize',()=>document.querySelectorAll('.note,.v13-entry').forEach(autoGrow));setTheme(localStorage.getItem('agenda-theme')||'light');render();
 </script>
@@ -3433,6 +3433,81 @@ body.dark #appointmentsPage .appt-row,body.dark #appointmentsPage .appt-row inpu
    });
  };
  renderAppointments();
+})();
+</script>
+
+
+
+<!-- ===== V79 — Tâches épurées + synchronisation des surlignages ===== -->
+<style>
+/* Les pages Tâches restent sobres : aucune couleur sur les lignes. */
+#todoPerso .todo-row, #todoTravail .todo-row,
+body:not(.dark) #todoPerso .todo-row, body:not(.dark) #todoTravail .todo-row {
+  background:#fff !important; color:#000 !important;
+  border:0 !important; border-bottom:1px solid rgba(143,132,118,.24) !important;
+  border-radius:0 !important;
+}
+#todoPerso .todo-desc, #todoTravail .todo-desc,
+#todoPerso .todo-date, #todoTravail .todo-date,
+body:not(.dark) #todoPerso .todo-desc, body:not(.dark) #todoTravail .todo-desc {
+  background:transparent !important; color:#000 !important; -webkit-text-fill-color:#000 !important;
+}
+body.dark #todoPerso .todo-row, body.dark #todoTravail .todo-row {
+  background:#000 !important; color:#fff !important;
+  border-bottom-color:rgba(255,255,255,.20) !important;
+}
+body.dark #todoPerso .todo-desc, body.dark #todoTravail .todo-desc,
+body.dark #todoPerso .todo-date, body.dark #todoTravail .todo-date {
+  background:transparent !important; color:#fff !important; -webkit-text-fill-color:#fff !important;
+}
+/* Les couleurs de surlignage de Ma journée ne sont pas modifiées. */
+</style>
+<script>
+(function(){
+  function stripHtml(html){
+    const box=document.createElement('div'); box.innerHTML=html||''; return (box.innerText||box.textContent||'').trim();
+  }
+  function categoryFromHtml(html){
+    const box=document.createElement('div'); box.innerHTML=html||'';
+    if(box.querySelector('.v15-hl-trav')) return 'travail';
+    if(box.querySelector('.v15-hl-perso')) return 'perso';
+    return null;
+  }
+  /* Synchronise toutes les journées sauvegardées, pas seulement celle affichée. */
+  window.syncDailyTodos=function(){
+    let a=todoLoad();
+    const seen=new Set();
+    const re=/^agenda-v13:(\d{4}-\d{2}-\d{2}):T(\d+):html$/;
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i)||''; const m=k.match(re); if(!m) continue;
+      const html=localStorage.getItem(k)||''; const cat=categoryFromHtml(html); const text=stripHtml(html);
+      const base=k.slice(0,-5), id='daily:'+base; const ix=a.findIndex(t=>t.id===id);
+      if(cat && text){
+        const done=localStorage.getItem(base+':done')==='1';
+        const obj=ix>=0?a[ix]:{id,source:'daily',start:m[1],end:'',done:false};
+        obj.category=cat; obj.text=text; obj.done=done; obj.end=done?(obj.end||todayISO()):'';
+        if(ix>=0)a[ix]=obj; else a.push(obj); seen.add(id);
+      } else if(ix>=0){ a.splice(ix,1); }
+    }
+    /* Inclure immédiatement les lignes visibles, même avant une nouvelle ouverture de page. */
+    document.querySelectorAll('#tasks .v13-checkrow').forEach(row=>{
+      const ed=row.querySelector('.v13-entry'), cb=row.querySelector('input[type=checkbox]'); if(!ed)return;
+      const cat=dailyCategory(ed), id='daily:'+row.dataset.dailyKey, text=ed.innerText.trim(); let ix=a.findIndex(t=>t.id===id);
+      if(cat&&text){const obj=ix>=0?a[ix]:{id,source:'daily',start:row.dataset.dailyDate,end:'',done:false};obj.category=cat;obj.text=text;obj.done=!!cb.checked;obj.end=cb.checked?(obj.end||todayISO()):'';if(ix>=0)a[ix]=obj;else a.push(obj);seen.add(id)}
+      else if(ix>=0){a.splice(ix,1)}
+    });
+    todoSave(a); renderTodoLists();
+  };
+  /* Nettoie les anciens textes P1…, T1… uniquement s'ils n'ont jamais été remplacés par l'utilisateur. */
+  for(let i=localStorage.length-1;i>=0;i--){
+    const k=localStorage.key(i)||'';
+    if(/^agenda-v13:\d{4}-\d{2}-\d{2}:[PT]\d+$/.test(k)){
+      const v=(localStorage.getItem(k)||'').trim();
+      if(/^[PT]\d+\.{3}$/.test(v)){localStorage.removeItem(k);localStorage.removeItem(k+':html');}
+    }
+  }
+  if(typeof render==='function') render();
+  if(typeof syncDailyTodos==='function') syncDailyTodos();
 })();
 </script>
 
