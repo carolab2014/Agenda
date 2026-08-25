@@ -3356,5 +3356,36 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
+
+<style>
+/* ===== V77 — Rendez-vous épurés : P/T seulement, sans couleurs ni encadrés ===== */
+#appointmentsPage .appt-legend{margin:10px 9px 14px;font-size:14px;opacity:.72}
+#appointmentsPage .appt-row{background:transparent!important;border:0!important;border-radius:0!important;padding:9px!important;border-bottom:1px solid var(--line)!important}
+#appointmentsPage .appt-row input,#appointmentsPage .appt-row textarea,#appointmentsPage .appt-row select{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
+#appointmentsPage .appt-row input:focus,#appointmentsPage .appt-row textarea:focus,#appointmentsPage .appt-row select:focus{outline:1px solid var(--line)!important;outline-offset:1px}
+body.dark #appointmentsPage .appt-row,body.dark #appointmentsPage .appt-row input,body.dark #appointmentsPage .appt-row textarea,body.dark #appointmentsPage .appt-row select{background:transparent!important;color:#fff!important;-webkit-text-fill-color:#fff!important;color-scheme:dark!important}
+</style>
+<script>
+/* V77 — libellé du type limité à P/T et ajout de la légende */
+(function(){
+ const list=document.querySelector('#appointmentsPage .appt-list');
+ const cols=document.querySelector('#appointmentsPage .appt-cols');
+ if(list && !document.querySelector('#appointmentsPage .appt-legend')){
+   const legend=document.createElement('div'); legend.className='appt-legend'; legend.textContent='P = Personnel   ·   T = Travail';
+   if(cols) cols.insertAdjacentElement('afterend',legend); else list.prepend(legend);
+ }
+ const oldRender=window.renderAppointments;
+ if(typeof oldRender==='function'){
+   window.renderAppointments=function(){
+     oldRender();
+     document.querySelectorAll('#appointmentsList .appt-type').forEach(sel=>{
+       Array.from(sel.options).forEach(o=>{o.textContent=o.value==='T'?'T':'P'});
+     });
+   };
+   window.renderAppointments();
+ }
+})();
+</script>
+
 </body>
 </html>
