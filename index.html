@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V88</title>
+<title>Mon Agenda V89</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -3862,5 +3862,56 @@ body.agenda-view-isolation .rich-note-page{display:none!important}body.agenda-vi
 })();
 </script>
 
+
+
+<!-- ===== V89 — correction navigation et affichage des pages ===== -->
+<style>
+/* Une seule vue active est visible. Cette règle neutralise les conflits V84/V85. */
+body.agenda-view-isolation .page.active,
+body.agenda-view-isolation .week-page.active,
+body.agenda-view-isolation .todo-page.active,
+body.agenda-view-isolation .appt-page.active,
+body.agenda-view-isolation .objectives-page.active,
+body.agenda-view-isolation .tracker-page.active,
+body.agenda-view-isolation .recipe-page.active,
+body.agenda-view-isolation .grocery-page.active,
+body.agenda-view-isolation .rich-note-page.active,
+body.agenda-view-isolation #monthPage.active,
+body.agenda-view-isolation #yearPage.active,
+body.agenda-view-isolation #appointmentsPage.active,
+body.agenda-view-isolation #objectivesPage.active {display:block!important;}
+</style>
+<script>
+(function(){
+ const all='.page,.week-page,.todo-page,.appt-page,.objectives-page,.tracker-page,.recipe-page,.grocery-page,.rich-note-page,#monthPage,#yearPage,#appointmentsPage,#objectivesPage';
+ function only(target){
+   document.querySelectorAll(all).forEach(el=>{
+     if(el!==target){el.classList.remove('active','agenda-current-view');el.style.display='none';}
+   });
+   if(target){target.classList.add('active','agenda-current-view');target.style.display='block';}
+   document.body.classList.add('agenda-view-isolation');
+   const ta=document.querySelector('.top-actions');
+   if(ta) ta.style.display=(target&&target.id==='home')?'flex':'none';
+   window.scrollTo(0,0);
+ }
+ // Corrige tous les boutons Accueil, notamment celui de Semaine.
+ window.showHome=function(){only(document.getElementById('home'));};
+ window.yearGoHome=window.showHome;
+ document.addEventListener('DOMContentLoaded',function(){
+   document.querySelectorAll('.week-home,.month-home,.year-home,.todo-home,.appt-home,.objectives-home,.tracker-home,.recipe-home,.grocery-home,.rich-note-home').forEach(b=>{
+     b.onclick=function(e){e.preventDefault();window.showHome();};
+   });
+ });
+ // Après chaque ouverture, garantit que la vue demandée reste la seule visible.
+ [['showWeek','weekPage'],['showMonth','monthPage'],['showYear','yearPage'],['openRecipesPage','recipesPage'],['openGroceryPage','groceryPage']].forEach(([name,id])=>{
+   const old=window[name]; if(typeof old!=='function')return;
+   window[name]=function(){const r=old.apply(this,arguments);only(document.getElementById(id));return r;};
+ });
+ const oldTracker=window.openTrackerPage;
+ if(typeof oldTracker==='function')window.openTrackerPage=function(key){const r=oldTracker.apply(this,arguments);only(document.getElementById('tracker-'+key));return r;};
+ const oldTodo=window.openTodo;
+ if(typeof oldTodo==='function')window.openTodo=function(cat){const r=oldTodo.apply(this,arguments);only(document.getElementById(cat==='perso'?'todoPerso':'todoTravail'));return r;};
+})();
+</script>
 </body>
 </html>
