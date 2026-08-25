@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V85</title>
+<title>Mon Agenda V86</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -1518,8 +1518,8 @@ body.dark #yearPage .year-note {
    <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><path d="M7 14c11-4 20-2 25 3v38c-5-5-14-7-25-3zM57 14c-11-4-20-2-25 3v38c5-5 14-7 25-3z"/><path d="M13 23c5-1 9 0 13 2M13 31c5-1 9 0 13 2M38 25c4-2 8-3 13-2M38 33c4-2 8-3 13-2"/></svg></span>LIVRES</button>
    <button class="tile c2 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><path d="M37 48a20 20 0 1 1 11-8c-3 4-8 2-8-2 0-3 3-5 7-5h5"/><circle cx="20" cy="27" r="3"/><circle cx="28" cy="18" r="3"/><circle cx="39" cy="20" r="3"/><path d="m44 52 8-25 5 2-8 25z"/></svg></span>LOISIRS CRÉATIFS</button>
 
-   <button class="tile c5 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="14" y="10" width="36" height="44" rx="4"/><path d="M21 10v44M27 20h16M27 29h16M27 38h12"/><path d="M10 18h8M10 27h8M10 36h8M10 45h8"/></svg></span>NOTES TRAVAIL</button>
-   <button class="tile c5 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="14" y="10" width="36" height="44" rx="4"/><path d="M21 10v44M27 20h16M27 29h16M27 38h12"/><path d="M10 18h8M10 27h8M10 36h8M10 45h8"/></svg></span>NOTES PERSO</button>
+   <button class="tile c5" onclick="openRichNotes('travail')"><span class="ico"><svg viewBox="0 0 64 64"><rect x="14" y="10" width="36" height="44" rx="4"/><path d="M21 10v44M27 20h16M27 29h16M27 38h12"/><path d="M10 18h8M10 27h8M10 36h8M10 45h8"/></svg></span>NOTES TRAVAIL</button>
+   <button class="tile c5" onclick="openRichNotes('perso')"><span class="ico"><svg viewBox="0 0 64 64"><rect x="14" y="10" width="36" height="44" rx="4"/><path d="M21 10v44M27 20h16M27 29h16M27 38h12"/><path d="M10 18h8M10 27h8M10 36h8M10 45h8"/></svg></span>NOTES PERSO</button>
    <button class="tile c5 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="13" y="28" width="38" height="27" rx="4"/><path d="M21 28v-8c0-7 5-12 11-12s11 5 11 12v8"/><circle cx="32" cy="40" r="3"/><path d="M32 43v6"/></svg></span>MOT DE PASSE</button>
    <button class="tile c5 placeholder"><span class="ico"><svg viewBox="0 0 64 64"><rect x="9" y="13" width="46" height="42" rx="5"/><path d="M9 25h46M18 34h10M18 43h7M37 34h9M37 43h9"/></svg></span>BUDGET</button>
 
@@ -3746,6 +3746,38 @@ body.agenda-view-isolation .agenda-current-view { display:block !important; }
     var active=document.querySelector(selectors+'.active') || document.getElementById('home');
     isolate(active);
   });
+})();
+</script>
+
+
+<!-- ===== V86 — Notes Travail / Perso avec barre de mise en forme ===== -->
+<style>
+.rich-note-page{display:none;min-height:100vh;padding:22px 90px 70px;background:var(--bg);color:var(--text)}
+.rich-note-page.active{display:block}.rich-note-head{position:relative;min-height:125px;border-radius:38px;padding:26px 110px;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,.10)}
+#richNotesTravail .rich-note-head{background:var(--ocean-mist)}#richNotesPerso .rich-note-head{background:var(--soft-pastel-violet)}
+.rich-note-head h1{font-family:"Snell Roundhand","Apple Chancery","Segoe Script",cursive;font-size:clamp(46px,6vw,70px);font-weight:400;margin:0;color:#000!important;-webkit-text-fill-color:#000!important}
+.rich-note-home{position:absolute;left:24px;top:25px}.rich-note-theme{position:absolute;right:24px;top:25px;display:flex;gap:10px}
+.rich-toolbar{max-width:1180px;margin:22px auto 0;border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:0 5px 15px rgba(0,0,0,.07);overflow:hidden}
+.rich-tools-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--line)}.rich-tools-row:last-child{border-bottom:0}
+.rich-tool,.rich-select{min-height:40px;border:1px solid var(--line);border-radius:9px;background:var(--field);color:var(--text);padding:7px 11px;font-size:18px;cursor:pointer}.rich-tool{min-width:42px;font-weight:700}.rich-tool:active{transform:translateY(1px)}
+.rich-select{font-size:15px}.rich-color{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;padding:3px;background:var(--field)}
+.rich-editor{max-width:1180px;min-height:620px;margin:16px auto 0;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--field);color:var(--text);font-size:18px;line-height:1.55;outline:none;box-shadow:0 4px 12px rgba(0,0,0,.05);overflow-wrap:anywhere}
+.rich-editor:empty:before{content:'Écrivez vos notes ici…';opacity:.42;font-style:italic}.rich-save{text-align:right;max-width:1180px;margin:8px auto;font-size:13px;opacity:.6}
+.rich-swatch{width:29px;height:29px;border-radius:50%;border:2px solid rgba(0,0,0,.12);cursor:pointer;padding:0}.rich-highlight-off{font-size:14px;min-width:auto}
+body.agenda-view-isolation .rich-note-page{display:none!important}body.agenda-view-isolation .rich-note-page.agenda-current-view{display:block!important}
+@media(max-width:800px){.rich-note-page{padding:14px 65px 50px}.rich-note-head{padding:65px 70px 20px}.rich-editor{min-height:520px}.rich-tools-row{gap:5px}.rich-tool{min-width:38px;padding:6px 8px}}
+</style>
+<section id="richNotesTravail" class="rich-note-page"><header class="rich-note-head"><button class="silver-round rich-note-home" onclick="show('home')" aria-label="Accueil"><svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><h1>Notes travail</h1><div class="rich-note-theme"><button class="silver-round" onclick="setTheme('light')">☀</button><button class="silver-round" onclick="setTheme('dark')">●</button></div></header><div class="rich-toolbar"></div><div class="rich-editor" contenteditable="true" spellcheck="true" data-key="agenda-v86-notes-travail"></div><div class="rich-save">Enregistrement automatique</div></section>
+<section id="richNotesPerso" class="rich-note-page"><header class="rich-note-head"><button class="silver-round rich-note-home" onclick="show('home')" aria-label="Accueil"><svg class="ui-svg" viewBox="0 0 24 24"><path d="M3.5 10.8 12 3.8l8.5 7v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-4v6H5a1.5 1.5 0 0 1-1.5-1.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><h1>Notes perso</h1><div class="rich-note-theme"><button class="silver-round" onclick="setTheme('light')">☀</button><button class="silver-round" onclick="setTheme('dark')">●</button></div></header><div class="rich-toolbar"></div><div class="rich-editor" contenteditable="true" spellcheck="true" data-key="agenda-v86-notes-perso"></div><div class="rich-save">Enregistrement automatique</div></section>
+<script>
+(function(){
+ const fonts=['Arial','Georgia','Times New Roman','Verdana','Trebuchet MS','Courier New','Comic Sans MS','Palatino','Garamond','Brush Script MT'];
+ const colors=['#000000','#666666','#c62828','#ef6c00','#f9a825','#2e7d32','#00838f','#1976d2','#3949ab','#7b1fa2','#d81b60','#ffffff'];
+ function cmd(c,v=null){document.execCommand(c,false,v);}
+ function toolbar(){let d=document.createElement('div');d.innerHTML=`<div class="rich-tools-row"><select class="rich-select font">${fonts.map(f=>`<option value="${f}">${f}</option>`).join('')}</select><select class="rich-select size"><option value="3">Normal</option><option value="5">Sous-titre</option><option value="7">Titre</option></select><button class="rich-tool" data-c="bold">B</button><button class="rich-tool" data-c="italic"><i>I</i></button><button class="rich-tool" data-c="underline"><u>U</u></button><button class="rich-tool" data-c="removeFormat">⌫ format</button><button class="rich-tool" data-c="justifyLeft">≡←</button><button class="rich-tool" data-c="justifyCenter">≡</button><button class="rich-tool" data-c="justifyRight">→≡</button></div><div class="rich-tools-row"><button class="rich-tool" data-c="insertUnorderedList">● liste</button><button class="rich-tool square">■ liste</button><button class="rich-tool arrow">➜ liste</button><button class="rich-tool check">☐ case</button><span style="margin-left:5px;font-size:14px">Texte :</span>${colors.map(c=>`<button class="rich-swatch" data-color="${c}" style="background:${c}" title="${c}"></button>`).join('')}<label title="Surligneur">🖍 <input class="rich-color high" type="color" value="#fff176"></label><button class="rich-tool rich-highlight-off">Sans surlignage</button></div>`;return d}
+ document.querySelectorAll('.rich-toolbar').forEach(t=>{let x=toolbar();t.replaceWith(x);x.className='rich-toolbar';x.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>cmd(b.dataset.c));x.querySelector('.font').onchange=e=>cmd('fontName',e.target.value);x.querySelector('.size').onchange=e=>cmd('fontSize',e.target.value);x.querySelectorAll('.rich-swatch').forEach(b=>b.onclick=()=>cmd('foreColor',b.dataset.color));x.querySelector('.high').oninput=e=>cmd('hiliteColor',e.target.value);x.querySelector('.rich-highlight-off').onclick=()=>cmd('hiliteColor','transparent');x.querySelector('.check').onclick=()=>cmd('insertHTML','<div>☐&nbsp;</div>');x.querySelector('.square').onclick=()=>cmd('insertHTML','<div>■&nbsp;</div>');x.querySelector('.arrow').onclick=()=>cmd('insertHTML','<div>➜&nbsp;</div>')});
+ document.querySelectorAll('.rich-editor').forEach(e=>{e.innerHTML=localStorage.getItem(e.dataset.key)||'';e.addEventListener('input',()=>localStorage.setItem(e.dataset.key,e.innerHTML));});
+ window.openRichNotes=function(kind){let target=document.getElementById(kind==='perso'?'richNotesPerso':'richNotesTravail');document.body.classList.add('agenda-view-isolation');document.querySelectorAll('.page,.week-page,.todo-page,.appt-page,.objectives-page,.tracker-page,.recipe-page,.grocery-page,.rich-note-page,#monthPage,#yearPage,#appointmentsPage,#objectivesPage').forEach(el=>{el.classList.remove('active','agenda-current-view');el.style.display='none'});target.classList.add('active','agenda-current-view');target.style.display='block';window.scrollTo(0,0)};
 })();
 </script>
 
