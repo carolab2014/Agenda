@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f9ff">
-<title>Mon Agenda V87</title>
+<title>Mon Agenda V88</title>
 <style>
 :root{
   --bg:#f7f9ff; --text:#10131a; --panel:#fff; --shadow:0 10px 24px rgba(23,38,77,.18);
@@ -3789,6 +3789,76 @@ body.agenda-view-isolation .rich-note-page{display:none!important}body.agenda-vi
  document.querySelectorAll('.rich-toolbar').forEach(t=>{let x=toolbar();t.replaceWith(x);x.className='rich-toolbar';x.addEventListener('pointerdown',ev=>{if(!ev.target.matches('select,input[type=color]')){ev.preventDefault();saveSelection()}});x.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>cmd(b.dataset.c));x.querySelector('.font').onchange=e=>cmd('fontName',e.target.value);x.querySelector('.size').onchange=e=>cmd('fontSize',e.target.value);x.querySelectorAll('.rich-swatch').forEach(b=>b.onclick=()=>colorText(b.dataset.color));x.querySelector('.high').onchange=e=>highlight(e.target.value);x.querySelector('.rich-highlight-off').onclick=clearHighlight;x.querySelector('.check').onclick=()=>insertHTML('<div><input type="checkbox" class="rich-inline-check" contenteditable="false">&nbsp;</div>');x.querySelector('.square').onclick=()=>insertHTML('<div>■&nbsp;</div>');x.querySelector('.arrow').onclick=()=>insertHTML('<div>➜&nbsp;</div>');x.querySelector('.indent').onclick=()=>nudge(1);x.querySelector('.outdent').onclick=()=>nudge(-1)});
  document.addEventListener('change',e=>{if(e.target.classList&&e.target.classList.contains('rich-inline-check')){const ed=e.target.closest('.rich-editor');persist(ed)}});
  window.openRichNotes=function(kind){let target=document.getElementById(kind==='perso'?'richNotesPerso':'richNotesTravail');document.body.classList.add('agenda-view-isolation');document.querySelectorAll('.page,.week-page,.todo-page,.appt-page,.objectives-page,.tracker-page,.recipe-page,.grocery-page,.rich-note-page,#monthPage,#yearPage,#appointmentsPage,#objectivesPage').forEach(el=>{el.classList.remove('active','agenda-current-view');el.style.display='none'});target.classList.add('active','agenda-current-view');target.style.display='block';activeEditor=target.querySelector('.rich-editor');savedRange=null;window.scrollTo(0,0)};
+})();
+</script>
+
+<!-- ===== V88 — correction couleurs texte + surligneur désactivable ===== -->
+<style>
+/* Autorise les couleurs choisies à remplacer la couleur globale du thème. */
+.rich-editor span[data-rich-text-color]{-webkit-text-fill-color:currentColor !important;}
+.rich-editor span[data-rich-highlight]{-webkit-box-decoration-break:clone;box-decoration-break:clone;}
+.rich-highlight-off.on{outline:2px solid var(--slate-pebble);outline-offset:1px;}
+</style>
+<script>
+(function(){
+  let active=null, range=null, highlightEnabled=true;
+  function editorOfRange(r){
+    if(!r)return null; let n=r.commonAncestorContainer; if(n.nodeType===3)n=n.parentElement;
+    return n&&n.closest?n.closest('.rich-editor'):null;
+  }
+  function remember(){
+    const sel=window.getSelection(); if(!sel||!sel.rangeCount)return;
+    const r=sel.getRangeAt(0); const ed=editorOfRange(r);
+    if(ed){active=ed;range=r.cloneRange();}
+  }
+  function restore(){
+    if(!active||!range)return false; active.focus({preventScroll:true});
+    const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(range); return true;
+  }
+  function save(){if(active)localStorage.setItem(active.dataset.key,active.innerHTML)}
+  function caretAfter(node){
+    const r=document.createRange(); r.setStartAfter(node); r.collapse(true);
+    const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(r); range=r.cloneRange();
+  }
+  function wrapSelection(style,attr){
+    if(!restore())return; const sel=window.getSelection(); if(!sel.rangeCount)return; const r=sel.getRangeAt(0);
+    if(r.collapsed)return;
+    const span=document.createElement('span'); span.setAttribute(attr,'1'); Object.assign(span.style,style);
+    try{r.surroundContents(span)}catch(e){const frag=r.extractContents();span.appendChild(frag);r.insertNode(span)}
+    caretAfter(span); save();
+  }
+  function setTextColor(c){wrapSelection({color:c,webkitTextFillColor:c},'data-rich-text-color')}
+  function setHighlight(c){highlightEnabled=true;wrapSelection({backgroundColor:c},'data-rich-highlight')}
+  function clearHighlight(){
+    highlightEnabled=false;
+    if(!restore())return; const sel=window.getSelection(); if(!sel.rangeCount)return; const r=sel.getRangeAt(0);
+    if(!r.collapsed){
+      const mark=document.createElement('span'); mark.setAttribute('data-rich-highlight-clear','1'); mark.style.backgroundColor='transparent';
+      try{r.surroundContents(mark)}catch(e){const frag=r.extractContents();mark.appendChild(frag);r.insertNode(mark)}
+      caretAfter(mark);
+    }else{
+      /* Sort du span surligné pour que le nouveau texte ne reste pas surligné. */
+      let n=r.startContainer.nodeType===3?r.startContainer.parentElement:r.startContainer;
+      const hi=n&&n.closest?n.closest('[data-rich-highlight]'):null;
+      if(hi&&active.contains(hi)) caretAfter(hi);
+    }
+    save();
+  }
+  document.querySelectorAll('.rich-editor').forEach(ed=>{
+    ['keyup','mouseup','touchend'].forEach(ev=>ed.addEventListener(ev,()=>setTimeout(remember,0)));
+    ed.addEventListener('focus',()=>{active=ed;remember()});
+  });
+  document.querySelectorAll('.rich-toolbar').forEach(tb=>{
+    /* Sauvegarde AVANT l'ouverture du sélecteur couleur sur iPad/Safari. */
+    tb.addEventListener('pointerdown',e=>{if(e.target.closest('.rich-swatch,.rich-color,.rich-highlight-off'))remember()},true);
+    tb.querySelectorAll('.rich-swatch').forEach(b=>{b.onclick=e=>{e.preventDefault();setTextColor(b.dataset.color)}});
+    const high=tb.querySelector('.high'); if(high){
+      high.addEventListener('pointerdown',remember,true);
+      high.oninput=e=>{if(range)setHighlight(e.target.value)};
+      high.onchange=e=>{if(range)setHighlight(e.target.value)};
+    }
+    const off=tb.querySelector('.rich-highlight-off'); if(off)off.onclick=e=>{e.preventDefault();clearHighlight();off.classList.add('on');setTimeout(()=>off.classList.remove('on'),450)};
+  });
 })();
 </script>
 
